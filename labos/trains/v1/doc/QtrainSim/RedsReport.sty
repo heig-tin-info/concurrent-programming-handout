@@ -1,0 +1,611 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Package pour dossier ReDS
+% v0.2  -  27 aout 08
+%
+% Versions:
+% 27.08.08   PGR-YNG   Version initiale
+% 07.01.09   GCD       Images en PNG, TdM avec numéros de page en chiffres romains
+%                      Numérotation réinitialisée après la TdM
+%                       Adaptation pour utiliser les styles de listing avec les outils
+%                      inclus dans LyX.
+%
+% Pour utiliser ce paquetage, il suffit d'ajouter la ligne suivante dans
+% le préambule du document LyX:
+% \usepackage{RedsReport}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NeedsTeXFormat{LaTeX2e}[1999/01/01]
+\ProvidesPackage{PGdoc}[2003/01/01]
+
+\newif\if@listings \@listingstrue
+\newif\if@chap     \@chaptrue
+\newif\if@noserif  \@noseriftrue
+\newif\if@twoside  \@twosidetrue
+
+\DeclareOption{nolistings}{\@listingsfalse}
+\DeclareOption{nochap}{\@chapfalse}
+\DeclareOption{secserif}{\@noseriffalse}
+%\DeclareOption{singleside}{\@twosidefalse}
+
+\DeclareOption*{\PassOptionsToPackage{\CurrentOption}{babel}}
+\ProcessOptions
+
+\RequirePackage[francais]{babel}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[latin9]{inputenc}
+%\RequirePackage[latin1]{inputenc}
+%\RequirePackage[pdftex, final]{graphicx}
+\RequirePackage{amsmath,amssymb}
+\RequirePackage{float}
+\RequirePackage{tabularx}
+\RequirePackage{graphics}
+\RequirePackage{array}
+\RequirePackage{wrapfig}
+\RequirePackage{calc}
+%\RequirePackage{picins}
+\RequirePackage{pifont}
+\RequirePackage{multicol}
+\RequirePackage{multirow}
+\RequirePackage[final]{pdfpages}
+\RequirePackage[section]{placeins} %float dans la section d'appel
+\RequirePackage{flafter} %float apres leur reference
+\RequirePackage{aeguill} %font vectoriel
+\RequirePackage{ltxtable}
+\RequirePackage{subfigure}
+\RequirePackage[Sonny]{fncychap}
+\RequirePackage{enumitem}
+\RequirePackage[pdftex=true,hyperindex=true,urlcolor=blue,pdfpagelabels]{hyperref} % pour les liens sur pdf 
+
+%\RequirePackage[a4paper, hmargin=2.5cm, vmargin=1.5cm]{geometry}
+
+% Espace separant les paragraphes du texte
+\setlength{\parskip}{2ex plus0.2ex minus0.2ex}
+\setlength{\parindent}{0ex}
+\selectlanguage{francais}
+
+%Autorise les grand flottants
+\renewcommand{\textfraction}{.1}
+
+%\newcommand{\refp}[1]{\ref{#1} page \pageref{#1}}
+
+%Redefinition de la table des matieres
+%Permet d'avoir les numéros de page en chiffres Romains pour la table des matières
+%Après la tdm, le comptage recommence à 1, en chiffres arabes
+\renewcommand{\tableofcontents}{%
+  \if@twocolumn
+      \@restonecoltrue\onecolumn
+  \else
+      \@restonecolfalse
+  \fi
+      \chapter*{\contentsname
+        \@mkboth{%
+          \contentsname}{\@author}}%
+    \pagenumbering{Roman}
+    \setcounter{page}{1}
+  \@starttoc{toc}%
+    \if@restonecol\twocolumn\fi
+
+    \newpage
+    \pagenumbering{arabic}
+    \setcounter{page}{1}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Marges des pages                                                           %
+%  P.G. - 31.12.05                                                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\if@twoside    
+  \RequirePackage[BCOR12mm,DIV13]{typearea}
+  \setlength{\textheight}{708pt}
+\else
+%  \usepackage[BCOR5mm,DIV12]{typearea}
+  \setlength{\hoffset}{-18pt}
+  \setlength{\oddsidemargin}{0pt}     % Marge gauche sur pages impaires
+  \setlength{\evensidemargin}{9pt}     % Marge gauche sur pages paires
+  \setlength{\marginparwidth}{54pt}     % Largeur de note dans la marge
+  \setlength{\textwidth}{481pt}     % Largeur de la zone de texte (17cm)
+  \setlength{\voffset}{-18pt}     % Bon pour DOS
+  \setlength{\marginparsep}{7pt}     % Separation de la marge
+  \setlength{\topmargin}{0pt}     % Pas de marge en haut
+%  \setlength{\headheight}{13pt}     % Haut de page
+  \setlength{\headsep}{10pt}     % Entre le haut de page et le texte
+  \setlength{\footskip}{27pt}     % Bas de page + separation
+  \setlength{\textheight}{708pt}     % Hauteur de la zone de texte (25cm)
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Titres et sous titres...                                                   %
+%  P.G. - 30.12.05                                                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% En-tete de section sans-serif
+
+    \RequirePackage{color}
+    %couleur des gros numero de chapitre et de la ligne
+    \definecolor{ChapColor}{rgb}{0.2,0.2,0.2}
+
+\if@chap
+    
+    \RequirePackage{fix-cm}
+
+     %\ChNameVar{\Large\sf} \ChNumVar{\Huge} \ChTitleVar{\Large\sf}
+     % \ChRuleWidth{0.5pt} \ChNameUpperCase
+    
+    %definition des chapitres
+    \renewcommand{\DOCH}{}
+    \renewcommand{\DOTI}[1]{%
+        \raggedleft
+        \CTV\FmTi{#1}{\color{ChapColor}{\fontsize{72pt}{90pt}\selectfont\bfseries\thechapter}} \tiny\par\nobreak
+        \mghrulefill{\RW}\par\nobreak
+        \vskip 20\p@}        
+    %definition du chapitre 0 (Table des matieres)   
+      \renewcommand{\DOTIS}[1]{%
+        \raggedleft
+        \vskip 5\p@
+        \CTV\FmTi{#1}\par\nobreak
+        {\color{ChapColor}\mghrulefill{\RW}}\par\nobreak
+        \vskip 20\p@}
+        
+\fi
+
+% Section, subsection, etc.. en police sans serif
+\if@noserif
+
+    %Definition des sections
+    \renewcommand{\section}{\@startsection {section}{1}{\z@}%
+                 {-3.5ex \@plus -1ex \@minus -.2ex}%
+                 {2.3ex \@plus.2ex}%
+                 {\normalfont\Large\sffamily\bfseries}}
+    
+    \renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+                 {-3.25ex\@plus -1ex \@minus -.2ex}%
+                 {1.5ex \@plus .2ex}%
+                 {\normalfont\large\sffamily\bfseries}}
+    
+    \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}%
+             {\z@}%
+             {-3.25ex\@plus -1ex \@minus -.2ex}%
+                 {1.5ex \@plus .2ex}%
+                 {\normalfont\normalsize\sffamily\bfseries}}
+    
+    \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}%
+                 {3.25ex \@plus1ex \@minus.2ex}%
+                 {-1em}%
+                 {\normalfont\normalsize\sffamily\bfseries}}
+    
+    \renewcommand{\subparagraph}{\@startsection{subparagraph}{5}%
+             {\parindent}%
+                 {3.25ex \@plus1ex \@minus .2ex}%
+                 {-1em}%
+                 {\normalfont\normalsize\sffamily\bfseries}}    
+\fi             
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Entete et pieds de pages                                                   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Chargement des en-tete fancy
+
+    \RequirePackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{1.0pt}
+    \renewcommand{\footrulewidth}{0pt}
+    \renewcommand{\headheight}{15pt}
+    
+    % defini le contenu de l'en-tete rappel au chapitre ou a la section courante
+    \if@chap
+      \renewcommand{\chaptermark}[1]{%
+      \markboth{\thechapter.\ #1}{}}
+    \else
+      \renewcommand{\sectionmark}[1]{%
+      \markboth{\thesection.\ #1}{}}
+    \fi
+    
+    % En-tete et pieds de pages generale
+    \if@twoside
+      \renewcommand{\headrulewidth}{1.0pt}
+      \fancyhead[LE]{\sffamily REDS - HEIG-VD}
+      \fancyhead[RE]{\sffamily \@title}
+      \fancyhead[LO]{\sffamily\slshape \leftmark}
+      \fancyhead[RO]{\sffamily Version du \@date}
+      \fancyfoot[LE,RO]{\thepage}
+    \else
+      \fancyhead[R]{\sffamily\thepage}
+      \fancyhead[L]{\sffamily\slshape \leftmark}
+    \fi
+    
+    % En-tete et pieds de pages des pages avec chapitres
+    \fancypagestyle{plain}{%
+      %\fancyhf{}
+      \if@twoside
+          \renewcommand{\headrulewidth}{0.0pt}
+          \fancyhead[R, L]{}
+          \fancyfoot[LE,RO]{\thepage}
+      \else
+        \fancyhead[R]{\sffamily\thepage}
+        \fancyhead[L]{\sffamily\slshape \leftmark}
+      \fi
+      } 
+
+%     \setlist{leftmargin=2cm} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Importation d'une figure                                                   %
+%  P.G. - 31.12.05                                                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \newcommand{\fig}[4][htbp]{
+       \begin{figure}[#1]
+             %\hrule height 0.3pt
+               \begin{center}
+               \includegraphics[width=#4]{fig/#2}
+               \end{center}
+             %\hrule height 0.3pt
+        %\caption{\sffamily\footnotesize\label{#2}#3}
+        \caption{\label{fig:#2}#3}    
+       \end{figure}
+    }
+    
+    \newcommand{\figr}[5][H]{
+       \begin{figure}[#1]
+             %\hrule height 0.3pt
+               \begin{center}
+               \includegraphics[angle=#5, width=#4]{fig/#2}
+               \end{center}
+             %\hrule height 0.3pt
+        %\caption{\sffamily\footnotesize\label{#2}#3}
+        \caption{\label{fig:#2}#3}    
+       \end{figure}
+    }
+    
+    \newcommand{\img}[2]{
+       \begin{center}
+       \includegraphics[width=#2]{#1}
+       \end{center}
+    }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Listing                                                                    %
+%  P.G. - 29.12.05                                                            % 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%utiliser la commande \lstlistoflistings pour ajouter une table des listings
+
+\if@listings
+    \RequirePackage{listings}
+    \RequirePackage{color}
+    
+    
+    \lstdefinelanguage{LinuxCmd}{%
+    morecomment=[l]{ \#}%
+  }%    
+
+    \definecolor{BackColor}{rgb}{0.96,0.96,0.99} %Couleur de fond 
+    \definecolor{RuleColor}{rgb}{0.9,0.9,0.98} %Couleur de fond 
+    \definecolor{CmtColor}{rgb}{0.0,0.5,0.0} %Couleur des commentaires
+    \definecolor{StringColor}{rgb}{0.8,0.0,0.0} %Couleur des chaine de texte
+    \definecolor{IdentColor}{rgb}{0.0,0.0,0.0} %Couleur des identificateurs
+    \definecolor{DefColor}{rgb}{0.0,0.0,0.0} %Couleur par defaut (symboles)
+    \definecolor{WhiteColor}{rgb}{1.0,1.0,1.0} %Couleur par defaut (symboles)    
+    
+    \lstdefinestyle{StdCode}
+    {
+            %frame=shadowbox,                                    %Cadre autour du code
+            %frame=L,                                                    %double ligne a gauche
+            basicstyle=\fontfamily{pcr}\selectfont\color{DefColor}\scriptsize,  %Style general
+            linewidth=\linewidth,                            %Largeur du texte
+            breaklines=true,                                    %Autorise a couper les lignes
+            numbers=left,                                            %Numerotation a gauche
+            numberstyle=\tiny,                                %Style des numero de lignes
+            numbersep=5pt,                                        %Espacement entre les numero et le code
+            framexleftmargin=5mm,                          %Position de la marge largeur du texte
+            xleftmargin=5mm,                                    %Position de la marge numero dans le cadre
+            backgroundcolor=\color{BackColor},%couleur de fond (definie ci-dessus)
+            tabsize=2,                                                %Remplacer les tab par 2 espace
+            showstringspaces=false,
+            captionpos=b,
+            postbreak=\ding{229},             %apres coupure de ligne
+            commentstyle=\color{CmtColor},    %Style des commentaires
+            keywordstyle=\color{blue},                %Style des mot clef
+            identifierstyle=\color{IdentColor},%Style des identifiant
+            stringstyle=\color{StringColor},    %Style des chaines de texte
+            %firstnumber=auto,                                %numerotation differentes pour tous les listings
+            %float,                                                        %les listing se comportes comme des objets float
+            %caption={},
+            %label={},
+        }
+    
+    \lstdefinestyle{cmd}
+    {
+            basicstyle=\fontfamily{pcr}\selectfont\color{DefColor}\scriptsize,  %Style generale
+            linewidth=\linewidth,                            %Largeur du texte
+            breaklines=true,                                    %Autorise a couper les lignes
+            numbers=none,                                            %Numerotation a gauche
+            frame=leftline,
+            framerule=5pt,
+            rulecolor=\color{RuleColor},
+            framexleftmargin=3mm,                          %Position de la marge largeur du texte
+            xleftmargin=6mm,                                    %Position de la marge numero dans le cadre
+            backgroundcolor=\color{WhiteColor},%couleur de fond (definie ci-dessus)
+            tabsize=2,                                                %Remplacer les tab par 2 espace
+            showstringspaces=false,
+            captionpos=b,
+            language=LinuxCmd,
+            caption={},
+            label={},
+            postbreak=\ding{229},
+            %prebreak= \textbackslash,
+            commentstyle=\color{CmtColor},    %Style des commentaires
+            keywordstyle=\color{blue},                %Style des mot clef
+            identifierstyle=\color{IdentColor},%Style des identifiant
+            stringstyle=\color{StringColor},    %Style des chaines de texte
+            %firstnumber=auto,                                %numerotation differentes pour tous les listings
+            %float,                                                        %les listing se comportes comme des objets float
+        }
+
+    % Style des listings par défaut
+    \lstset{style=StdCode}
+    
+    \newcommand{\code}[2]{                                %Insertion d'un fichier Code Source
+        \lstset{                                                        %Language puis Nom du fichier
+          sty   le=StdCode,
+            language=#1,
+            caption={},
+            label={},
+        }
+        \lstinputlisting{lst/#2}
+    }
+    
+    \newcommand{\codelbl}[4]{                        %Insertion d'un fichier Code Source
+        \lstset{                                                    %Language puis Nom du fichier puis
+          style=StdCode,                                    %Label puis descriptif
+            language=#1,
+            caption={#4},
+            label={#3},
+        }
+        \lstinputlisting{lst/#2}
+    }
+    
+        \newcommand{\lst}[3]{                        %Insertion d'un fichier Code Source
+        \lstset{                                                    %Language puis Nom du fichier puis
+          style=StdCode,                                    %Label puis descriptif
+            language=#1,
+            caption={#3},
+            label={lst:#2},
+        }
+        \lstinputlisting{lst/#2}
+    }
+
+    \newcommand{\txtlst}[3]{
+        \lstset{                                                    %Language puis Nom du fichier puis
+          style=StdCode,                                    %Label puis descriptif
+            language=#1,
+            caption={#3},
+            label={lst:#2},
+        }
+        \lstlisting{lst/#2}
+    }
+
+\fi
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Titre                                                                      %
+%  P.G. - 29.12.05                                                            %
+%  GCD  - 06.01.09 - Change header and footer type (now using array)          %
+%                    Use PNG image type.                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+
+\newlength\savedwidth
+\newcommand\whline{\noalign{\global\savedwidth
+  \arrayrulewidth\global\arrayrulewidth 1pt}
+  \hline \noalign{\global\arrayrulewidth
+  \savedwidth}
+}
+\renewcommand\arraystretch{1.5}% (MyValue=1.0 is for standard spacing)
+
+\renewcommand{\maketitle}{\begin{titlepage}%
+
+    \setlength{\headsep}{10pt}
+    \setlength{\footskip}{1pt}
+    \setlength{\textheight}{900pt}
+
+    \let\footnotesize\small
+    \let\footnoterule\relax
+    \parindent \z@
+    \reset@font
+
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lr}
+    \whline
+    \rule[2mm]{0pt}{16mm}
+    \includegraphics[height=16mm]{logos/Logo_HEIG-VD.png}&
+    \includegraphics[height=16mm]{logos/Logo_REDS.png}\\
+    \whline
+    \end{tabular*}
+
+    \null\vfil
+    \vskip 70\p@
+    %\hrule height 4pt
+    %\vskip 10\p@
+    \begin{center}
+        \LARGE
+        \strut \Huge\sffamily\@title \par
+        \vskip 20\p@
+        \strut \huge\sffamily\@author
+    \end{center}
+    %\vskip 5\p@
+    %\hrule height 4pt 
+    \vskip 85\p@
+    \vfil\null
+    \begin{center}
+        \includegraphics[width=0.4\linewidth]{logos/titre.png}
+    \end{center}
+    \vskip 100\p@
+    \vfil\null
+
+    \begin{tabular*}{\linewidth}{@{\extracolsep{\fill}}lr}
+    \rule[2mm]{0pt}{12mm}
+    \parbox[b]{0.5\linewidth}{\sffamily\textbf{D\'epartement TIC\\Institut REDS\\Version du \@date}}&
+    \includegraphics[height=12mm]{logos/Logo_HES-SO.png}\\
+    \whline
+    \end{tabular*}
+  \end{titlepage}%
+  
+  \setcounter{footnote}{0}%
+}
+
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Page de preambule                                                          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\newcommand{\makepreambule}{
+    \null\vfill%
+    \begin{center}
+        %\strut \sffamily\large Diplome\par    
+        %\vskip 10\p@
+        \strut \sffamily\fontsize{32pt}{38pt}\selectfont{\bfseries RealTime Colibri}\\
+        \vskip 10\p@
+      \strut \huge\sffamily\@title \par
+        \strut \huge\sffamily\@date \par
+    \end{center}
+    \null\vfill%
+    
+    \begin{center}
+        
+    \end{center}
+    
+    \begin{minipage}{12cm}
+        \thispagestyle{empty}%
+        Patrick Gerber <patrick.gerber@heig-vd.ch>\\
+        \\
+        Suivit par:\\
+        Daniel Rossier <daniel.rossier@heig-vd.ch>\\
+        \\
+        Haute Ecole d'Ingenierie et Gestion du Canton de Vaud\\
+        Rte de Cheseaux 1\\
+        CH-1401 Yverdon \par%
+        \vskip 0.2cm
+        \includegraphics[width=4.2cm]{./logos/heig-vd} \hspace{1.5cm} \includegraphics[width=3cm]{./logos/hes-so}%
+        \vskip 1cm
+        \small{Fichier \LaTeX~compile sous Mik\TeX~le \today .}\\
+        \small{Revision SVN no. \svnkw{Rev}}
+    \end{minipage}
+    \vfil\null%
+    \setcounter{footnote}{0}%
+    \newpage
+}
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Notes, info, warning                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+  \newlength{\padnota}
+    \newlength{\larnota}
+    \newlength{\indnota}
+    \newlength{\largligne}
+  
+  \newcommand{\note}[1]{%
+      \setlength{\padnota}{5pt}
+        \setlength{\larnota}{1.2cm}
+        \setlength{\indnota}{\larnota+\padnota}
+        \setlength{\largligne}{\textwidth-\indnota}
+      %\parshape=4
+        %\indnota\largligne
+        %\indnota\largligne
+        %\indnota\largligne
+        %0pt\textwidth\noindent%
+        \parshape=1
+        \indnota\largligne
+        \raisebox{-\larnota+1ex}[0pt][0pt]{%
+        \makebox[0pt][r]{%
+        \includegraphics[width=\larnota]{logos/#1}%
+        \hspace*{\padnota}}}%
+        }
+        
+    \newenvironment{warning}
+        {\vspace{0.3cm}\begin{minipage}{\textwidth}\note{Warning}\begin{minipage}[t]{0.98\textwidth - \larnota}}
+        {\end{minipage}\end{minipage}\vspace{0.3cm}}
+        
+    \newenvironment{info}
+        {\vspace{0.3cm}\begin{minipage}{\textwidth}\note{Info}\begin{minipage}[t]{0.98\textwidth - \larnota}}
+        {\end{minipage}\end{minipage}\vspace{0.3cm}}
+        
+    \newenvironment{tips}
+        {\vspace{0.3cm}\begin{minipage}{\textwidth}\note{Tips}\begin{minipage}[t]{0.98\textwidth - \larnota}}
+        {\end{minipage}\end{minipage}\vspace{0.3cm}}
+        
+    \newenvironment{ppd}
+        {\vspace{0.3cm}\begin{minipage}{\textwidth}\note{ppd}\begin{minipage}[t]{0.98\textwidth - \larnota}}
+        {\end{minipage}\end{minipage}\vspace{0.3cm}}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Entree de journal                                                                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    
+    
+\definecolor{gris25}{rgb}{0.9,0.9,0.93} %Couleur de fond     
+    %%% JOUR MULTPLE %%%%
+\newcommand{\jour}[1]{
+    \addcontentsline{toc}{subsubsection}{#1}
+    \fcolorbox{black}{gris25}{
+        \begin{minipage}{0.975\textwidth}
+             Date : #1
+        \end{minipage}}        
+    \vskip 3pt}
+
+
+\newcommand{\itemjour}[3]{
+     \framebox[\textwidth]{Heure : #1 \hfill Duree : #2 \hfill Lieu : #3}
+     \vskip 5pt
+}    
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Quelques definitions                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\Degrea}{\,\left[{\mbox{$^{\circ}$}}\text{C}\right]}
+\newcommand{\Degre}{\mbox{$^{\circ}$}\text{C}}
+\newcommand{\degreea}{\,\left[{\mbox{$^{\circ}$}}\right]}
+\newcommand{\degree}{\mbox{$^{\circ}$}}
+
+%init compteur d'equation
+\makeatletter
+\renewcommand\theequation{\thesection.\arabic{equation}}
+\@addtoreset{equation}{section}
+\makeatother
+
+\newcommand{\equ}[2]{
+    \begin{equation}
+    \label{#1}
+        #2
+    \end{equation}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Equation numeriques                                                                      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\NOT}[1]{\overline{#1}}
+\newcommand{\AND}{\bullet}
+%\newcommand{\AND}{\centerdot}
+\newcommand{\OR}{\dotplus}
+%\newcommand{\OR}{\boxplus}
+\newcommand{\XOR}{\oplus}
+
+\newcommand{\NumConvention}{%
+La convention pour les equation numerique utilisee dans ce document, est la suivante:%
+\begin{itemize}
+    \item not : $\NOT{A}$%
+    \item or : $A \OR B$%
+    \item and : $A \AND B$%
+    \item xor : $A \XOR B$%
+\end{itemize}}
+
+\endinput
+

@@ -1,0 +1,893 @@
+#LyX 1.6.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass report
+\begin_preamble
+\usepackage{RedsReport}
+\end_preamble
+\use_default_options false
+\language french
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\float_placement H
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+libmarklin
+\end_layout
+
+\begin_layout Author
+Kevin Georgy et Daniel Molla
+\end_layout
+
+\begin_layout Date
+03 mars 2012
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter*
+Révisions
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="8cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Date
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Version
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Ingénieur
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Révision
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+17/01/09
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+v1.0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+KGY
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Version initiale
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+26/03/09
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+v1.1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+KGY
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Adaptation pour version paquet 
+\noun on
+Debian
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+03/03/12
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+v1.2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+DMO
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Adapation pour la distribution 11.10
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Révisions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter*
+Conventions
+\end_layout
+
+\begin_layout Section*
+Mise en forme
+\end_layout
+
+\begin_layout Itemize
+Les noms propres sont écrits en 
+\noun on
+Petites Capitales
+\end_layout
+
+\begin_layout Itemize
+Les fichiers, dossiers ou commandes sont en 
+\family typewriter
+chasse fixe
+\end_layout
+
+\begin_layout Itemize
+Les termes étrangers, les nouveaux termes ou les termes techniques sont
+ en 
+\emph on
+emphasis
+\end_layout
+
+\begin_layout Itemize
+Le 
+\emph on
+listing
+\emph default
+ de code prend la forme suivante:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Pour des commandes ou un extrait de code source:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename fig/convention_listing_txt.png
+	scale 33
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Pour du code sources:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename fig/convention_listing_file.png
+	scale 33
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+libmarklin
+\noun default
+ est une bibliothèque qui fournit les accès aux maquettes 
+\noun on
+Märklin
+\noun default
+ utilisées dans le cadre des laboratoires de programmation concurrente de
+ la 
+\noun on
+Heig-vd
+\noun default
+.
+ Elle permet de contrôler les locomotives et les aiguillages, en utilisant
+ le port série, et de recevoir les activations des contacts par le port
+ parallèle.
+\end_layout
+
+\begin_layout Chapter
+Installation
+\end_layout
+
+\begin_layout Section
+Matériel
+\end_layout
+
+\begin_layout Standard
+La figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_branchements"
+
+\end_inset
+
+ illustre les connexions à réaliser avec la maquette.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/matos.eps
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Branchement
+\begin_inset CommandInset label
+LatexCommand label
+name "fig_branchements"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Logiciel
+\end_layout
+
+\begin_layout Standard
+La bibliothèque est uniquement disponible pour la distribution 
+\noun on
+GNU/Linux Ubuntu 8.10
+\noun default
+.
+ Cette distrbution a été la première utilisée pour le laboratoire de programmati
+on concurente.
+ Elle fonctionne également sur d'autres distributions, dont nottamenent
+ la distribution 
+\noun on
+GNU/Linux Ubuntu 11.10
+\noun default
+ actuellement utilisée.
+ Un paquet d'installation est fournit (
+\family typewriter
+libmarklin_x.x.x-0ubuntux_i386.deb
+\family default
+).
+ Il suffit d'ouvrir ce dernier avec 
+\noun on
+GDebi
+\noun default
+ pour procéder à son installation/mise-à-jour.
+\end_layout
+
+\begin_layout Standard
+Pour que les utilisateurs puissent avoir accès au port LPT, utilisé pour
+ la reception des contacts, il faut qu'ils soient ajoutés au groupe 
+\begin_inset Quotes eld
+\end_inset
+
+lp
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Pour ce faire, utiliser la commande suivante en spécifiant <user_name>
+ par le nom d'utilisateur devant utiliser la librairie :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sudo adduser <user_name> lp
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il est également nécessaire de donner aux utilisateurs l'accès au port série
+ (COM) utilisée pour l'envoie de commandes aux aiguillages et locomotives.
+ Pour ce faire, il faut récupérer le nom du groupe représantant le port
+ série utilisé.
+ La commande suivante permet ensuite d'ajouter les droits nécessaires en
+ spécifiant <user_name> par le nom d'utilisateur et <nom_group_port> par
+ nom du groupe représantant le port série utilisé (généralement 
+\family typewriter
+dialout
+\family default
+) :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sudo adduser <user_name> <nom_group_port>
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La librairie est désormais prête à l'emploi.
+\end_layout
+
+\begin_layout Chapter
+Configuration
+\end_layout
+
+\begin_layout Standard
+Il est possible de modifier certains paramètres utilisés par la librairie
+ après son installation.
+ Le fichier de configuration (
+\emph on
+/etc/libmarklin/markinl.conf
+\emph default
+) a la forme suivante :
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "lst/marklin.conf"
+lstparams "caption={Fichier de configuration.},label={fich_config}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Le premier paramètre (
+\family typewriter
+comport
+\family default
+) défini le fichier 
+\emph on
+device
+\emph default
+ du port COM à utiliser (
+\emph on
+/dev/ttyS0 = COM1
+\emph default
+, 
+\emph on
+/dev/ttyS1 = COM2
+\emph default
+, ...).
+ Le second (
+\family typewriter
+lptport
+\family default
+) défini le fichier 
+\emph on
+device
+\emph default
+ du port LPT à utiliser (
+\emph on
+/dev/parport0 = LPT1
+\emph default
+, 
+\emph on
+/dev/parport0 = LPT2
+\emph default
+, ...).
+ Les trois derniers paramètres permettent de règler différents temps d'attente
+ :
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+cmd_tempo
+\family default
+ est le temps minimum à attendre entre l'envoi de deux commandes.
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+vit_prog_delay
+\family default
+ définit le temps entre chaque incrémentation ou décrémentation de vitesse
+ lors d'appels à 
+\family typewriter
+mettre_vitesse_progressive().
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+min_aig_alim 
+\family default
+est le temps d'alimentation minimum des aiguillages.
+\end_layout
+
+\begin_layout Chapter
+Utilisation avec QtCreator
+\end_layout
+
+\begin_layout Standard
+Cette documentation se base sur l'environnement 
+\noun on
+Qt SDK
+\noun default
+ 4.7.3.
+ 
+\end_layout
+
+\begin_layout Section
+Récupération du projet
+\end_layout
+
+\begin_layout Standard
+Il faut récupérer le projet exemple Qt disponible ou le projet actuel de
+ l'utilisateur.
+ Une fois récupéré, il est possible de lancer 
+\noun on
+QtCreator
+\noun default
+ à partir du fichier 
+\family typewriter
+QtrainSim.pro
+\family default
+ du projet ou alors d'ouvrir le projet à partir de 
+\noun on
+QtCreator
+\noun default
+.
+\end_layout
+
+\begin_layout Section
+Passage en mode maquette
+\end_layout
+
+\begin_layout Standard
+Une fois le projet récupéré, il faut éditer le fichier 
+\family typewriter
+QtrainSim.pro
+\family default
+ du projet et décommenter la ligne suivante:
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+CONFIG += MAQUETTE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Le simulateur est alors prêt à être utilisé en mode maquette.
+ Avant tout lancement de l'application, il est préférable de contrôler que
+ les numéros de maquette, de locomotives ainsi que l'emplacement initiales
+ de celles correspondent avec la maquette et aux locomotives utilisés.
+\end_layout
+
+\begin_layout Section
+Interaction utilisateur
+\end_layout
+
+\begin_layout Standard
+Une fois l'application lancée en mode maquette, l'utilisateur a la possibilité
+ de cliquer sur les aiguillages de l'interface graphiques afin de changer
+ en temps réel leur direction.
+ Il va sans dire qu'une telle possibilité doit être utlilisée avec prudence
+ afin de ne pas endomager le materiel mis à diosposition (locomotives, rails
+ et aiguillages).
+\end_layout
+
+\begin_layout Standard
+L'utilisateur dispose également d'un bouton d'arrêt d'urgence.
+ La figure
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig_emergency_button"
+
+\end_inset
+
+présente l'emplacement de ce bouton.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename fig/emergency_button.png
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Bouton d'arrêt d'urgence
+\begin_inset CommandInset label
+LatexCommand label
+name "fig_emergency_button"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+L'implentation de l'action à réaliser lors de la pression du bouton revient
+ à l'utilisateur au sein de la méthode 
+\emph on
+emergency_stop()
+\emph default
+ en fonction du fonctionnent de son application.
+\end_layout
+
+\begin_layout Standard
+A relever que les locomotives de l'application graphique ne se déplace pas
+ durant l'exécution en mode maquette et que la gestion des 
+\emph on
+logs
+\emph default
+ pour les locomotives est à gérer par l'utilisateur.
+\end_layout
+
+\begin_layout Section
+Écriture d'un programme
+\end_layout
+
+\begin_layout Standard
+Lors de l'utilisation du simulateur en mode maquette, les fonctions fournies
+ par la librairie définie dans 
+\family typewriter
+ctrain_handler.h
+\family default
+ (
+\emph on
+listing
+\emph default
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lstctrainhandler"
+
+\end_inset
+
+) sont utilisées.
+ A noter que les fonctions 
+\emph on
+selection_maquette 
+\emph default
+et
+\emph on
+ assigner_loco
+\emph default
+ ne sont pas présentes dans la librairie de la maquette et sont récupérée
+ à partir de la librairies du simulateur.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "lst/ctrain_handler.h"
+lstparams "caption={ctrain\\_handler.h},label={lstctrainhandler},language=C,style=stdCode"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Le 
+\emph on
+listing
+\emph default
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "lst_min_main"
+
+\end_inset
+
+ montre un fichier source minimal pour l'utilisation de la librairie.
+ On remarque l'inclusion 
+\emph on
+<ctrain_handler.h>
+\emph default
+ qui fournit l'accès au fonctions.
+ L'appel à 
+\emph on
+init_maquette()
+\emph default
+ et 
+\emph on
+mettre_maquette_hors_service()
+\emph default
+ sont à appeler obligatoirement en début et fin de programme.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "lst/main_minimal.c"
+lstparams "caption={Fichier source minimal},label={lst_min_main},language=C,style=stdCode"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

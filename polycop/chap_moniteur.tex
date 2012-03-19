@@ -1,0 +1,435 @@
+\chapter{Moniteurs}
+\startchapter
+\lettrine[lines=4]{L}es mécanismes de coopération et de synchronisation basés sur les verrous et les sémaphores constituent des constructions non structurées. Ces mécanismes sont donc difficiles à mettre en oeuvre et il est délicat de prouver leur fiabilité ou le respect des contraintes d'un cahier des charges. Afin de pallier à ces points faibles, de nouvelles constructions et de nouvelles abstractions ont successivement été proposées. Parmi les propositions, on relève les moniteurs permettant de mettre en oeuvre une synchronisation orientée sur les données. Les moniteurs ont été implémentés dans divers langages de programmation concurrente: Pascal Concurrent, Modula, Portal et même plus récemment $\mu$C++ ainsi que Java.
+\section{Définition}
+Un {\em moniteur} comprend un ensemble de variables et un ensemble de procédures qui manipulent ces variables. Certaines procédures sont accessibles depuis l'extérieur et sont les {\em points d'entrée} du moniteur. Les tâches qui font appel à un moniteur pour se synchroniser n'ont pas un accès direct aux variables contenues dans le moniteur. Elles ne peuvent les atteindre que par les points d'entrée fournis par le moniteur. Les procédures contiennent des opérations qui permettent de bloquer et de réveiller les tâches conformément aux spécifications du problème. Les conditions de blocage et de réveil sont exprimées en fonction des variables du moniteur. Le mécanisme d'exécution du moniteur garantit qu'une seule tâche est active dans le moniteur, en train d'exécuter une de ses procédures. Un moniteur contient aussi une partie d'initialisation qui n'est exécutée qu'une fois lors de la création du moniteur (voir figure~\ref{moniteur:struct}). Un moniteur est donc tout simplement un type de donnée abstrait qui possède des mécanismes de synchronisation et dont l'accès se réalise en exclusion mutuelle.
+\begin{figure}[!ht]
+\figcaption{moniteur:struct}{Structure d'un moniteur}
+\begin{center}
+\begin{tabular}{l}
+{\bf monitor} <{\em nom}> \\
+\hspace{0.3cm}<{\em déclarations des variables rémanentes locales}>; \\
+\hspace{0.3cm}<{\em déclarations des variables conditions}>;  \\
+\hspace{0.3cm}{\bf procedure} {\em OpérationLocale}({\em liste de paramètres)}  \\
+\hspace{0.6cm}<{\em déclarations des variables locales}>; \\
+\hspace{0.6cm}{\bf begin} <{\em code pour implémenter l'opération}>; \\
+\hspace{0.6cm}{\bf end}; \\
+\hspace{0.3cm}{\bf entry procedure} {\em OpérationVisible}({\em liste de paramètres}) \\
+\hspace{0.6cm}<{\em déclarations des variables locales}>; \\
+\hspace{0.6cm}{\bf begin} <{\em code pour implémenter l'opération}>; \\
+\hspace{0.6cm}{\bf end}; \\
+\hspace{0.3cm}{\bf begin} <{\em code pour initialiser les variables rémanentes}>; \\
+\hspace{0.3cm}{\bf end};
+\end{tabular}
+\end{center}
+\vspace{-.2cm}
+\rule{\textwidth}{0.01in}
+\end{figure}
+
+La synchronisation des tâches s'exprime au moyen de {\em variables conditions} (VC). Une VC est déclarée comme une variable ordinaire mais elle ne peut être utilisée que par 2 primitives: les primitives {\em attente} et {\em signale}. Soit la VC $cond$ déclarée par
+\begin{center}
+{\bf condition} $cond$;
+\end{center}
+les opérations $cond.attente$ et $cond.signale$ ont les effets suivants. La primitive $cond.attente$ bloque inconditionnellement la tâche appelante, lui fait relâcher l'exclusion mutuelle sur le moniteur et la place dans une file associée à $cond$. Le résultat de l'exécution de la primitive $cond.signale$ dépend de l'état de la file associée à $cond$. Si la file est vide, la tâche appelante poursuit son exécution et l'opération n'a aucun effet.  Aucun état n'est préservé par la VC, à la différence de l'opération $V$ qui affecte l'état du sémaphore. Par contre si la file associée à $cond$ n'est pas vide, l'une des tâches bloquées est réactivée et reprend immédiatement son exécution à l'instruction qui suit la primitive $cond.attente$. La tâche appelante est suspendue et reprendra son exécution lorsque la tâche qu'elle a réveillée exécute une primitive $attente$ ou quitte le moniteur.
+
+Prenons quelques exemples pour illustrer ces idées. L'algorithme~\ref{moniteur:exempleVerrou} montre une implémentation d'un verrou. La variable \ccode{verrou} indique l'état du verrou. La première exécution de \ccode{Verrouille} met \ccode{verrou} à vrai. Les appels de \ccode{Verrouille} suivants bloqueront les tâches appelantes.  Remarquons que la procédure \ccode{Deverrouille} essaie toujours de réveiller une tâche en attente après avoir modifié \ccode{verrou}. Si une telle tâche existe, cette tâche remet immédiatement \ccode{verrou} à vrai, sinon \ccode{verrou} reste inchangée.
+
+\begin{algorithm}[!htb]
+\caption{Verrou par moniteur}\label{moniteur:exempleVerrou}
+\begin{center}
+\begin{tabular}{l}
+{\bf monitor} VerrouMoniteur \\
+\hspace{0.3cm}{\bf var} verrou: boolean; \\
+\hspace{0.3cm}{\bf var} acces: {\bf condition}; \\
+
+\hspace{0.3cm}{\bf entry procedure} Verrouille \\
+\hspace{0.6cm}{\bf begin} \\
+\hspace{1cm} {\bf if} verrou {\bf then} acces.attente; \\
+\hspace{1cm} verrou := {\em true}; \\
+\hspace{0.6cm}{\bf end} Verrouille; \\
+
+\hspace{0.3cm}{\bf entry procedure} Deverrouille \\
+\hspace{0.6cm}{\bf begin} \\
+\hspace{1cm}verrou := {\em false}; \\
+\hspace{1cm}acces.signale; \\
+\hspace{0.6cm}{\bf end} Deverrouille; \\
+
+\hspace{0.3cm}{\bf begin} verrou := {\em false}; \\
+\hspace{0.3cm}{\bf end} VerrouMoniteur;
+\end{tabular}
+\end{center}
+\end{algorithm}
+\par
+Le problème des producteurs et des consommateurs, illustré sur l'algorithme~\ref{moniteur:ProdCons}, est rendu évident. Signalons seulement le fait que lors de la création du moniteur, la partie d'initialisation doit se faire avant tout appel à l'une des procédures accessibles du moniteur.
+\begin{algorithm}[!ht]
+\caption{Problème des producteurs et des consommateurs par moniteur}\label{moniteur:ProdCons}
+\begin{center}
+\begin{tabular}{l}
+{\bf monitor} Tampons \\
+\hspace{0.3cm}{\bf var} place: array [0..N-1] {\bf of} ARTICLE; \\
+\hspace{0.3cm}{\bf var} tete, queue, taille: integer; \\
+\hspace{0.3cm}{\bf var} pasPlein, pasVide: {\bf condition}; \\
+
+\hspace{0.3cm}{\bf entry procedure} deposer(a: ARTICLE) \\
+\hspace{0.6cm}{\bf begin} \\
+\hspace{1cm}{\bf if} taille = N {\bf then} pasPlein.attente; \\
+\hspace{1cm}taille := taille + 1; \\
+\hspace{1cm}place[tete] := a; \\
+\hspace{1cm}tete := (tete + 1) {\bf mod} N; \\
+\hspace{1cm}pasVide.signale; \\
+\hspace{0.6cm}{\bf end} deposer; \\
+
+\hspace{0.3cm}{\bf entry procedure} retirer({\bf var} a: ARTICLE) \\
+\hspace{0.6cm}{\bf begin} \\
+\hspace{1cm}{\bf if} taille = 0 {\bf then} pasVide.attente; \\
+\hspace{1cm}a := place[queue]; \\
+\hspace{1cm}taille := taille - 1; \\
+\hspace{1cm}queue := (queue + 1) {\bf mod} N; \\
+\hspace{1cm}pasPlein.signale; \\
+\hspace{0.6cm}{\bf end} retirer; \\
+
+\hspace{0.3cm}{\bf begin} taille := 0; queue := 0; tete := 0; \\
+\hspace{0.3cm}{\bf end} Tampons;
+\end{tabular}
+\end{center}
+\end{algorithm}
+\par
+Attardons-nous à présent sur quelques extensions et sur quelques variantes du modèle des moniteurs que nous avons introduit. Lorsqu'une tâche $Q$ se fait réveiller par la primitive {\em signale}, $Q$ reprend immédiatement son exécution. Cette approche est la plus répandue car la condition sur laquelle $Q$ était en attente est toujours vérifiée lorsque $Q$ reprend son exécution. Certains langages abordent la question différemment.  Par exemple en Mesa, l'ancêtre de Java, la primitive {\em notify} exécutée par la tâche $P$ sur une VC a pour effet de réveiller une tâche, mais cette dernière ne reprendra son exécution seulement après que $P$ libère le moniteur. Ainsi en Mesa, la mise en suspension s'écrit par  \\
+\hspace*{1cm}{\bf while} B {\bf do}  \\
+\hspace*{1.3cm}VC.attente;  \\
+\hspace*{1cm}{\bf end};  \\
+au lieu de  \\
+\hspace*{1cm}{\bf if} B {\bf then}  VC.attente; \\
+Cette approche a deux extensions intéressantes. D'abord un chien de garde peut être associé à chaque VC. Si une tâche est suspendue plus longtemps qu'elle ne devrait, le système peut émettre automatiquement un {\em notify} et la tâche ainsi réveillée peut alors effectuer les actions appropriées. Enfin la primitive {\em broadcast} généralise la primitive {\em notify} et a pour effet de réveiller toutes les tâches qui sont suspendues sur la VC. Le choix de la tâche qui reprend contrôle du moniteur, une fois que celui-ci devient libre, est laissé au soin du répartiteur. La gestion des tâches est ainsi simplifiée.
+
+\section{Moniteurs en $pthreads$}
+Les moniteurs $pthreads$ sont réalisés en conjuguant verrous et variables conditions.
+\subsection*{Rappel}
+Création d'un verrou \\
+\hspace*{1cm}\ccode{int pthread_mutex_init(pthread_mutex_t *m,} \\
+\hspace*{5cm}\ccode{ const pthread_mutex_attr *attr)} \\
+ou \\
+\hspace*{1cm}\ccode{pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;} \\
+Destruction d'un verrou \\
+\hspace*{1cm}\ccode{int pthread_mutex_destroy(pthread_mutex_t *mutex)} \\
+Verrouillage, avec blocage en attente si déjà verrouillé. Renvoie 0 si tout se passe bien. \\
+\hspace*{1cm}\ccode{int pthread_mutex_lock(pthread_mutex_t *mutex)} \\
+Déverrouillage. Seule la tâche qui a verrouillé le verrou a le droit de le déverrouiller (en cas de tentative de déverrouiller un verrou verrouillé par une autre tâche, le comportement est indéfini). \\
+\hspace*{1cm}\ccode{int pthread_mutex_unlock(pthread_mutex_t *mutex)} \\
+Si une ou plusieurs tâches sont bloquées, en attente du verrou, une d'entre elles obtient le verrou et est débloquée. Le choix de cette tâche dépend des priorités et des politiques d'ordonnancement. Si les attributs (pour la création des tâches et des verrous) ne sont pas utilisés, l'ordre de déblocage est indéterminé (pas nécessairement FIFO).
+
+\subsection*{Variables conditions}
+\begin{enumerate}
+\item Création d'une variable condition \\
+\hspace*{1cm}\ccode{int pthread_cond_init(pthread_cond_t *c,} \\
+\hspace*{5cm}\ccode{ const pthread_cond_attr *attr)} \\
+ou \\
+\hspace*{1cm}\ccode{pthread_cond_t c = PTHREAD_COND_INITIALIZER;} \\
+Crée la variable condition \ccode{c} (on ignorera l'attribut).
+\item Destruction d'une variable condition \\
+\hspace*{1cm}\ccode{int pthread_cond_destroy(pthread_cond_t *c)} \\
+Détruit la variable condition \ccode{c}.
+\item Mise en attente inconditionnelle \\
+\hspace*{1cm}\ccode{int pthread_cond_wait(pthread_cond_t *cond,}\\
+\hspace*{5cm}\ccode{ pthread_mutex_t *mutex)} \\
+La tâche appelante doit posséder le verrou \ccode{mutex}. La tâche est alors bloquée sur la variable condition \ccode{cond} après avoir libéré le verrou, et la tâche reste bloquée jusqu'à ce que la variable condition soit signalée et que la tâche réussisse à réacquérir le verrou.
+\item Réveil d'une tâche \\
+\hspace*{1cm}\ccode{int pthread_cond_signal(pthread_cond_t *cond)} \\
+Signale la variable condition : une tâche bloquée sur la variable condition \ccode{cond} est réveillée. Cette tâche tente alors de réacquérir le verrou correspondant à son appel de \ccode{pthread_cond_wait}. Elle sera effectivement débloquée quand elle réussira à réacquérir ce verrou. Il n'y a aucun ordre garanti pour le choix de la tâche réveillée. Aussi, l'opération \ccode{pthread_cond_signal} n'a aucun effet s'il n'y a aucune tâche bloquée sur la variable condition (pas de mémorisation). \\
+\hspace*{1cm}\ccode{int pthread_cond_broadcast(pthread_cond_t *cond)} \\
+Toutes les tâches en attente sont réveillées et tentent d'obtenir le verrou correspondant à leur appel de \ccode{pthread_cond_wait}.
+\end{enumerate}
+
+\subsection*{Remarques}
+Contrairement à la définition des moniteurs que nous avons vu précédemment, la tâche signalée n'a pas priorité sur le signaleur : le signaleur ne perd pas l'accès au moniteur s'il le possédait, et le signalé reste bloqué tant qu'il n'obtient pas le verrou. C'est pourquoi il est nécessaire d'utiliser une boucle d'attente réévaluant la condition d'exécution. En effet, cette condition peut être invalidée entre le moment où la tâche est signalée et le moment où elle obtient effectivement le verrou, par exemple si une autre tâche obtient le verrou et pénètre dans le moniteur avant la tâche signalée.
+
+Enfin, pour des raisons d'efficacité, il est courant de faire l'appel à \ccode{pthread_cond_signal} hors de la zone d'exclusion mutuelle du moniteur, de sorte que la tâche signalée puisse acquérir plus facilement le verrou. Attention cependant à garantir l'atomicité des opérations du moniteur!
+
+L'algorithme \ref{moniteurs:pthreadProdCons} propose une solution au problème des producteurs et des consommateurs grâce aux primitives proposées par la bibliothèque {\em pthread}.
+
+\begin{algorithm}[!ht]
+\caption{Exemple d'un moniteur $pthread$: problème des producteurs et des consommateurs à un tampon}\label{moniteurs:pthreadProdCons}
+\begin{center}
+\begin{tabular}{l}
+\lstset{language=C++}
+\begin{lstlisting}
+#include <pthread.h>
+#include <string.h>
+#include <stdlib.h>
+static pthread_cond_t estLibre, estPlein;
+static pthread_mutex_t protege;
+static char *tampon = NULL;
+
+/* Initialise le producteur/consommateur. */
+void InitialiseTampon(void)
+{
+  pthread_mutex_init(&protege,NULL);
+  pthread_cond_init(&estLibre,NULL);
+  pthread_cond_init(&estPlein,NULL);
+} /* fin de InitialiseTampon */
+
+/* Depose le message msg (qui est dupliqué) et bloque tant que le
+** tampon est plein. */
+void Deposer(char *msg) {
+  pthread_mutex_lock(&protege);
+  while (tampon != NULL)
+     pthread_cond_wait(&estLibre,&protege);
+  if ((tampon = (char *)malloc(strlen(msg) + 1)) != NULL) {
+     strcpy(tampon,msg);
+     pthread_cond_signal(&estPlein);
+  }
+  pthread_mutex_unlock(&protege);
+} /* fin de Deposer */
+
+/* Renvoie le message du tampon et bloque tant que le tampon est vide.
+** La libération de la mémoire contenant le message est à la charge de
+** l'appelant. */
+char *Prelever(void) {
+  char *resultat;
+  pthread_mutex_lock(&protege);
+  while (buffer == NULL)
+     pthread_cond_wait(&estPlein,&protege);
+  resultat = tampon;
+  tampon = NULL;
+  pthread_mutex_unlock(&protege);
+  pthread_cond_signal(&estLibre);
+  return resultat;
+} /* fin de Prelever */
+
+void DetruitTampon(void) {
+  pthread_mutex_destroy(&protege);
+  pthread_cond_destroy(&estLibre);
+  pthread_cond_destroy(&estPlein);
+  if (tampon != NULL) {
+     free(tampon);
+     tampon = NULL;
+  }
+} /* fin de DetruitTampon */
+\end{lstlisting}
+\end{tabular}
+\end{center}
+\end{algorithm}
+
+\section{Implémentation de moniteurs à partir de sémaphores}
+
+L'implémentation de moniteurs à l'aide de sémaphores se réalise de la manière suivante.  Une structure de données est associée à chaque variable de type moniteur.
+La procédure à appliquer comporte 5 étapes.
+\begin{enumerate}
+\item Pour chaque variable (instance) $mon$ de type moniteur, créer un enregistrement : \\
+\hspace*{0.3cm}\ccode{typedef struct \{ } \\
+\hspace*{0.7cm}\ccode{      sem_t mutex; } \\
+\hspace*{0.7cm}\ccode{      sem_t signale;       // file bloquante des signaleurs } \\
+\hspace*{0.7cm}\ccode{      unsigned nbSignale; // tâches en attente dans signale } \\
+\hspace*{0.3cm}\ccode{ \} T_Moniteur; } \\
+\hspace*{0.3cm}\ccode{T_Moniteur mon; } \\
+Le sémaphore \ccode{mutex} assure l'exclusion mutuelle du moniteur et le sémaphore \ccode{signale} bloque, si nécessaire, les processus qui exécutent la primitive $signale$ sur n'importe quelle VC déclarée dans le moniteur.  La variable \ccode{nbSignale} comptabilise le nombre de tâches suspendues sur le sémaphore \ccode{signale}.
+
+\item Chaque procédure constituant un point d'entrée du moniteur est encadré par : \\
+\hspace*{0.3cm}\ccode{sem_wait(&mon.mutex); } \\
+\hspace*{0.3cm}< {\em code de la procédure}>  \\
+\hspace*{0.3cm}\ccode{if (mon.nbSignale > 0) sem_post(&mon.signale); } \\
+\hspace*{0.3cm}\ccode{else sem_post(&mon.mutex); } \\
+L'exclusion mutuelle est assurée par le sémaphore {mutex}, et lors du relâchement du moniteur, la priorité est donnée à la tâche ayant émis un $signale$.
+
+\item Pour chaque variable condition \ccode{cond} du moniteur, créer un enregistrement: \\
+\hspace*{0.3cm}\ccode{typedef struct \{ } \\
+\hspace*{0.7cm}\ccode{      sem_t attente; } \\
+\hspace*{0.7cm}\ccode{      unsigned nbAttente; // tâches en attente } \\
+\hspace*{0.3cm}\ccode{ \} T_Condition; } \\
+\hspace*{0.3cm}\ccode{T_Condition cond; }
+
+\item Dans toutes les procédures du moniteur, substituer \ccode{cond.attente} par :
+\hspace*{0.3cm}\ccode{cond.nbAttente += 1; } \\
+\hspace*{0.3cm}\ccode{if (mon.nbSignale > 0) sem_post(&mon.signale); } \\
+\hspace*{0.3cm}\ccode{else sem_post(&mon.mutex); } \\
+\hspace*{0.3cm}\ccode{sem_wait(&cond.attente); } \\
+\hspace*{0.3cm}\ccode{cond.nbAttente -= 1; }
+
+\item Dans toutes les procédures du moniteur, substituer \ccode{cond.signale} par :\\
+\hspace*{0.3cm}\ccode{if (cond.nbAttente > 0) \{ } \\
+\hspace*{0.7cm}\ccode{mon.nbSignale += 1; } \\
+\hspace*{0.7cm}\ccode{sem_post(&cond.attente); } \\
+\hspace*{0.7cm}\ccode{sem_wait(mon.signale); } \\
+\hspace*{0.7cm}\ccode{mon.nbSignale -= 1;} \\
+\hspace*{0.3cm}\ccode{ \} }
+\end{enumerate}
+
+Pour illustrer l'utilité des substitutions ci-dessus, prenons l'algorithme~\ref{moniteur:ProdCons} montrant la gestion des tampons entre producteurs et consommateurs. Après application directe des substituons, nous obtenons l'algorithme~\ref{moniteur:ProdCons2}.
+\begin{algorithm}[!ht]
+\caption{Problème des producteurs et des consommateurs à un tampon (sans optimisation)}\label{moniteur:ProdCons2}
+\begin{center}
+\begin{tabular}{l}
+\lstset{language=C++}
+\begin{lstlisting}
+static T_Moniteur Tampons;
+static ARTICLE place[0..N-1];
+static int tete, queue, taille;
+static T_Condition pasPlein, pasVide;
+
+void deposer(ARTICLE a) {
+  sem_wait(&Tampons.mutex);
+  if (taille == N) {
+     pasPlein.nbAttente += 1;
+     if (Tampons.nbSignale > 0)
+        sem_post(&Tampons.signale);
+     else sem_post(&Tampons.mutex);
+     sem_wait(&pasPlein.attente);
+     pasPlein.nbAttente -= 1;
+  }
+  taille += 1;
+  place[tete] = a;
+  tete = (tete + 1) % N;
+  if (pasVide.nbAttente > 0) {
+     Tampons.nbSignale += 1;
+     sem_post(&pasVide.attente);
+     sem_wait(Tampons.signale);
+     Tampons.nbSignale -= 1;
+  }
+  if (Tampons.nbSignale > 0)
+     sem_post(&Tampons.signale);
+  else
+     sem_post(&Tampons.mutex);
+} /* fin de deposer */
+
+void retirer(ARTICLE *a) {
+  sem_wait(&Tampons.mutex);
+  if (taille == 0) {
+     pasVide.nbAttente += 1;
+     if (Tampons.nbSignale > 0)
+        sem_post(&Tampons.signale);
+     else sem_post(&Tampons.mutex);
+     sem_wait(&pasVide.attente);
+     pasVide.nbAttente -= 1;
+  }
+  a = place[queue];
+  taille -= 1;
+  queue = (queue + 1) % N;
+  if (pasPlein.nbAttente > 0) {
+     Tampons.nbSignale += 1;
+     sem_post(&pasPlein.attente);
+     sem_wait(Tampons.signale);
+     Tampons.nbSignale -= 1;
+  }
+  if (Tampons.nbSignale > 0)
+     sem_post(&Tampons.signale);
+  else
+     sem_post(&Tampons.mutex);
+} /* fin de retirer */
+\end{lstlisting}
+\end{tabular}
+\end{center}
+\end{algorithm}
+
+Malgré que la substitution obtenue donne une solution correcte, celle-ci peut être optimisée. Lorsqu'un producteur dépose un article et réveille un consommateur (\ccode{pasVide.signale}), ce producteur se met en attente dans la file des signaleurs, puis quand le contrôle lui revient, il sort du moniteur. Pour ce producteur, il aurait été préférable de réveiller le consommateur et de sortir immédiatement. La procédure \ccode{deposer} devient alors %\vspace*{-0.6cm}
+\begin{center}
+\begin{tabular}{l}
+\lstset{language=C++}
+\begin{lstlisting}
+void deposer(ARTICLE a) {
+  sem_wait(&Tampons.mutex);
+  if (taille == N) {
+     pasPlein.nbAttente += 1;
+     if (Tampons.nbSignale > 0)
+        sem_post(&Tampons.signale);
+     else sem_post(&Tampons.mutex);
+     sem_wait(&pasPlein.attente);
+     pasPlein.nbAttente -= 1;
+  }
+  taille += 1;
+  place[tete] = a;
+  tete = (tete + 1) % N;
+  if (pasVide.nbAttente > 0)
+     sem_post(&pasVide.attente);
+  else if (Tampons.nbSignale > 0)
+     sem_post(&Tampons.signale);
+  else
+     sem_post(&Tampons.mutex);
+} /* fin de deposer */
+\end{lstlisting}
+\end{tabular}
+\end{center}
+Finalement, on constate qu'après cette transformation la file \ccode{signale} est toujours vide. Nous pouvons éliminer tout ce qui est en relation avec le sémaphore \ccode{signale}. La version finale est donnée sur l'algorithme~\ref{moniteur:ProdCons3},  où nous avons appliqué les mêmes transformations à la procédure \ccode{retirer}.
+
+\begin{algorithm}[!ht]
+\caption{Problème des producteurs et des consommateurs à un tampon (version finale)}\label{moniteur:ProdCons3}
+\begin{center}
+\begin{tabular}{l}
+\lstset{language=C++}
+\begin{lstlisting}
+static T_Moniteur Tampons;
+static ARTICLE place[0..N-1];
+static int tete, queue, taille;
+static T_Condition pasPlein, pasVide;
+
+void deposer(ARTICLE a) {
+  sem_wait(&Tampons.mutex);
+  if (taille == N) {
+     pasPlein.nbAttente += 1;
+     sem_post(&Tampons.mutex);
+     sem_wait(&pasPlein.attente);
+     pasPlein.nbAttente -= 1;
+  }
+  taille += 1;
+  place[tete] = a;
+  tete = (tete + 1) % N;
+  if (pasVide.nbAttente > 0)
+     sem_post(&pasVide.attente);
+  else
+     sem_post(&Tampons.mutex);
+} /* fin de deposer */
+
+void retirer(ARTICLE *a) {
+  sem_wait(&Tampons.mutex);
+  if (taille == 0) {
+     pasVide.nbAttente += 1;
+     sem_post(&Tampons.mutex);
+     sem_wait(&pasVide.attente);
+     pasVide.nbAttente -= 1;
+  }
+  a = place[queue];
+  taille -= 1;
+  queue = (queue + 1) % N;
+  if (pasPlein.nbAttente > 0)
+     sem_post(&pasPlein.attente);
+  else
+     sem_post(&Tampons.mutex);
+} /* fin de retirer */
+\end{lstlisting}
+\end{tabular}
+\end{center}
+\end{algorithm}
+
+\section{Remarques finales}
+Grâce à leur construction haut niveau, les moniteurs procurent les avantages suivants:
+\begin{itemize}
+\item[-] une protection associée au moniteur (exclusion mutuelle);
+\item[-] une souplesse d'utilisation des primitives $attente$ et $signale$;
+\item[-] une efficacité de ces mécanismes.
+\end{itemize}
+Les moniteurs ont aussi quelques inconvénients:
+\begin{itemize}
+\item[-] un risque de manque de lisibilité qui est partiellement dû à des variations sémantiques des implémentations dans les divers langages qui les supportent. Dans le cas de $pthread$, il n'y a aucune garantie que les variables partagées sont effectivement accédées uniquement depuis les points d'entrée du moniteur qui devrait les protéger;
+\item[-] les variables condition sont de bas niveau;
+\item[-] l'impossibilité d'imposer un ordre total ou partiel dans l'exécution des procédures ou fonctions exportées.
+\end{itemize}
+
+
+\section{Exercices}
+
+\startexercice
+
+Proposer une solution au problème des lecteurs/rédacteurs avec priorité aux lecteurs, en faisant appel au concept de moniteur. Donnez une solution avec verrou et variable condition, puis transformez-là en une solution à base de sémaphores.
+
+\startexercice
+
+Considérons le problème des producteurs/consommateurs, où les consommateurs consomment obligatoirement deux données avant de poursuivre leur exécution.
+
+Proposer une solution basée sur les moniteurs.
+
+\startexercice
+
+Considérons le problème des producteurs/consommateurs, où les consommateurs consomment obligatoirement deux données avant de poursuivre leur exécution. Attention, deux données déposées successivement par les producteurs doivent être consommées par le même consommateur avant que le consommateur suivant puisse commencer ses consommations.
+
+Proposer une solution basée sur les moniteurs.
+
+

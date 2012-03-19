@@ -1,0 +1,754 @@
+#LyX 1.6.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass report
+\begin_preamble
+\usepackage{RedsReport}
+\end_preamble
+\use_default_options false
+\language french
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\float_placement H
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+TrainSim (version C) - Manuel utilisateur
+\end_layout
+
+\begin_layout Author
+Kevin Georgy
+\end_layout
+
+\begin_layout Date
+9 février 2009
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter*
+Révisions
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="8cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Date
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Version
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Ingénieur
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Révision
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+09/01/09
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+v1.0
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+KGY
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Version initiale
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Révisions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter*
+Conventions
+\end_layout
+
+\begin_layout Section*
+Mise en forme
+\end_layout
+
+\begin_layout Itemize
+Les noms propres sont écrits en 
+\noun on
+Petites Capitales
+\end_layout
+
+\begin_layout Itemize
+Les fichiers, dossiers ou commandes sont en 
+\family typewriter
+chasse fixe
+\end_layout
+
+\begin_layout Itemize
+Les termes étrangés, les nouveaux termes ou les termes techniques sont en
+ 
+\emph on
+emphasis
+\end_layout
+
+\begin_layout Itemize
+Le 
+\emph on
+listing
+\emph default
+ de code prend la forme suivante:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Pour des commandes ou un extrait de code source:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename fig/convention_listing_txt.png
+	scale 33
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Pour du code sources:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Graphics
+	filename fig/convention_listing_file.png
+	scale 33
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Section
+But du document
+\end_layout
+
+\begin_layout Standard
+Ce document donne les informations nécessaires à l'installation et à l'utilisati
+on du simulateur de maquettes de train 
+\noun on
+TrainSim
+\noun default
+ version modifiée pour permettre l'utilisation du langage C/C++.
+\end_layout
+
+\begin_layout Chapter
+Installation
+\end_layout
+
+\begin_layout Section
+Linux (Ubuntu 8.10)
+\end_layout
+
+\begin_layout Subsection
+Prérequis
+\end_layout
+
+\begin_layout Standard
+Le simulateur et la compilation des programmes clients nécessite certains
+ paquets additionnels :
+\end_layout
+
+\begin_layout Itemize
+g++
+\end_layout
+
+\begin_layout Itemize
+gnat
+\end_layout
+
+\begin_layout Itemize
+freeglut3
+\end_layout
+
+\begin_layout Itemize
+freeglut3-dev
+\end_layout
+
+\begin_layout Standard
+Ces paquets peuvent être installée via 
+\emph on
+Système > Administration > Gestionnaire de paquets Synaptic
+\emph default
+ ou grâce à la comamnde suivante :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+sudo apt-get install g++ gnat freeglut3 freeglut3-dev
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Installation
+\end_layout
+
+\begin_layout Standard
+L'installation consiste à 
+\emph on
+dézipper
+\emph default
+ le paquet dans un répertoire quelconque, que nous nommerons $INSTALL_DIR.
+\end_layout
+
+\begin_layout Chapter
+Utilisation
+\end_layout
+
+\begin_layout Standard
+Le simulateur est composer de deux parties.
+ La première est le simulateur en lui-même, qui permet d'afficher une vue
+ de la maquette en 3D.
+ La seconde est le programme client, qui permet de contrôler la maquette.
+\end_layout
+
+\begin_layout Section
+Simulateur
+\end_layout
+
+\begin_layout Subsection
+Compilation
+\end_layout
+
+\begin_layout Standard
+Dans un premier temps, il faut compiler le simulateur.
+ Cette étape peut être effectué par la commande suivante :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cd $INSTALL_DIR
+\end_layout
+
+\begin_layout Plain Layout
+
+make simulateur
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Execution
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:execution_sim"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On peut ensuite lancer le simulateur grâce à la commande suivante :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cd $INSTALL_DIR
+\end_layout
+
+\begin_layout Plain Layout
+
+make runsimulateur
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A partir de ce moment, le simulateur se met en attente du programme client.
+\end_layout
+
+\begin_layout Section
+Programme client
+\end_layout
+
+\begin_layout Standard
+Cette partie permet d'écrire un programme permettant de piloter le simulateur.
+\end_layout
+
+\begin_layout Subsection
+Modification du programme
+\end_layout
+
+\begin_layout Standard
+Les sources du programme se situent dans 
+\family typewriter
+$INSTALL_DIR/client/src
+\family default
+\emph on
+.
+
+\emph default
+ On y trouve le fichier 
+\family typewriter
+main.c:
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "/home/kgeorgy/Reds/PCO/TrainSimC1.0/client/src/main.c"
+lstparams "caption={Fichier principal du client.},label={main_cli_file},language=C,style=StdCode"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Attention à l'inclusion 
+\family typewriter
+#include "controler/ctrain_handler.h"
+\family default
+ qui contient les diférentes actions possibles sur la maquette :
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void init_maquette(void);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void mettre_maquette_hors_service(void);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void mettre_maquette_en_service(void);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void diriger_aiguillage(int no_aiguillage, int direction, int temps_alim);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void attendre_contact(int no_contact);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void arreter_loco(int no_loco);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void mettre_vitesse_progressive(int no_loco, int vitesse_future);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void mettre_fonction_loco(int no_loco, char etat);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void inverser_sens_loco(int no_loco);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void mettre_vitesse_loco(int no_loco, int vitesse);
+\end_layout
+
+\begin_layout Itemize
+
+\family typewriter
+void demander_loco(int contact_a, int contact_b, int *no_loco, int *vitesse);
+\end_layout
+
+\begin_layout Standard
+Toutes ces opérations sont documentées dans 
+\family typewriter
+controler/ctrain_handler.h
+\family default
+.
+ Il est donc recommandé de lire ce fichier.
+\end_layout
+
+\begin_layout Standard
+La présence de 
+\family typewriter
+init_maquette()
+\family default
+ et 
+\family typewriter
+mettre_maquette_hors_service(
+\family default
+) en début et en fin de programme est obligatoire.
+ Le code client est à mettre entre ces deux instructions.
+\end_layout
+
+\begin_layout Subsection
+Ajout de fichiers sources
+\end_layout
+
+\begin_layout Standard
+Il est possible (souhaitable) que le programme client se compose de plusieurs
+ fichiers sources.
+ Il faut les mettre dans le dossier 
+\family typewriter
+$INSTALL_DIR/client/src
+\family default
+, là où se situe le fichier 
+\family typewriter
+main.c
+\family default
+.
+ Il faut aussi indiquer qu'ils doivent être compilés en modifiant le fichier
+ 
+\family typewriter
+$INSTALL_DIR/client/Makefile
+\family default
+ :
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset include
+LatexCommand lstinputlisting
+filename "/home/kgeorgy/Reds/PCO/TrainSimC1.0/client/Makefile"
+lstparams "caption={Fichier Makefile},label={cli_make_file},language={make},style=StdCode"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Il suffit d'ajouter les fichiers sources sans extension, à la ligne 8, à
+ la suite de 
+\family typewriter
+main
+\family default
+.
+\end_layout
+
+\begin_layout Subsection
+Compilation
+\end_layout
+
+\begin_layout Standard
+Utiliser les commandes suivantes pour compiler le client :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cd $INSTALL_DIR
+\end_layout
+
+\begin_layout Plain Layout
+
+make client
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Execution
+\end_layout
+
+\begin_layout Standard
+Lancez tout d'abord le simulateur (cf.
+ section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:execution_sim"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+Utiliser les commandes suivantes pour lancer le client :
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+cd $INSTALL_DIR
+\end_layout
+
+\begin_layout Plain Layout
+
+make runclient
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

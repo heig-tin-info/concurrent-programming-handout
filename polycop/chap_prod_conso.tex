@@ -1,0 +1,405 @@
+\chapter{Producteurs-consommateurs}
+\startchapter
+\section{Enoncé du problème}
+Une tâche productrice place des éléments dans un tampon pour qu'une tâche consommatrice puisse les retirer et les traiter. Le tampon peut contenir un nombre maximum d'éléments et ces éléments sont organisés en liste circulaire. Un élément du tampon, dont le contenu a été consommé, peut à nouveau servir.
+
+Ce schéma constitue une communication entre 2 tâches, la productrice étant l'émettrice du message et la consommatrice, la destinatrice du message. C'est aussi la seule manière de transférer des données contenues dans une tâche vers une autre tâche. Dans ce qui suit, nous généralisons le problème à un nombre quelconque de tâches. N'importe quelle productrice peut alors déposer un élément dans un tampon et aussi n'importe quelle consommatrice peut la retirer. Notons que la séparation des tâches en productrices et consommatrice n'est qu'à des fins d'exposition et pour distinguer les actions menées par ces tâches. Nous pouvons en effet imager des situations où les tâches sont à la fois productrice et consommatrice.
+
+Les productrices et les consommatrices doivent se coordonner afin de respecter les contraintes suivantes :
+\begin{enumerate}
+\item Les éléments contenus dans le tampon ne sont consommés qu'une seule fois;
+\item Les éléments  du tampon sont consommés selon leur ordre de production ;
+\item Il n'y a pas d'écrasement prématuré des tampons, autrement dit, si le tampon est plein, une productrice doit attendre la libération d'un élément du tampon.
+\end{enumerate}
+
+La figure \ref{prodcons:base} montre les activités des deux tâches. Chaque tâche boucle indéfiniment, l'une produisant des éléments consommés par l'autre. La tâche \ccode{Producteur} invoque la procédure \ccode{Depose} pour insérer son élément \ccode{item} dans le tampon. La tâche \ccode{Consommateur} appelle la fonction \ccode{Preleve} pour obtenir le prochain élément à consommer.
+Bien qu'il n'y ait qu'une seule tâche productrice et qu'une seule tâche consommatrice créées par la tâche principale (\ccode{main}), le schéma convient à un nombre quelconque de tâches productrices et consommatrices.
+
+Les 2 fonctions \ccode{Depose} et \ccode{Preleve} ne doivent pas uniquement assurer la cohérence du tampon, qui est une variable partagée entre les tâches, mais elles doivent aussi synchroniser les tâches. Soit
+
+\hspace{0.6cm}$Produit(t)$, le nombre d'éléments introduits dans le tampon jusqu'au temps $t$,
+
+\hspace{0.6cm}$Consomm\acute{e}(t)$, le nombre d'éléments retirés du tampon jusqu'à $t$,
+
+\hspace{0.6cm}$N$, la capacité du tampon,
+
+alors $\forall t \geq 0: 0 \leq Produit(t) - Consomm\acute{e}(t) \leq N$.
+
+Les actions des tâches deviennent alors
+
+\hspace{0.6cm}Productrice : attendre que $Produit(t) - Consomm\acute{e}(t) < N$, puis déposer l'item produit;
+
+\hspace{0.6cm}Consommatrice : attendre que $Produit(t) - Consomm\acute{e}(t) > 0$, puis prélever l'item produit.
+
+\begin{figure}[t]
+\figcaption{prodcons:base}{Schéma des tâches productrices et consommatrices}
+\begin{center}
+\begin{tabular}{l}
+\lstset{language=C++}
+\begin{lstlisting}
+#include <stdlib.h>
+#include <stdbool.h>
+#include <pthread.h>
+
+bool InitialiseTampon(TAMPON *tampon);
+void Depose(ITEM item);
+ITEM Preleve(void);
+
+void *Producteur(void *arg)
+{
+  ITEM item;
+  while (true) {
+     // produire item
+     Depose(item);
+  }
+  return NULL;
+} /* fin de Producteur */
+  
+void *Consommateur(void *arg)
+{
+  ITEM item;
+  while (true) {
+     item = Preleve();
+     // consommer item
+  }
+  return NULL;
+} /* fin de Consommateur */
+
+int main(void)
+{
+  pthread_t prod, cons;
+  if (InitialiseTampon(&Tampon))
+     if (pthread_create(&prod,NULL,Producteur,NULL) == 0)
+        if (pthread_create(&cons,NULL,Consommateur,NULL) == 0) {
+           pthread_join(prod,NULL);
+           pthread_join(cons,NULL);
+           return EXIT_SUCCESS;
+        }
+  return EXIT_FAILURE;
+} /* fin de main */
+\end{lstlisting}
+\end{tabular}
+\end{center}
+\vspace{-.2cm}
+\rule{\textwidth}{0.01in}
+\end{figure}
+
+Dans ce qui suit, nous formulons des algorithmes permettant la synchronisation entre productrice et consommatrice. Nous commençons par le cas particulier où le tampon ne peut contenir qu'un seul élément avant de généraliser nos solutions à une capacité quelconque.
+
+\section{Problème à un seul tampon}
+Notre premier algorithme repose sur une variable qui indique l'état courant du tampon. Cette variable peut être positionnée à \ccode{Vide} ou \ccode{Plein}.
+Quand une tâche productrice appelle \ccode{Depose} et trouve l'état du tampon à \ccode{Plein}, la tâche doit être mise dans une file d'attente et se mettre à l'état bloqué (libérant ainsi le processeur). La même chose survient pour une tâche consommatrice appelant la fonction \ccode{Preleve} et trouvant le tampon vide. Quand un tampon est rempli par une tâche productrice, celle-ci doit vérifier s'il y a une tâche consommatrice en attente et, si c'est le cas, la réveiller. La même chose s'applique pour une tâche consommatrice qui vide le tampon.
+Un sémaphore nous donne le moyen de créer une file d'attente quand il est initialisé à 0. Notre solution utilise donc 2 sémaphores pour créer une file d'attente pour les consommatrices et une autre pour les tâches productrices. Puisqu'un sémaphore ne nous donne aucune indication quant au nombre de tâches bloquées dans sa file d'attente, il nous faut introduire un compteur.
+
+Pour déposer un item dans le tampon, un producteur obtient d'abord le sémaphore \ccode{mutex} qui garde le tampon et notamment ses variables d'état (les champs \ccode{etat}, \ccode{attenteProd} et \ccode{attenteCons}).
+La suite de son exécution dépend de l'état du tampon. Si le tampon est plein, la tâche joint la file \ccode{attendreVide} après avoir incrémenté le compteur \ccode{attenteProd} et libéré l'exclusion mutuelle. La tâche sortira de son attente quand le tampon sera vidé.
+La tâche productrice insère ensuite son item dans le tampon. Avant de quitter la section critique, la tâche doit réveiller une tâche consommatrice s'il y a en une. Pour ce faire, elle consulte l'état de la file d'attente des consommatrices avec la variable \ccode{attenteCons}. Si \ccode{attenteCons} $>$ \ccode{0}, alors il ne sert à rien d'indiquer que \ccode{etat} $=$ \ccode{Plein}, car la seule action possible sur le tampon est de le vider et la seule tâche qui pourra accéder au tampon est la consommatrice qui va être réveillée par la tâche productrice. Pour garantir que la tâche consommatrice réveillée reprend le contrôle du tampon, la tâche productrice ne libère pas \ccode{mutex} mais le transfère à la consommatrice qui l'hérite. Cet artifice assure l'absence de famine des consommatrices.
+Par contre, après avoir inséré son item dans le tampon, si la tâche productrice voit que \ccode{attenteCons} $=$ \ccode{0}, alors elle indique que le tampon est plein (\ccode{etat} $=$ \ccode{Plein}) afin de bloquer les futurs appels à \ccode{Depose} et aussi pour indiquer que le prochain appel à \ccode{Preleve} ne doit pas bloquer une consommatrice. 
+
+Le retrait d'un item du tampon est symétrique. Les consommatrices attendent que le tampon devienne plein puis réalisent une copie locale avant de libérer l'exclusion mutuelle ou réveiller une productrice bloquée.
+\begin{algorithm}[h!tp]
+\caption{Première méthode}\label{prodcons:tampon1}
+\begin{center}
+\begin{tabular}{l}
+\lstset{language=C++}
+\begin{lstlisting}
+#include <semaphore.h>
+
+typedef struct {
+  ITEM element;
+  sem_t mutex, attendreVide, attendrePlein;
+  bool etat;
+  unsigned attenteProd, attenteCons;
+} TAMPON;
+
+#define Vide false
+#define Plein true
+
+static TAMPON Tampon;
+
+bool InitialiseTampon(TAMPON *tampon)
+{
+  if (sem_init(&tampon->mutex,0,1) == 0)
+     if (sem_init(&tampon->attendreVide,0,0) == 0)
+        if (sem_init(&tampon->attendrePlein,0,0) == 0) {
+           tampon->etat = Vide;
+           tampon->attenteProd = tampon->attenteCons = 0;
+           return true;
+        }
+  return false;
+} /* fin de InitialiseTampon */
+
+void Depose(ITEM item)
+{
+  sem_wait(&Tampon.mutex);
+  if (Tampon.etat == Plein) {
+     Tampon.attenteProd += 1;
+     sem_post(&Tampon.mutex);
+     sem_wait(&Tampon.attendreVide);
+  }
+  Tampon.element = item;
+  if (Tampon.attenteCons > 0) {
+     Tampon.attenteCons -= 1;
+     sem_post(&Tampon.attendrePlein);
+  }
+  else {
+     Tampon.etat = Plein;
+     sem_post(&Tampon.mutex);
+  }
+} /* fin de Depose */
+
+ITEM Preleve(void)
+{
+  ITEM item;
+  sem_wait(&Tampon.mutex);
+  if (Tampon.etat == Vide) {
+     Tampon.attenteCons += 1;
+     sem_post(&Tampon.mutex);
+     sem_wait(&Tampon.attendrePlein);
+  }
+  item = Tampon.element;
+  if (Tampon.attenteProd > 0) {
+     Tampon.attenteProd -= 1;
+     sem_post(&Tampon.attendreVide);
+  }
+  else {
+     Tampon.etat = Vide;
+     sem_post(&Tampon.mutex);
+  }
+  return item;
+} /* fin de Preleve */
+\end{lstlisting}
+\end{tabular}
+\end{center}
+\end{algorithm}
+
+Notre second algorithme, plus simple que le premier, considère que l'état du tampon peut être exprimé directement par un sémaphore. En effet, si nous avons un sémaphore \ccode{attendreVide} qui indique par la valeur $1$ que le tampon est vide, un appel à \ccode{P(attendreVide)} laisse passer l'appelant si le tampon est vide ou bloque l'appelant si le tampon est plein (valeur du semaphore $= 0$). Quand une tâche vide le tampon, celle-ci peut ensuite faire \ccode{V(attendreVide)} pour réveiller une tâche en attente que le tampon devienne vide ou encore modifier la valeur du sémaphore pour qu'elle redevienne égale à $1$. Un raisonnement semblable peut être fait avec un second sémaphore \ccode{attendrePlein}, qui indique par sa valeur $1$ que le tampon est plein et par $0$ qu'il est vide. Autrement dit, \ccode{attendreVide} compte le nombre de tampons vides ($0$ ou $1$) alors que \ccode{attendrePlein} compte le nombre de tampons pleins. Notons que \ccode{attendreVide} $+$ \ccode{attendrePlein} $=$ $1$.
+
+\begin{algorithm}[h!t]
+\caption{Deuxième méthode}\label{prodcons:tampon2}
+\begin{center}
+\begin{tabular}{l}
+\lstset{language=C++}
+\begin{lstlisting}
+#include <semaphore.h>
+
+typedef struct {
+  ITEM element;
+  sem_t attendreVide, attendrePlein;
+} TAMPON;
+
+static TAMPON Tampon;
+
+bool InitialiseTampon(TAMPON *tampon)
+{
+  if (sem_init(&tampon-> attendreVide,0,1) == 0)
+    if (sem_init(&tampon->attendrePlein,0,0) == 0)
+      return true;
+  return false;
+} /* fin de InitialiseTampon */
+
+void Depose(ITEM item)
+{
+  sem_wait(&Tampon.attendreVide);
+  Tampon.element = item;
+  sem_post(&Tampon.attendrePlein);
+} /* fin de Depose */
+
+ITEM Preleve(void)
+{
+  ITEM item;
+  sem_wait(&Tampon.attendrePlein);
+  item = Tampon.element;
+  sem_post(&Tampon.attendreVide);
+  return item;
+} /* fin de Preleve */
+\end{lstlisting}
+\end{tabular}
+\end{center}
+\end{algorithm}
+
+L'algorithme \ref{prodcons:tampon2} illustre les fonctions \ccode{Depose} et \ccode{Preleve} qui utilisent le principe précédent. Notons finalement que l'initialisation du tampon reflète son état vide.
+
+
+\section{Extension à $N$ tampons}
+Pour généraliser le problème à une capacité supérieure à 1, il y a 2 aspects à considérer. Le premier est lié à la synchronisation entre les tâches et le second à la gestion du tampon.
+Le tampon est un tableau géré selon une liste circulaire à l'aide de 2 indices, \ccode{ptEntree} et \ccode{ptSortie}, indiquant respectivement la prochaine case libre du tableau et la prochaine case contenant l'élément à retirer du tableau. Sans considérer la synchronisation, les tâches productrices réalisent
+\begin{center}
+\vspace{-0.2 cm}
+\begin{tabular}{l}
+\begin{lstlisting}
+tableau[ptEntree] = item;
+ptEntree = (ptEntree + 1) % TAILLE_TAMPON;
+\end{lstlisting}
+\end{tabular}
+\end{center}
+La première instruction introduit l'élément dans le tableau et la seconde prépare l'indice pour la prochaine insertion. De manière identique, les consommatrices font
+\begin{center}
+\vspace{-0.2 cm}
+\begin{tabular}{l}
+\begin{lstlisting}
+item = tableau[ptSortie];
+ptSortie = (ptSortie + 1) % TAILLE_TAMPON;
+\end{lstlisting}
+\end{tabular}
+\end{center}
+En initialisant \ccode{ptEntree} à \ccode{ptSortie}, on voit que les éléments retirés se font dans le même ordre qu'ils ont été introduits par les tâches productrices.
+
+Le second problème qu'il faut traiter est lié à la synchronisation. Dans les 2 bouts de code ci-dessus, il faut bloquer les consommatrices lorsque le tampon est vide, et aussi les productrices lorsque le tampon est plein. Dans ces 2 cas, \ccode{prEntree} $=$ \ccode{ptSortie} et, pour savoir si le tampon est plein ou vide, nous utilisons un indicateur supplémentaire, un compteur de cases libres. Quand une productrice dépose un élément, ce compteur est décrémenté, et lorsqu'une consommatrice prélève un élément, le compteur est incrémenté. Ainsi, quand le compteur est égal à 0, le tampon est plein, et quand il est égal à \ccode{TAILLE_TAMPON}, le tampon est vide.
+La généralisation de l'algorithme \ref{prodcons:tampon1} est donnée par l'algorithme \ref{prodcons:tampon3}. Le passage du premier algorithme vers le second tient tout simplement compte des nouvelles variables qui ont été introduites pour gérer le tableau circulaire.
+\begin{algorithm}[!ht]
+\caption{Extension de l'algorithme \ref{prodcons:tampon1}}\label{prodcons:tampon3}
+\begin{center}
+\begin{tabular}{l}
+\lstset{language=C++}
+\begin{lstlisting}
+#include <semaphore.h>
+
+#define TAILLE_TAMPON 5
+
+typedef struct {
+  ITEM element[TAILLE_TAMPON];
+  sem_t mutex, attendreVide, attendrePlein;
+  int libres, ptEntree, ptSortie;
+  unsigned attenteProd, attenteCons;
+} TAMPON;
+
+static TAMPON Tampon;
+
+bool InitialiseTampon(TAMPON *tampon)
+{
+  if (sem_init(&tampon->mutex,0,1) == 0)
+     if (sem_init(&tampon->attendreVide,0,0) == 0)
+        if (sem_init(&tampon->attendrePlein,0,0) == 0) {
+           tampon->libres = TAILLE_TAMPON;
+           tampon->attenteProd = tampon->attenteCons = 0;
+           tampon->ptEntree = tampon->ptSortie = 0;
+           return true;
+        }
+  return false;
+} /* fin de InitialiseTampon */
+
+void Depose(ITEM item)
+{
+  sem_wait(&Tampon.mutex);
+  if (Tampon.libres == 0) {
+     Tampon.attenteProd += 1;
+     sem_post(&Tampon.mutex);
+     sem_wait(&Tampon.attendreVide);
+  }
+  Tampon.element[Tampon.ptEntree++] = item;
+  Tampon.ptEntree %= TAILLE_TAMPON;
+  Tampon.libres -= 1;
+  if (Tampon.attenteCons > 0) {
+     Tampon.attenteCons -= 1;
+     sem_post(&Tampon.attendrePlein);
+  }
+  else
+     sem_post(&Tampon.mutex);
+} /* fin de Depose */
+
+ITEM Preleve(void)
+{
+  ITEM item;
+  sem_wait(&Tampon.mutex);
+  if (Tampon.libres == TAILLE_TAMPON) {
+     Tampon.attenteCons += 1;
+     sem_post(&Tampon.mutex);
+     sem_wait(&Tampon.attendrePlein);
+  }
+  item = Tampon.element[Tampon.ptSortie++];
+  Tampon.ptSortie %= TAILLE_TAMPON;
+  Tampon.libres += 1;
+  if (Tampon.attenteProd > 0) {
+     Tampon.attenteProd -= 1;
+     sem_post(&Tampon.attendreVide);
+  }
+  else
+     sem_post(&Tampon.mutex);
+  return item;
+} /* fin de Preleve */
+\end{lstlisting}
+\end{tabular}
+\end{center}
+\end{algorithm}
+
+Les idées de l'algorithme \ref{prodcons:tampon2} peuvent également s'appliquer à un tampon ayant une capacité supérieure à 1 (voir algorithme \ref{prodcons:tampon4}).
+Le sémaphore \ccode{attendreVide} compte le nombre de cases vides du tampon que les productrices peuvent utiliser pour insérer leurs éléments, et quand ce sémaphore devient égal à 0, il bloque toutes les productrices appelant la procédure \ccode{Depose}.
+De manière identique, le sémaphore \ccode{attendrePlein} compte le nombre d'éléments contenus dans le tampon, et bloque les consommatrices quand il vaut 0. Le sémaphore \ccode{mutex} assure l'exclusion mutuelle entre les productrices et les consommatrices.
+
+\begin{algorithm}[!ht]
+\caption{Extension de l'algorithme \ref{prodcons:tampon2}}\label{prodcons:tampon4}
+\begin{center}
+\begin{tabular}{l}
+\lstset{language=C++}
+\begin{lstlisting}
+#include <semaphore.h>
+
+#define TAILLE_TAMPON 5
+
+typedef struct {
+  ITEM element[TAILLE_TAMPON];
+  sem_t mutex, attendreVide, attendrePlein;
+  int ptEntree, ptSortie;
+} TAMPON;
+
+static TAMPON Tampon;
+
+bool InitialiseTampon(TAMPON *tampon)
+{
+  if (sem_init(&tampon->mutex,0,1) == 0)
+     if (sem_init(&tampon->attendreVide,0,TAILLE_TAMPON) == 0)
+        if (sem_init(&tampon->attendrePlein,0,0) == 0) {
+           tampon->ptEntree = tampon->ptSortie = 0;
+           return true;
+        }
+  return false;
+} /* fin de InitialiseTampon */
+
+void Depose(ITEM item)
+{
+  sem_wait(&Tampon.attendreVide);
+  sem_wait(&Tampon.mutex);
+  Tampon.element[Tampon.ptEntree++] = item;
+  Tampon.ptEntree %= TAILLE_TAMPON;
+  sem_post(&Tampon.attendrePlein);
+  sem_post(&Tampon.mutex);
+} /* fin de Depose */
+
+ITEM Preleve(void)
+{
+  ITEM item;
+  sem_wait(&Tampon.attendrePlein);
+  sem_wait(&Tampon.mutex);
+  item = Tampon.element[Tampon.ptSortie++];
+  Tampon.ptSortie %= TAILLE_TAMPON;
+  sem_post(&Tampon.attendreVide);
+  sem_post(&Tampon.mutex);
+  return item;
+} /* fin de Preleve */
+\end{lstlisting}
+\end{tabular}
+\end{center}
+\end{algorithm}
+
+A priori, on pourrait croire que l'algorithme \ref{prodcons:tampon4} est plus rapide que l'algorithme \ref{prodcons:tampon3}. Ceci n'est pas forcément le cas car chaque insertion ou retrait nécessite 4 appels à des primitives de sémaphores. Ces appels ont un coût non négligeable. Par contre, l'algorithme \ref{prodcons:tampon3} ne réalise généralement que 2 appels de primitives pour accomplir les mêmes actions.
+
+\section{Exercices}
+
+\startexercice
+
+Les 2 dernières opérations réalisées par les fonctions \ccode{Depose} et \ccode{Preleve} de l'algorithme \ref{prodcons:tampon4} sont respectivement \par
+\hspace{1cm} \ccode{sem_post(&Tampon.attendrePlein);} \par
+\hspace{1cm} \ccode{sem_post(&Tampon.mutex);} \par
+et \par
+ \hspace{1cm} \ccode{sem_post(&Tampon.attendreVide);} \par
+ \hspace{1cm} \ccode{sem_post(&Tampon.mutex);} \par
+L'ordre de ces opérations peut-il être inversé?
+
+\startexercice
+
+Dans l'algorithme \ref{prodcons:tampon4}, les tâches productrices et consommatrices se partagent un sémaphore \ccode{mutex} qui réalise l'exclusion mutuelle entre les productrices et les consommatrices. Est-il nécessaire de faire l'exclusion mutuelle entre toutes les tâches ou peut-on simplement réaliser une exclusion mutuelle entre les productrices et une autre entre les consommatrices? Autrement dit, peut-on introduire 2 sémaphores à la place de \ccode{mutex}?
+
+
+
+

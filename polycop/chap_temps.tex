@@ -1,0 +1,74 @@
+
+\chapter{Temps d'exécution}\label{sec:temps}
+
+\startchapter
+%\section{}
+
+
+\lettrine[lines=4]{C}{et annexe} présente quelques fonctions C permettant la gestion du temps par une application. Nous pourrons ensuite les utiliser afin de mettre au point des attentes, ainsi que pour mesurer le temps d'exécution d'une tâche.
+
+\section{Temps courant}
+
+Le temps courant correspond à la perception du temps que nous avons. Il est possible, dans ce cadre, de récupérer le nombre de secondes et microsecondes écoulées depuis le début de la journée, grâce à la fonction \ccode{gettimeofday()}.
+
+
+\begin{lstlisting}
+#include <systime.h>
+#include <unistd.h>
+
+struct timeval {
+int    tv_sec;        /* secondes */
+int    tv_usec;    /* microsecondes */
+};
+
+int gettimeofday(
+	struct timeval *tv,
+	struct timezone *tz); 
+\end{lstlisting}
+
+
+ Le type \ccode{struct timeval} permet de stocker cette valeur sous la forme de deux champs, le premier (\ccode{tv_sec}) représentant les secondes écoulées, et le deuxième (\ccode{tv_usec}) les microsecondes additionnelles.
+ 
+Le second argument, \ccode{tz}, est obligatoire, mais n'est pas utilisé.
+
+Exemple d'utilisation:
+
+\begin{lstlisting}[frame=trBL]
+	struct timeval t1,t2;
+	struct timezone tz;
+	gettimeofday(&t1,&tz);
+	sleep(3);
+	gettimeofday(&t2,&tz);
+	printf("t1: %d, %d\n",t1.tv_sec,t1.tv_usec);
+	printf("t1: %d, %d\n",t2.tv_sec,t2.tv_usec);
+\end{lstlisting}
+
+Dans cet exemple, la différence de temps au niveau des secondes, devrait être de 3, la fonction \ccode{sleep()} laissant l'application ne rien faire pendant 3 secondes.
+
+
+\section{temps processeur}
+
+Outre le temps standard, il est possible de savoir combien de temps processeur a été consommé par un processus. Cela permet de savoir exactement le temps qui a réellement été passé sur une tâche particulière, et ce malgré le fait que le processeur est partagé par les différents processus exécutés en pseudo-parallèle.
+
+La fonction \ccode{clock()} permet de le faire, à la manière suivante:
+
+\begin{lstlisting}[frame=trBL]
+#include <time.h>
+
+clock_t start, end;
+double elapsed;
+
+start = clock();
+... /* Traitement à évaluer. */
+end = clock();
+elapsed = ((double) (end - start)) / CLOCKS_PER_SEC;
+\end{lstlisting}
+
+La constante \ccode{CLOCKS_PER_SEC} donne le nombre de coups d'horloge par seconde, tandis que \ccode{clock()} retourne le nombre de coups d'horloges passés depuis le lancement du programme. En combinant les deux il est aisé de trouver le nombre de secondes nécessaires à un traitement particulier.
+
+
+%\section{Attente}
+
+
+%int gettimeofday(struct timeval *tv, struct timezone *tz); 
+

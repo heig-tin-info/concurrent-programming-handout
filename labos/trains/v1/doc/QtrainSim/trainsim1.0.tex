@@ -1,0 +1,309 @@
+%% LyX 1.6.1 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[a4paper,french]{report}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{listings}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{array}
+\usepackage{float}
+\usepackage{graphicx}
+
+\usepackage{booktabs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\newcommand{\noun}[1]{\textsc{#1}}
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{RedsReport}
+
+\usepackage{babel}
+\addto\extrasfrench{\providecommand{\og}{\leavevmode\flqq~}\providecommand{\fg}{\ifdim\lastskip>\z@\unskip\fi~\frqq}}
+
+\begin{document}
+
+\title{QtrainSim}
+
+
+\author{Kevin Georgy, Jéremie Ecoffey et Daniel Molla}
+
+
+\date{5 mars 2012}
+
+\maketitle
+\newpage{}
+
+
+\chapter*{Révisions}
+
+%
+\begin{table}[H]
+\noindent \begin{centering}
+\begin{tabular}{|c|c|c|>{\centering}p{8cm}|}
+\hline 
+\textbf{Date} & \textbf{Version} & \textbf{Ingénieur} & \textbf{Révision}\tabularnewline
+\hline
+\hline 
+17/01/09 & v1.0 & KGY & Version initiale\tabularnewline
+\hline 
+26/03/09 & v1.1 & KGY & Ajout des plans des maquettes et des fonctionnalités GUI\tabularnewline
+\hline 
+05/03/12 & v1.2 & DMO & Mise à niveau de la documentation pour l'application Qt\tabularnewline
+\hline
+\end{tabular}
+\par\end{centering}
+
+\caption{Révisions}
+
+\end{table}
+
+
+\newpage{}
+
+
+\chapter*{Conventions}
+
+
+\section*{Mise en forme}
+\begin{itemize}
+\item Les noms propres sont écrits en \noun{Petites Capitales}
+\item Les fichiers, dossiers ou commandes sont en \texttt{chasse fixe}
+\item Les termes étrangers, les nouveaux termes ou les termes techniques
+sont en \emph{emphasis}
+\item Le \emph{listing} de code prend la forme suivante:
+
+\begin{itemize}
+\item Pour des commandes ou un extrait de code source:\\
+\includegraphics[scale=0.33]{fig/convention_listing_txt}
+\item Pour du code sources:\\
+\includegraphics[scale=0.33]{fig/convention_listing_file}
+\end{itemize}
+\end{itemize}
+\thispagestyle{empty}
+
+\newpage{}
+
+\tableofcontents{}
+
+
+\chapter{Introduction}
+
+\noun{Qtrainsim} est un programme de simulation des maquettes de train
+\noun{Märklin. }Grâce à la librairie \noun{libtrainsim}, il est possible
+d'écrire des programmes C utilisant ce simulateur.
+
+Ce document indique comment installer le simulateur sur différentes
+plate-formes disponibles et comment l'utiliser.
+
+
+\chapter{Installation}
+
+
+\section{Mise en place}
+
+Cette documentation se base sur l'environnement \noun{Qt SDK} 4.7.3. 
+
+Récupérer le projet associé à la plate-forme utilisée. Une fois récupéré,
+lancer \noun{QtCreator} à partir du fichier \texttt{QtrainSim.pro}
+du projet ou alors ouvrir le projet à partir de \noun{QtCreator}.
+Verifier dans le fichier \texttt{QtrainSim.pro} que la ligne suivante
+est bien commentée :
+
+
+\begin{lstlisting}
+CONFIG += MAQUETTE
+\end{lstlisting}
+
+
+Cette ligne permet de spécifier à l'application si elle doit utiliser
+la librairie du simulateur ou la librairie des maquettes physiques.
+Compiler puis lancer l'application. La simulateur est désormais prêt
+à l'emploi.
+
+
+\section{Écriture d'un programme}
+
+Les fonctions fournies par la librairie sont définies dans \texttt{src/ctrain\_handler.h
+}(\emph{listing} \ref{lst_ctrainhandler}).
+
+%\newcommand{\ccode}[1]{\lstinline{#1}}
+%\newcommand{\cfunction}[1]{\ccode{#1}}
+%\newcommand{\param}[4]{\ccode{#1} & \ccode{#2} & \ccode{#3} & #4 \\ }
+%\cfunction{void afficher_message(const char* message)}
+%\newenvironment{listparam}{\begin{tabularx}{\textwidth}{cccX}}{\end{tabularx}}
+
+%\begin{tabularx}{\textwidth}{cccX}
+%\toprule
+%\textbf{Paramètre} & \textbf{type} & \textbf{return} & \textbf{Description} \\
+%\midrule
+%\param{message}{const char *}{void}{Chaine de caractère contenant le message à afficher.}
+%\bottomrule
+%\end{tabularx}
+
+\lstinputlisting[caption={ctrain\_handler.h},label={lst_ctrainhandler},language=C,style=stdCode]{lst/ctrain_handler.h}
+
+Le \emph{listing} \ref{lst_min_main} montre un fichier source minimal
+pour l'utilisation de la librairie. On remarque l'inclusion \emph{<trainsim/ctrain\_handler.h>}
+qui fournit l'accès au fonctions. L'appel à \emph{init\_maquette()}
+et \emph{mettre\_maquette\_hors\_service()} sont à effectuer obligatoirement
+en début et fin de programme.
+
+\lstinputlisting[caption={Fichier source minimal},label={lst_min_main},language=C,style=stdCode]{lst/main_minimal.c}
+
+
+\chapter{Utilisation}
+
+
+\section{Généralité}
+
+Pour programmer le comportement des locomotives dans QTrainSim, il
+faut utiliserer le langage C. Il est neamoins possible de créer des
+objets en C++ (le simulateur lui-même est en C++), et même d\textquoteright{}utiliser
+la librairie Qt. Toutefois, le projet est structuré de telle manière
+que l\textquoteright{}utilisation la plus simple consiste en la complétion
+en C de la méthode run() utilisée par le thread {}``User'' dans
+main.cpp. En aucun cas il n\textquoteright{}est nécessaire, ni même
+souhaitable de modifier les autres fichiers du projet. En cas de modification,
+il faut savoir que le programme pourrait ne pas fonctionner sur la
+maquette physique. Toutes les fonctions nécessaires se trouvent dans
+l\textquoteright{}API représetée par le fichier \texttt{ctrain\_handler.h}.
+Ces fonctions peuvent être appelées directement et sans préfixe depuis
+\texttt{cmain.c}.
+
+Le simulateur se lance directement à partir de \noun{QtCreator}. Afin
+d'indiquer au simulateur la maquette et les locomotives à utiliser,
+les fonction \emph{selection\_maquette }et\emph{ assigner\_loco }doivent
+être appelées à l'intérieur de la fonction \emph{cmain} du fichier
+\texttt{cmain.c}.
+
+
+\section{Interface graphique}
+
+La figure \ref{fig_interface} représente l'interface graphique dans
+son integralité.
+
+%
+\begin{figure}[H]
+\noindent \begin{centering}
+\includegraphics[scale=0.35]{fig/interface}
+\par\end{centering}
+
+\caption{Interface graphique du simulateur\label{fig_interface}}
+
+\end{figure}
+
+
+
+\subsection{Barre de menu}
+
+\newcommand{\menu}[1]{\textbf{#1}}
+\newcommand{\submenu}[2]{\fbox{\textbf{#1$\rightarrow$#2}}}
+
+\subsubsection{Actions}
+
+Le menu \menu{Actions} de la barre de menu permet d'interagir directement
+sur la vue contenant la maquette virtuelle du simulateur. Voici les
+différentes actions définies :
+\begin{itemize}
+\item {}``Resume''/{}``Pause'' permet de démarrer ou mettre en pause
+le système en fonction de l'état de celui-ci.
+\item {}``Emergency stop'' fait appelle à la fonction \emph{emergency\_stop()
+}située à l'intérieur du fichier \texttt{cmain.c}. C'est la responsabilité
+de l'utilisateur de placer le code spécifique à cet appel.
+\item {}``Exit'' permet de quitter l'application.
+\item {}``Pause loco n''/{}``Restart loco n'' permettent de mettre en
+pause ou de redémarrer une locomotive spécifique représentée par le
+numéro {}``n'' en fonction de son état actuel.
+\end{itemize}
+
+\subsubsection{Views}
+Le menu \menu{Views} de la barre de menu permet d'intéragir directement
+sur la vue contenant la maquette virtuelle du simulateur et les vues
+relatives aux logs des locomotives. Voici les différentes actions
+définies pour ces vues :
+\begin{itemize}
+\item \submenu{Views}{Zoom in} permet de réaliser un zoom progressif au sein de la
+vue contenant la maquette virtuelle du simulateur.
+\item \submenu{Views}{Zoom out} permet de réaliser un zoom regressif au sein de la
+vue contenant la maquette virtuelle du simulateur.
+\item \submenu{Views}{Zoom fit} permet de dimensionner la maquette virtuelle du simulateur
+au sein de sa vue en fonction de la taille de l'application.
+\item \submenu{Views}{Rotate +} permet de réaliser une légère rotation de la maquette
+virtuelle du simulateur sur la droite.
+\item \submenu{Views}{Rotate -} permet de réaliser une légère rotation de la maquette
+virtuelle du simulateur sur la gauche.
+\item \submenu{Views}{View Loco logs} permet d'afficher ou non les logs des locomotives
+dans leur vue respective.
+\item \submenu{Views}{View contact number} permet d'afficher à proximité de chaque
+contact son numéro.
+\item \submenu{Views}{View aiguillage number} permet d'afficher à proximité de chaque
+aiguillage son numéro.
+\end{itemize}
+
+\subsubsection{Settings}
+Le menu \menu{Settings} de la barre de menu permet d'interagir sur
+différents paramètres de l'application. Actuellement, il est existe
+uniquement l'action \submenu{Settings}{Inertia} qui permet d'ajouter ou non de
+l'inertie lors de l'arrêt des locomotives. En pratique, activer l'inertie
+permet une simulation plus fidèle aux conditions réelles. Les locos
+changeront alors leurs vitesses de manière progressives. Cela est
+notamment important dans la gestion des distances de freinage.
+
+
+\subsection{Barre d'outils}
+
+La barre d'outils offre différents raccourcis pour les actions {}``Resume''/{}``Pause'',
+{}``Emergency stop'' , {}``Zoom in'' , {}``Zoom out'' et {}``Pause
+loco n''/{}``Restart loco n''.
+
+
+\subsection{Maquette virtuelle}
+
+La maquette est schématisée par une vue en deux dimension. Les voies
+variables (aiguillages, aiguillages enroulés, aiguillages triples,
+traversées-jonctions) sont représentées avec une voie en noir (qui
+indique l\textquoteright{}orientation actuelle de la voie) et une
+ou plusieurs voies grisées. La où les locomotives sont représentées
+par un rectangle de couleur portant le numéro de la locomotive aux
+deux extrémités. Deux triangles jaunes représentent les phares, et
+indiquent la direction de la locomotive. Les couleurs des locomotives
+sont générées dynamiquement de manière à ce qu\textquoteright{}elles
+soient le plus distinguables possible. Les contacts sont indiqués
+par des disques bleus. Il est possible de modifier l\textquoteright{}orientation
+d\textquoteright{}une voie variable en cliquant directement sur celle-ci. 
+
+
+\subsection{Console générale }
+
+La console générale offre un journal des informations de toutes les
+locomotives dans l\textquoteright{}ordre chronologique. 
+
+
+\subsection{Console locomotive}
+
+Chaque locomotive est également dotée de sa propre console sur la
+droite de la fenêtre. Cette console offre un journal des informations
+de la locomotive concernée dans l\textquoteright{}ordre chronologique.
+
+
+\chapter{Plan des maquettes}
+
+La figure \ref{fig:Plan-des-maquettes} indique la composition des
+différentes maquettes utilisables sur le simulateur.
+
+%
+\begin{figure}[H]
+\includegraphics[scale=0.5]{\string"fig/Maquette A1\string"}\includegraphics[scale=0.5]{\string"fig/Maquette A2\string"}
+
+\includegraphics[scale=0.45]{\string"fig/Maquette B1\string"}\includegraphics[scale=0.45]{\string"fig/Maquette B2\string"}
+
+\caption{Plan des maquettes\label{fig:Plan-des-maquettes}}
+
+\end{figure}
+
+\end{document}

@@ -1,0 +1,29 @@
+#ifndef VOIEAIGUILLAGETRIPLE_H
+#define VOIEAIGUILLAGETRIPLE_H
+
+#include <voievariable.h>
+#include <loco.h>
+
+class VoieAiguillageTriple : public VoieVariable
+{
+public:
+    VoieAiguillageTriple(qreal angle, qreal rayon, qreal longueur);
+    void setNumVoieVariable(int numVoieVariable);
+    void calculerAnglesEtCoordonnees(Voie *v);
+    void calculerPositionContact();
+    QList<QList<Voie*>*> explorationContactAContact(Voie* voieAppelante);
+    qreal getLongueurAParcourir();
+    Voie* getVoieSuivante(Voie* voieArrivee);
+    void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante);
+    void correctionPosition(qreal deltaX, qreal deltaY, Voie *v);
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+
+    virtual void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+private:
+    qreal rayonGauche, rayonDroite, angle, longueur;
+    QPointF* centreGauche;
+    QPointF* centreDroite;
+};
+
+#endif // VOIEAIGUILLAGETRIPLE_H

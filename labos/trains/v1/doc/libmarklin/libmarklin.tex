@@ -1,0 +1,264 @@
+%% LyX 1.6.1 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[a4paper,french]{report}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{listings}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{array}
+\usepackage{float}
+\usepackage{graphicx}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\newcommand{\noun}[1]{\textsc{#1}}
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{RedsReport}
+
+\usepackage{babel}
+\addto\extrasfrench{\providecommand{\og}{\leavevmode\flqq~}\providecommand{\fg}{\ifdim\lastskip>\z@\unskip\fi~\frqq}}
+
+\begin{document}
+
+\title{libmarklin}
+
+
+\author{Kevin Georgy et Daniel Molla}
+
+
+\date{03 mars 2012}
+
+\maketitle
+\newpage{}
+
+
+\chapter*{Révisions}
+
+%
+\begin{table}[H]
+\noindent \begin{centering}
+\begin{tabular}{|c|c|c|>{\centering}p{8cm}|}
+\hline 
+\textbf{Date} & \textbf{Version} & \textbf{Ingénieur} & \textbf{Révision}\tabularnewline
+\hline
+\hline 
+17/01/09 & v1.0 & KGY & Version initiale\tabularnewline
+\hline 
+26/03/09 & v1.1 & KGY & Adaptation pour version paquet \noun{Debian}\tabularnewline
+\hline 
+03/03/12 & v1.2 & DMO & Adapation pour la distribution 11.10\tabularnewline
+\hline
+\end{tabular}
+\par\end{centering}
+
+\caption{Révisions}
+
+\end{table}
+
+
+\newpage{}
+
+
+\chapter*{Conventions}
+
+
+\section*{Mise en forme}
+\begin{itemize}
+\item Les noms propres sont écrits en \noun{Petites Capitales}
+\item Les fichiers, dossiers ou commandes sont en \texttt{chasse fixe}
+\item Les termes étrangers, les nouveaux termes ou les termes techniques
+sont en \emph{emphasis}
+\item Le \emph{listing} de code prend la forme suivante:
+
+\begin{itemize}
+\item Pour des commandes ou un extrait de code source:\\
+\includegraphics[scale=0.33]{fig/convention_listing_txt}
+\item Pour du code sources:\\
+\includegraphics[scale=0.33]{fig/convention_listing_file}
+\end{itemize}
+\end{itemize}
+\thispagestyle{empty}
+
+\newpage{}
+
+\tableofcontents{}
+
+
+\chapter{Introduction}
+
+\noun{libmarklin} est une bibliothèque qui fournit les accès aux maquettes
+\noun{Märklin} utilisées dans le cadre des laboratoires de programmation
+concurrente de la \noun{Heig-vd}. Elle permet de contrôler les locomotives
+et les aiguillages, en utilisant le port série, et de recevoir les
+activations des contacts par le port parallèle.
+
+
+\chapter{Installation}
+
+
+\section{Matériel}
+
+La figure \ref{fig_branchements} illustre les connexions à réaliser
+avec la maquette.
+
+%
+\begin{figure}[H]
+\noindent \begin{centering}
+\includegraphics[scale=0.35]{fig/matos}
+\par\end{centering}
+
+\caption{Branchement\label{fig_branchements}}
+
+
+
+\end{figure}
+
+
+
+\section{Logiciel}
+
+La bibliothèque est uniquement disponible pour la distribution \noun{GNU/Linux
+Ubuntu 8.10}. Cette distrbution a été la première utilisée pour le
+laboratoire de programmation concurente. Elle fonctionne également
+sur d'autres distributions, dont nottamenent la distribution \noun{GNU/Linux
+Ubuntu 11.10} actuellement utilisée. Un paquet d'installation est
+fournit (\texttt{libmarklin\_x.x.x-0ubuntux\_i386.deb}). Il suffit
+d'ouvrir ce dernier avec \noun{GDebi} pour procéder à son installation/mise-à-jour.
+
+Pour que les utilisateurs puissent avoir accès au port LPT, utilisé
+pour la reception des contacts, il faut qu'ils soient ajoutés au groupe
+{}``lp''. Pour ce faire, utiliser la commande suivante en spécifiant
+<user\_name> par le nom d'utilisateur devant utiliser la librairie
+:
+
+
+\begin{lstlisting}
+sudo adduser <user_name> lp
+\end{lstlisting}
+
+
+Il est également nécessaire de donner aux utilisateurs l'accès au
+port série (COM) utilisée pour l'envoie de commandes aux aiguillages
+et locomotives. Pour ce faire, il faut récupérer le nom du groupe
+représantant le port série utilisé. La commande suivante permet ensuite
+d'ajouter les droits nécessaires en spécifiant <user\_name> par le
+nom d'utilisateur et <nom\_group\_port> par nom du groupe représantant
+le port série utilisé (généralement \texttt{dialout}) :
+
+
+\begin{lstlisting}
+sudo adduser <user_name> <nom_group_port>
+\end{lstlisting}
+
+
+La librairie est désormais prête à l'emploi.
+
+
+\chapter{Configuration}
+
+Il est possible de modifier certains paramètres utilisés par la librairie
+après son installation. Le fichier de configuration (\emph{/etc/libmarklin/markinl.conf})
+a la forme suivante :
+
+\lstinputlisting[caption={Fichier de configuration.},label={fich_config}]{lst/marklin.conf}
+
+Le premier paramètre (\texttt{comport}) défini le fichier \emph{device}
+du port COM à utiliser (\emph{/dev/ttyS0 = COM1}, \emph{/dev/ttyS1
+= COM2}, ...). Le second (\texttt{lptport}) défini le fichier \emph{device}
+du port LPT à utiliser (\emph{/dev/parport0 = LPT1}, \emph{/dev/parport0
+= LPT2}, ...). Les trois derniers paramètres permettent de règler
+différents temps d'attente :
+\begin{itemize}
+\item \texttt{cmd\_tempo} est le temps minimum à attendre entre l'envoi
+de deux commandes.
+\item \texttt{vit\_prog\_delay} définit le temps entre chaque incrémentation
+ou décrémentation de vitesse lors d'appels à \texttt{mettre\_vitesse\_progressive().}
+\item \texttt{min\_aig\_alim }est le temps d'alimentation minimum des aiguillages.
+\end{itemize}
+
+\chapter{Utilisation avec QtCreator}
+
+Cette documentation se base sur l'environnement \noun{Qt SDK} 4.7.3. 
+
+
+\section{Récupération du projet}
+
+Il faut récupérer le projet exemple Qt disponible ou le projet actuel
+de l'utilisateur. Une fois récupéré, il est possible de lancer \noun{QtCreator}
+à partir du fichier \texttt{QtrainSim.pro} du projet ou alors d'ouvrir
+le projet à partir de \noun{QtCreator}.
+
+
+\section{Passage en mode maquette}
+
+Une fois le projet récupéré, il faut éditer le fichier \texttt{QtrainSim.pro}
+du projet et décommenter la ligne suivante:
+
+
+\begin{lstlisting}
+CONFIG += MAQUETTE
+\end{lstlisting}
+
+
+Le simulateur est alors prêt à être utilisé en mode maquette. Avant
+tout lancement de l'application, il est préférable de contrôler que
+les numéros de maquette, de locomotives ainsi que l'emplacement initiales
+de celles correspondent avec la maquette et aux locomotives utilisés.
+
+
+\section{Interaction utilisateur}
+
+Une fois l'application lancée en mode maquette, l'utilisateur a la
+possibilité de cliquer sur les aiguillages de l'interface graphiques
+afin de changer en temps réel leur direction. Il va sans dire qu'une
+telle possibilité doit être utlilisée avec prudence afin de ne pas
+endomager le materiel mis à diosposition (locomotives, rails et aiguillages).
+
+L'utilisateur dispose également d'un bouton d'arrêt d'urgence. La
+figure\ref{fig_emergency_button}présente l'emplacement de ce bouton.
+
+%
+\begin{figure}[H]
+\noindent \begin{centering}
+\includegraphics[scale=0.35]{fig/emergency_button}
+\par\end{centering}
+
+\caption{Bouton d'arrêt d'urgence\label{fig_emergency_button}}
+
+\end{figure}
+
+
+L'implentation de l'action à réaliser lors de la pression du bouton
+revient à l'utilisateur au sein de la méthode \emph{emergency\_stop()}
+en fonction du fonctionnent de son application.
+
+A relever que les locomotives de l'application graphique ne se déplace
+pas durant l'exécution en mode maquette et que la gestion des \emph{logs}
+pour les locomotives est à gérer par l'utilisateur.
+
+
+\section{Écriture d'un programme}
+
+Lors de l'utilisation du simulateur en mode maquette, les fonctions
+fournies par la librairie définie dans \texttt{ctrain\_handler.h}
+(\emph{listing} \ref{lstctrainhandler}) sont utilisées. A noter que
+les fonctions \emph{selection\_maquette }et\emph{ assigner\_loco}
+ne sont pas présentes dans la librairie de la maquette et sont récupérée
+à partir de la librairies du simulateur.
+
+\lstinputlisting[caption={ctrain\_handler.h},label={lstctrainhandler},language=C,style=stdCode]{lst/ctrain_handler.h}
+
+Le \emph{listing} \ref{lst_min_main} montre un fichier source minimal
+pour l'utilisation de la librairie. On remarque l'inclusion \emph{<ctrain\_handler.h>}
+qui fournit l'accès au fonctions. L'appel à \emph{init\_maquette()}
+et \emph{mettre\_maquette\_hors\_service()} sont à appeler obligatoirement
+en début et fin de programme.
+
+\lstinputlisting[caption={Fichier source minimal},label={lst_min_main},language=C,style=stdCode]{lst/main_minimal.c}
+\end{document}

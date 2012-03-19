@@ -1,0 +1,248 @@
+% Version du mardi 19 mai 15h40
+\documentclass[ 11pt, onecolumn, twoside, openright, epic, eepic]{report}
+
+\usepackage{color}
+
+\usepackage[french]{babel}
+
+%\usepackage{french}
+\usepackage{frbib}
+
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{a4}
+%\usepackage{abbrevs}
+\usepackage{amsfonts}
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{amsthm}
+%\usepackage{cases}
+%\usepackage{dropping}
+\usepackage{lettrine}
+\usepackage{times}
+%\usepackage{sectsty}
+\usepackage[Lenny]{fncychap}
+\usepackage{graphicx}
+%\usepackage{epstopdf}
+\usepackage{hyperref}
+
+\usepackage{times}
+\usepackage{amstext}
+\usepackage{subfigure}
+
+
+\usepackage{listings}
+
+\lstset{language=C}
+%\lstset{emph={entity},emphstyle=\color{red}}
+\lstset{basicstyle=\scriptsize\ttfamily,
+stringstyle=\ttfamily}
+%\lstset{columns=flexible}
+\lstset{tabsize=2,showstringspaces=false}
+
+\newcommand{\ccode}[1]{{\lstset{basicstyle=\normalsize\ttfamily,stringstyle=\ttfamily}\lstinline$#1$}}
+
+\usepackage[chapter]{algorithm}
+\usepackage{algorithmic}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+
+\usepackage{ulem}
+
+\normalem
+
+\usepackage[labelfont=bf,justification=justified,format=hang,skip=0pt,nooneline]{caption}
+
+\floatname{algorithm}{Algorithme}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Draft                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\usepackage[light,none,bottomafter]{draftcopy}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Repertoires des images                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\graphicspath{{./images/}}
+
+
+\newcommand{\com}[1]{}
+%\renewcommand{\com}[1]{\pagebreak{\typeout{Comment: #1}\Huge\textbf{#1}}\pagebreak}
+
+
+\newcommand{\ang}[1]{\textit{#1}}
+
+\newcommand{\figcaption}[2]{
+\rule{\textwidth}{0.01in}
+\vspace{-.6cm}
+\caption{\label{#1} #2}
+\vspace{-.3cm}
+\rule{\textwidth}{0.01in}}
+
+%\renewcommand{\includegraphics}[2]{}
+
+
+\setlength{\headheight}{1.2cm}
+
+\setlength{\voffset}{-1.2cm}
+
+\setlength{\textheight}{655pt}
+
+
+\addtolength{\oddsidemargin}{-1cm}
+\addtolength{\evensidemargin}{-1cm}
+\addtolength{\textwidth}{2cm}
+
+
+%%%%%%%%%%%%%%
+
+
+\newcounter{exercicecounter}
+\setcounter{exercicecounter}{1}
+
+\newcommand{\extitle}[1]{\begin{center}{\Huge #1}\end{center}\vspace{1cm}}
+
+\newenvironment{exercice}[1][]{{%
+  \noindent%
+  \begin{minipage}[l]{\linewidth}%
+    \vspace{8mm}%
+    \rule{\linewidth}{0.2mm} \\%
+    %%\vspace{1mm}%
+    \large\textbf{Exercice \theexercicecounter :} #1\\ %
+    \rule{\linewidth}{0.2mm}%
+    \vspace{5mm}%
+    \addtocounter{exercicecounter}{1}%
+  \end{minipage}}}{}
+  
+\newcommand{\startexercice}{\subsection*{Exercice \thechapter.\theexercicecounter}\addtocounter{exercicecounter}{1}}
+  
+\newcommand{\startchapter}{\thispagestyle{myplain}
+%\setcounter{page}{1}
+\setcounter{exercicecounter}{1}}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%%%%%%%%%%
+
+
+
+\setlength{\unitlength}{1cm}
+
+\pagestyle{fancy}
+% with this we ensure that the chapter and section
+% headings are in lowercase
+\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\chaptername}\ \thechapter.\ \MakeUppercase{#1}}{}}
+%\renewcommand{\rightmark}[1]{PCO1. \markboth{\MakeUppercase{\chaptername}\ \thechapter.\ \MakeUppercase{#1}}{}}
+%\renewcommand{\chaptermark}[1]{PCO1. \markboth{\MakeUppercase{\chaptername}\ \thechapter.\ \MakeUppercase{#1}}{}}
+\fancyhf{} %delete the current section for header and footer
+\fancyhead[RO]{\thepage}
+\fancyhead[LE]{\thepage}
+\fancyhead[LO]{\rightmark}
+\fancyhead[RE]{\leftmark}
+\fancyfoot[C]{Programmation Concurrente 1 \copyright HEIG-VD}
+\fancyheadoffset[LE,RO]{1.5cm} \fancyfootoffset[LE,RO]{1.5cm}
+%\fancyhead[LE]{{\Roman{chapter}}.\thepage}
+
+\fancypagestyle{myplain}{%
+%\fancyhf{} % clear all header and footer fields
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead{}
+\fancyfoot[C]{Programmation Concurrente 1 \copyright HEIG-VD}
+}
+
+\renewcommand{\figurename}{Figure}
+\def\listfigurename{Liste des figures}
+\renewcommand{\tablename}{Tableau}
+
+
+\emergencystretch=50pt
+
+%% on remplace les items
+\renewcommand{\labelitemi}{$\bullet$}
+
+
+
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{2}
+
+\setlength{\parindent}{0pt}
+
+%\pagestyle{headings}
+
+
+
+%\thispagestyle{empty}
+\include{chap_titre}
+\thispagestyle{empty} \thispagestyle{empty}
+
+\addcontentsline{toc}{chapter}{Table des matières}
+\tableofcontents
+
+%\clearpage
+
+
+\include{chap_intro}
+
+\include{chap_exclusion}
+
+\include{chap_semaphore}
+
+\include{chap_prod_conso}
+
+%\setcounter{chapter}{4}
+\include{chap_lecteur_redacteur}
+
+%\setcounter{chapter}{5}
+
+\include{chap_moniteur}
+
+\appendix
+
+
+\include{chap_pthread}
+
+\include{chap_temps}
+
+%\newpage
+%\mbox{}
+%\newpage \addcontentsline{toc}{chapter}{Liste des Figures}
+%\listoffigures
+
+%\clearpage \addcontentsline{toc}{chapter}{Liste des Tableaux}
+%\listoftables
+
+%\clearpage \addcontentsline{toc}{chapter}{Liste des Algorithmes}
+%\listofalgorithms
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Bibliographie, liste des figures et tableaux, %%
+%% table des matières                            %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\let\ifFTR\iftrue\captionsfrench
+
+\nocite{*}
+\bibliographystyle{frplain}
+%\bibliography{../bibtex/routing}
+%,../bibtex/biblio
+
+%\newpage
+%\mbox{}
+
+
+\startchapter
+\addcontentsline{toc}{chapter}{Bibliographie}
+\bibliography{pco}
+\clearpage \thispagestyle{empty}
+
+
+\end{document}
