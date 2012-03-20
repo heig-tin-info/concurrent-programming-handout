@@ -93,6 +93,7 @@ Voie* VoieDroite::getVoieSuivante(Voie *voieArrivee)
 
 void VoieDroite::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante)
 {
+    /*
     angle = 0.0;
     rayon = 0.0;
 
@@ -110,6 +111,19 @@ void VoieDroite::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angle
     {
         dist = 0.0;
     }
+    */
+
+
+    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal x = posActuelle.x() - xLiaison;
+    qreal y = posActuelle.y() - yLiaison;
+    qreal distDel = sqrt((x*x) + (y*y));
+
+    if(distDel < dist)
+        dist -= distDel;
+    else
+        dist = 0.0;
 }
 
 void VoieDroite::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
@@ -135,6 +149,34 @@ void VoieDroite::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
         calculerPositionContact();
 }
 
+
+void VoieDroite::correctionPositionLoco(qreal &x, qreal &y)
+{
+    QPointF p0(x, y);
+    QPointF p1 = *coordonneesLiaison[0];
+    QPointF p2 = *coordonneesLiaison[1];
+
+    qreal distP1P0 = sqrt((p1.x()-p0.x())*(p1.x()-p0.x()) + (p1.y()-p0.y())*(p1.y()-p0.y()));
+    qreal dx = p1.x()-p2.x();
+    qreal dy = p1.y()-p2.y();
+    qreal distP1P2 = sqrt(dx*dx + dy*dy);
+
+    qreal add   = (p0.x()-p1.x())*(p2.x()-p1.x())+(p0.y()-p1.y())*(p2.y()-p1.y());
+    qreal sqrt1 = sqrt((p0.x()-p1.x())*(p0.x()-p1.x())+(p0.y()-p1.y())*(p0.y()-p1.y()));
+    qreal sqrt2 = sqrt((p2.x()-p1.x())*(p2.x()-p1.x())+(p2.y()-p1.y())*(p2.y()-p1.y()));
+    qreal angleP2P1P0 = add/(sqrt1*sqrt2);
+
+    qreal distP1P3 = distP1P0*angleP2P1P0;
+    qreal rapport = distP1P3/distP1P2;
+
+    qreal dxP0 = rapport*dx;
+    qreal dyP0 = rapport*dy;
+
+    x = -dxP0;
+    y = -dyP0;
+}
+
+
 #define min(a,b) ((a<b)?(a):(b))
 
 QRectF VoieDroite::boundingRect() const
@@ -151,6 +193,7 @@ void VoieDroite::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 {
     painter->setPen(this->pen());
     painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
+
     drawBoundingRect(painter);
 }
 

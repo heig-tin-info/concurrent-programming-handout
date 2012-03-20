@@ -18,6 +18,7 @@ public:
     Voie* getVoieSuivante(Voie* voieArrivee);
     void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante);
     void correctionPosition(qreal deltaX, qreal deltaY, Voie *v);
+    void correctionPositionLoco(qreal &x, qreal &y);
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     virtual void setNumVoieVariable(int numVoieVariable);

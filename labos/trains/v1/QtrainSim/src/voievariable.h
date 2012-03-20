@@ -19,6 +19,7 @@ public:
       */
     virtual void setNumVoieVariable(int numVoieVariable)=0;
     virtual void correctionPosition(qreal deltaX, qreal deltaY, Voie* v)=0;
+    virtual void correctionPositionLoco(qreal &x, qreal &y)=0;
 signals:
     /** signale que la voie variable a été modifiée.
       * \param v la voie modifiée.

@@ -181,6 +181,13 @@ void VoieCroisement::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
         calculerPositionContact();
 }
 
+
+void VoieCroisement::correctionPositionLoco(qreal &x, qreal &y)
+{
+    //TODO
+}
+
+
 QRectF VoieCroisement::boundingRect() const
 {
     return QRectF(QPointF(-200.0, -200.0),

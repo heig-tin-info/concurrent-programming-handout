@@ -203,6 +203,12 @@ public:
       */
     void drawBoundingRect(QPainter *painter);
 
+    /** permet de corriger la position d'une locomotive par rapport à une voie.
+      * \param x la correction en X
+      * \param y la correction en Y
+      */
+    virtual void correctionPositionLoco(qreal &x, qreal &y)=0;
+
     void setIdVoie(int id);
 protected:
     QMap<int, Voie*> ordreLiaison;

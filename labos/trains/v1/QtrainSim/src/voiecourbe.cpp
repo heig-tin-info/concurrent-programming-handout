@@ -183,6 +183,13 @@ void VoieCourbe::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
         calculerPositionContact();
 }
 
+
+void VoieCourbe::correctionPositionLoco(qreal &x, qreal &y)
+{
+    //TODO
+}
+
+
 QRectF VoieCourbe::boundingRect() const
 {
     return QRectF(QPointF(-200.0, -200.0),

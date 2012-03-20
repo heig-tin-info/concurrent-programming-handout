@@ -93,6 +93,8 @@ void VoieButtoir::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angl
     }
 }
 
+
+
 void VoieButtoir::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
 {
     //corrections...
@@ -101,6 +103,13 @@ void VoieButtoir::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
     if(this->contact != NULL)
         calculerPositionContact();
 }
+
+
+void VoieButtoir::correctionPositionLoco(qreal &x, qreal &y)
+{
+    //TODO
+}
+
 
 #define min(a,b) ((a<b)?(a):(b))
 

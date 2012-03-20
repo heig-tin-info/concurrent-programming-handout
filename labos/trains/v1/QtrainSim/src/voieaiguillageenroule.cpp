@@ -87,6 +87,13 @@ void VoieAiguillageEnroule::calculerAnglesEtCoordonnees(Voie *v)
         ordreLiaison[2]->calculerAnglesEtCoordonnees(this);
 }
 
+
+void VoieAiguillageEnroule::correctionPositionLoco(qreal &x, qreal &y)
+{
+    //TODO
+}
+
+
 void VoieAiguillageEnroule::calculerPositionContact()
 {
     //dummy code. A priori, on ne met pas de contact sur un aiguillage.

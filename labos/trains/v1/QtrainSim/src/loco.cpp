@@ -268,7 +268,11 @@ void Loco::avancer(qreal distance)
 
 void Loco::avancerDroit(qreal distance)
 {
-    moveBy(distance * cos(angleCumule * (PI / 180.0)), - distance * sin(angleCumule * (PI / 180.0)));
+    qreal x =  distance * cos(angleCumule * (PI / 180.0));
+    qreal y = -distance * sin(angleCumule * (PI / 180.0));
+    voieActuelle->correctionPositionLoco(x, y);
+    moveBy(x,y);
+
 }
 
 void Loco::avancerCourbe(qreal angle, qreal rayon)

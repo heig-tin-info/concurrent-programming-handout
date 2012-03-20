@@ -328,6 +328,13 @@ void VoieAiguillageTriple::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, q
     }
 }
 
+
+void VoieAiguillageTriple::correctionPositionLoco(qreal &x, qreal &y)
+{
+    //TODO
+}
+
+
 void VoieAiguillageTriple::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
 {
     //correction

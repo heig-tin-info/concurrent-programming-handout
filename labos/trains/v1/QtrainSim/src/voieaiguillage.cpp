@@ -322,6 +322,13 @@ void VoieAiguillage::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
         calculerPositionContact();
 }
 
+
+void VoieAiguillage::correctionPositionLoco(qreal &x, qreal &y)
+{
+    //TODO
+}
+
+
 #define min(a,b) (a<b?a:b)
 #define min3(a,b,c) (a<min(b,c)?a:min(b,c))
 

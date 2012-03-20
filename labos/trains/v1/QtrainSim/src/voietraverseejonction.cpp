@@ -316,6 +316,13 @@ void VoieTraverseeJonction::correctionPosition(qreal deltaX, qreal deltaY, Voie 
 
 }
 
+
+void VoieTraverseeJonction::correctionPositionLoco(qreal &x, qreal &y)
+{
+    //TODO
+}
+
+
 QRectF VoieTraverseeJonction::boundingRect() const
 {
     return QRectF(QPointF(-200.0, -200.0),
