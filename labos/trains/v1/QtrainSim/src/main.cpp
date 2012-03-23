@@ -20,10 +20,7 @@ int main(int argc, char *argv[])
 
     QApplication app(argc,argv);
 
-#ifdef MAQUETTE
     CommandeTrain::getInstance()->init_maquette();
-#endif // MAQUETTE
 
-    init_maquette();
     return app.exec();
 }

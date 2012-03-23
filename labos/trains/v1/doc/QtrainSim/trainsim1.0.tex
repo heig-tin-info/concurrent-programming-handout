@@ -11,6 +11,9 @@
 \usepackage{array}
 \usepackage{float}
 \usepackage{graphicx}
+\usepackage{palatino}
+
+\usepackage{dirtree}
 
 \usepackage{booktabs}
 
@@ -25,12 +28,18 @@
 \usepackage{babel}
 \addto\extrasfrench{\providecommand{\og}{\leavevmode\flqq~}\providecommand{\fg}{\ifdim\lastskip>\z@\unskip\fi~\frqq}}
 
+
+
+\newcommand{\file}[1]{\texttt{#1}}
+\newcommand{\folder}[1]{\texttt{#1}}
+\newcommand{\ccode}[1]{\lstinline[basicstyle=\fontfamily{pcr}\selectfont\color{DefColor}\normalsize]{#1}}
+
 \begin{document}
 
 \title{QtrainSim}
 
 
-\author{Kevin Georgy, Jéremie Ecoffey et Daniel Molla}
+\author{Kevin Georgy, Jéremie Ecoffey, Daniel Molla, Yann Thoma}
 
 
 \date{5 mars 2012}
@@ -54,6 +63,8 @@
 26/03/09 & v1.1 & KGY & Ajout des plans des maquettes et des fonctionnalités GUI\tabularnewline
 \hline 
 05/03/12 & v1.2 & DMO & Mise à niveau de la documentation pour l'application Qt\tabularnewline
+\hline 
+22/03/12 & v1.3 & YTA & Nouvelles fonctionnalités de l'application et refonte d'une partie du document\tabularnewline
 \hline
 \end{tabular}
 \par\end{centering}
@@ -94,8 +105,7 @@ sont en \emph{emphasis}
 \chapter{Introduction}
 
 \noun{Qtrainsim} est un programme de simulation des maquettes de train
-\noun{Märklin. }Grâce à la librairie \noun{libtrainsim}, il est possible
-d'écrire des programmes C utilisant ce simulateur.
+\noun{Märklin}. Outre une utilisation en simulation pure, il peut également être exploité pour la commande de maquettes réelles, grâce à la librairie \noun{libtrainsim}. Le développeur peut contrôler l'exécution des locomotives, via du code C ou C++.
 
 Ce document indique comment installer le simulateur sur différentes
 plate-formes disponibles et comment l'utiliser.
@@ -106,30 +116,73 @@ plate-formes disponibles et comment l'utiliser.
 
 \section{Mise en place}
 
-Cette documentation se base sur l'environnement \noun{Qt SDK} 4.7.3. 
+Cette documentation se base sur l'environnement \noun{Qt SDK} 4.7.3. A priori le code devrait être fonctionnel sur des version postérieurs du \noun{Qt SDK}. Le simulateur est écrit en C++, en exploitant les différentes classes offertes par le \noun{Qt SDK}.
 
-Récupérer le projet associé à la plate-forme utilisée. Une fois récupéré,
-lancer \noun{QtCreator} à partir du fichier \texttt{QtrainSim.pro}
-du projet ou alors ouvrir le projet à partir de \noun{QtCreator}.
-Verifier dans le fichier \texttt{QtrainSim.pro} que la ligne suivante
-est bien commentée :
+Un projet démontrant un fonctionnement basique peut \^etre récupéré sur le site web du reds: \url{http://reds.heig-vd.ch}. Le répertoire du projet contient:
 
+
+
+\dirtree{%
+.1 /.
+.2 QTrainSim.
+.3 src \DTcomment{ \begin{minipage}[t]{10cm}
+Contient les fichiers sources
+\end{minipage}}.
+.4 ....
+.3 images\DTcomment{ \begin{minipage}[t]{10cm}
+Contient les images
+\end{minipage}}.
+.4 ....
+.3 sound \DTcomment{\begin{minipage}[t]{10cm}
+Contient les sons
+\end{minipage}}.
+.4 ....
+.3 Maquettes \DTcomment{ \begin{minipage}[t]{10cm}
+Contient la description des maquettes
+\end{minipage}}.
+.4 ....
+.3 QTrainSim.pro \DTcomment{ \begin{minipage}[t]{10cm}
+Fichier de description du projet Qt
+\end{minipage}}.
+.3 qtrainsim.qrc \DTcomment{ \begin{minipage}[t]{10cm}
+Fichier de ressources
+\end{minipage}}.
+.3 infosVoies.txt \DTcomment{ \begin{minipage}[t]{10cm}
+Fichier de description des voies
+\end{minipage}}.
+}
+
+Le projet peut \^etre compilé en ligne de commande ou via \noun{QtCreator}, l'IDE fourni avec l'environnement Qt.
+
+En ligne de commande, une fois placé dans le répertoire \folder{QTrainSim}, exécuter les commandes suivantes:
+
+\begin{lstlisting}[style=cmd]
+qmake # génération du Makefile
+make  # compilation proprement dite
+\end{lstlisting}
+
+Par défaut la compilation se fait pour une simulation. Afin de compiler pour une exécution sur les maquettes réelles, la ligne de suivante doit \^etre décommentée dans le fichier \file{QTrainSim.pro}:
 
 \begin{lstlisting}
 CONFIG += MAQUETTE
 \end{lstlisting}
 
-
 Cette ligne permet de spécifier à l'application si elle doit utiliser
 la librairie du simulateur ou la librairie des maquettes physiques.
-Compiler puis lancer l'application. La simulateur est désormais prêt
-à l'emploi.
+
+
+Les opérations de compilation peuvent également \^etre exécutées gr\^ace à l'environnement \noun{QtCreator}. Il est conseillé de l'utiliser, notamment pour les possibilités de debug offertes. Le fichier de projet \file{QtrainSim.pro} peut \^etre ouvert via \noun{QtCreator}. L'application, après compilation, peut \^etre lancée via l'interface de \noun{QtCreator}, en mode \textit{release} ou \textit{debug}.
+
+\newcommand{\attention}{\includegraphics[height=1em]{fig/attention}\hspace{.2cm}}
+
+\attention Attention, sous \noun{QtCreator} il faut désactiver l'option "Shadow build". Ceci ce fait via l'onglet "Projects", dans la barre de gauche, puis en sélectionnant les "Build settings". Il y est possible de désactiver cette option. Ceci n'a pas lieu d'être en ligne de commande.
 
 
 \section{Écriture d'un programme}
 
 Les fonctions fournies par la librairie sont définies dans \texttt{src/ctrain\_handler.h
 }(\emph{listing} \ref{lst_ctrainhandler}).
+
 
 %\newcommand{\ccode}[1]{\lstinline{#1}}
 %\newcommand{\cfunction}[1]{\ccode{#1}}
@@ -145,12 +198,11 @@ Les fonctions fournies par la librairie sont définies dans \texttt{src/ctrain\_h
 %\bottomrule
 %\end{tabularx}
 
-\lstinputlisting[caption={ctrain\_handler.h},label={lst_ctrainhandler},language=C,style=stdCode]{lst/ctrain_handler.h}
+\lstinputlisting[caption={ctrain\_handler.h},label={lst_ctrainhandler},language=C,style=stdCode]{../../QtrainSim/src/ctrain_handler.h}
 
 Le \emph{listing} \ref{lst_min_main} montre un fichier source minimal
-pour l'utilisation de la librairie. On remarque l'inclusion \emph{<trainsim/ctrain\_handler.h>}
-qui fournit l'accès au fonctions. L'appel à \emph{init\_maquette()}
-et \emph{mettre\_maquette\_hors\_service()} sont à effectuer obligatoirement
+pour l'utilisation de la librairie. On remarque l'inclusion \ccode{#include "ctrain_handler.h"} qui fournit l'accès au fonctions. L'appel à \ccode{init_maquette()}
+et \ccode{mettre_maquette_hors_service()} sont à effectuer obligatoirement
 en début et fin de programme.
 
 \lstinputlisting[caption={Fichier source minimal},label={lst_min_main},language=C,style=stdCode]{lst/main_minimal.c}
@@ -163,22 +215,22 @@ en début et fin de programme.
 
 Pour programmer le comportement des locomotives dans QTrainSim, il
 faut utiliserer le langage C. Il est neamoins possible de créer des
-objets en C++ (le simulateur lui-même est en C++), et même d\textquoteright{}utiliser
+objets en C++ (le simulateur lui-même est en C++), et même d'utiliser
 la librairie Qt. Toutefois, le projet est structuré de telle manière
-que l\textquoteright{}utilisation la plus simple consiste en la complétion
-en C de la méthode run() utilisée par le thread {}``User'' dans
-main.cpp. En aucun cas il n\textquoteright{}est nécessaire, ni même
+que l'utilisation la plus simple consiste en la complétion
+en C de la méthode run() utilisée par le thread \textit{User} dans
+\file{main.cpp}. En aucun cas il n'est nécessaire, ni même
 souhaitable de modifier les autres fichiers du projet. En cas de modification,
 il faut savoir que le programme pourrait ne pas fonctionner sur la
 maquette physique. Toutes les fonctions nécessaires se trouvent dans
-l\textquoteright{}API représetée par le fichier \texttt{ctrain\_handler.h}.
+l'API représetée par le fichier \file{ctrain\_handler.h}.
 Ces fonctions peuvent être appelées directement et sans préfixe depuis
-\texttt{cmain.c}.
+\file{cmain.c}.
 
 Le simulateur se lance directement à partir de \noun{QtCreator}. Afin
 d'indiquer au simulateur la maquette et les locomotives à utiliser,
-les fonction \emph{selection\_maquette }et\emph{ assigner\_loco }doivent
-être appelées à l'intérieur de la fonction \emph{cmain} du fichier
+les fonction \ccode{selection_maquette()} et \ccode{assigner_loco()} doivent
+être appelées à l'intérieur de la fonction \ccode{cmain()} du fichier
 \texttt{cmain.c}.
 
 
@@ -202,7 +254,16 @@ son integralité.
 \subsection{Barre de menu}
 
 \newcommand{\menu}[1]{\textbf{#1}}
-\newcommand{\submenu}[2]{\fbox{\textbf{#1$\rightarrow$#2}}}
+\newcommand{\menuitem}[1]{\textbf{#1}}
+%\newcommand{\submenu}[2]{\fbox{\textbf{#1$\rightarrow$#2}}}
+\newcommand{\submenu}[2]{\textbf{#1$\rightarrow$#2}}
+
+\subsubsection{File}
+
+\begin{itemize}
+\item \submenu{File}{Print} permet d'imprimer la vue de la maquette en cours.
+\item \submenu{File}{Exit} permet de quitter l'application.
+\end{itemize}
 
 \subsubsection{Actions}
 
@@ -210,15 +271,12 @@ Le menu \menu{Actions} de la barre de menu permet d'interagir directement
 sur la vue contenant la maquette virtuelle du simulateur. Voici les
 différentes actions définies :
 \begin{itemize}
-\item {}``Resume''/{}``Pause'' permet de démarrer ou mettre en pause
-le système en fonction de l'état de celui-ci.
-\item {}``Emergency stop'' fait appelle à la fonction \emph{emergency\_stop()
-}située à l'intérieur du fichier \texttt{cmain.c}. C'est la responsabilité
-de l'utilisateur de placer le code spécifique à cet appel.
-\item {}``Exit'' permet de quitter l'application.
-\item {}``Pause loco n''/{}``Restart loco n'' permettent de mettre en
+\item \submenu{Actions}{Resume/Pause} permet de démarrer ou mettre en pause
+le système en fonction de l'état de celui-ci. Cette action n'est applicable qu'en simulation, qui doit notamment être lancée via ce biais. Sur la maquette l'expérience débute immédiatement au lancement du programme.
+\item \submenu{Actions}{Emergency stop} fait appelle à la fonction \emph{emergency\_stop()} située à l'intérieur du fichier \texttt{cmain.c}. C'est la responsabilité de l'utilisateur de placer le code spécifique à cet appel.
+\item \submenu{Actions}{Pause loco n/Restart loco n} permettent de mettre en
 pause ou de redémarrer une locomotive spécifique représentée par le
-numéro {}``n'' en fonction de son état actuel.
+numéro $n$ en fonction de son état actuel.
 \end{itemize}
 
 \subsubsection{Views}
@@ -257,9 +315,9 @@ notamment important dans la gestion des distances de freinage.
 
 \subsection{Barre d'outils}
 
-La barre d'outils offre différents raccourcis pour les actions {}``Resume''/{}``Pause'',
-{}``Emergency stop'' , {}``Zoom in'' , {}``Zoom out'' et {}``Pause
-loco n''/{}``Restart loco n''.
+La barre d'outils offre différents raccourcis pour les actions \menuitem{Resume/Pause},
+\menuitem{Emergency stop} , \menuitem{Zoom in} , \menuitem{Zoom out} et \menuitem{Pause
+loco n/Restart loco n}.
 
 
 \subsection{Maquette virtuelle}
@@ -267,40 +325,49 @@ loco n''/{}``Restart loco n''.
 La maquette est schématisée par une vue en deux dimension. Les voies
 variables (aiguillages, aiguillages enroulés, aiguillages triples,
 traversées-jonctions) sont représentées avec une voie en noir (qui
-indique l\textquoteright{}orientation actuelle de la voie) et une
+indique l'orientation actuelle de la voie) et une
 ou plusieurs voies grisées. La où les locomotives sont représentées
 par un rectangle de couleur portant le numéro de la locomotive aux
 deux extrémités. Deux triangles jaunes représentent les phares, et
 indiquent la direction de la locomotive. Les couleurs des locomotives
-sont générées dynamiquement de manière à ce qu\textquoteright{}elles
+sont générées dynamiquement de manière à ce qu'elles
 soient le plus distinguables possible. Les contacts sont indiqués
-par des disques bleus. Il est possible de modifier l\textquoteright{}orientation
-d\textquoteright{}une voie variable en cliquant directement sur celle-ci. 
+par des disques bleus. Il est possible de modifier l'orientation
+d'une voie variable en cliquant directement sur celle-ci. 
 
 
-\subsection{Console générale }
+\subsection{Console générale}
 
 La console générale offre un journal des informations de toutes les
-locomotives dans l\textquoteright{}ordre chronologique. 
+locomotives dans l'ordre chronologique. 
 
+Il est possible d'y afficher des messages en appelant la fonction \ccode{afficher_message()}.
 
 \subsection{Console locomotive}
 
 Chaque locomotive est également dotée de sa propre console sur la
 droite de la fenêtre. Cette console offre un journal des informations
-de la locomotive concernée dans l\textquoteright{}ordre chronologique.
+de la locomotive concernée dans l'ordre chronologique.
 
+Il est possible d'y afficher des messages en appelant la fonction \ccode{afficher_message_loco()}, en passant notamment le numéro de la locomotive en paramètre.
+
+\subsection{Interactions}
+
+Il est possible d'agir sur les aiguillages en cliquant dessus. Les aiguillages changent alors de sens, autant en simulation que sur les maquettes réelles.
+
+Lors de l'appel à la fonction \ccode{attendre_contact()}, le contact devient vert et le reste jusqu'à ce qu'une locomotive passe dessus.
+
+Les locomotives peuvent être articifiellement placées en pause en cliquant sur le bouton correspondant. Attention, cette fonctionnalité n'est valable qu'en simulation.
 
 \chapter{Plan des maquettes}
 
 La figure \ref{fig:Plan-des-maquettes} indique la composition des
 différentes maquettes utilisables sur le simulateur.
 
-%
-\begin{figure}[H]
-\includegraphics[scale=0.5]{\string"fig/Maquette A1\string"}\includegraphics[scale=0.5]{\string"fig/Maquette A2\string"}
+\begin{figure}[!ht]
+\includegraphics[width=.48\textwidth]{\string"fig/Maquette A1\string"}\includegraphics[width=.48\textwidth]{\string"fig/Maquette A2\string"}
 
-\includegraphics[scale=0.45]{\string"fig/Maquette B1\string"}\includegraphics[scale=0.45]{\string"fig/Maquette B2\string"}
+\includegraphics[width=.48\textwidth]{\string"fig/Maquette B1\string"}\includegraphics[width=.48\textwidth]{\string"fig/Maquette B2\string"}
 
 \caption{Plan des maquettes\label{fig:Plan-des-maquettes}}
 

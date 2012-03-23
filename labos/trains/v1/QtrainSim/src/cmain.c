@@ -36,7 +36,9 @@ void cmain()
   loco1.no =1;
   loco1.vitesse = 12;
 
+  init_maquette();
   selection_maquette("MAQUET_B");
+
 
   afficher_message("Et c'est parti!!");
 

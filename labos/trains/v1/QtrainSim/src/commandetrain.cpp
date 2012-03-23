@@ -110,7 +110,7 @@ void CommandeTrain::ajouter_loco(int no_loco)
 
 void CommandeTrain::diriger_aiguillage(int no_aiguillage, int direction, int temps_alim)
 {
-    setVoieVariable(no_aiguillage, direction);
+    emit setVoieVariable(no_aiguillage, direction);
 }
 
 void CommandeTrain::attendre_contact(int no_contact)
@@ -126,12 +126,12 @@ void CommandeTrain::attendre_contact(int no_contact)
 
 void CommandeTrain::arreter_loco(int no_loco)
 {
-    setVitesseLoco(no_loco, 0);
+    emit setVitesseLoco(no_loco, 0);
 }
 
 void CommandeTrain::mettre_vitesse_progressive(int no_loco, int vitesse_future)
 {
-    setVitesseProgressiveLoco(no_loco, vitesse_future);
+    emit setVitesseProgressiveLoco(no_loco, vitesse_future);
 }
 
 void CommandeTrain::mettre_fonction_loco(int no_loco, char etat)
@@ -141,12 +141,12 @@ void CommandeTrain::mettre_fonction_loco(int no_loco, char etat)
 
 void CommandeTrain::inverser_sens_loco(int no_loco)
 {
-    reverseLoco(no_loco);
+    emit reverseLoco(no_loco);
 }
 
 void CommandeTrain::mettre_vitesse_loco(int no_loco, int vitesse)
 {
-    setVitesseLoco(no_loco, vitesse);
+    emit setVitesseLoco(no_loco, vitesse);
 }
 
 void CommandeTrain::demander_loco(int contact_a, int contact_b, int *no_loco, int *vitesse)

@@ -37,6 +37,7 @@ void cmain()
   loco1.vitesse = 12;
 
   selection_maquette("MAQUET_B");
+  init_maquette();
 
   // Demande au simulateur de placer une loco entre les contacts 6 et 11
   // Recupere le numero et la vitesse saisis par l'utilisateur.

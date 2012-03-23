@@ -365,7 +365,8 @@ void Loco::adapterVitesse()
 {
     if(inverser)
     {
-        vitesse--;
+        if (vitesse!=0)
+            vitesse--;
         if(vitesse ==0)
         {
             this->rotate(180.0);
