@@ -12,6 +12,7 @@ using namespace std;
 #include "commandetrain.h"
 #endif // MAQUETTE
 
+
 /**
  * Programme principal
  */
@@ -20,7 +21,9 @@ int main(int argc, char *argv[])
 
     QApplication app(argc,argv);
 
-    CommandeTrain::getInstance()->init_maquette();
+//    CommandeTrain::getInstance()->init_maquette();
+
+    init_maquette();
 
     return app.exec();
 }

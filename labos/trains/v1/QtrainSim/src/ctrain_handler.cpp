@@ -9,7 +9,7 @@
  * Revision         : 27.3.2009 (CEZ)
  */
  
-#include <ctrain_handler.h>
+#include "ctrain_handler.h"
 
 #include "commandetrain.h"
 
@@ -21,7 +21,7 @@
  * A appeler au debut du programme client.
  */
 void init_maquette(void) {
-//    CMD_TRAIN->init_maquette();
+    CMD_TRAIN->init_maquette();
 }
 
 /*
