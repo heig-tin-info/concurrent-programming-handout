@@ -28,7 +28,7 @@ public:
     /** méthode d'affichage.
       *
       */
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 
     /** retourne le numéro de la loco.
       * \return le numéro de la loco.
@@ -94,7 +94,7 @@ public:
     /** Méthode d'affichage.
       *
       */
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 
     /** permet d'indiquer la voie sur laquelle la loco est posée.
       * \param v la voie actuelle.

@@ -1,6 +1,6 @@
 #include "simview.h"
 
-SimView::SimView(QWidget *parent)
+SimView::SimView(QWidget */*parent*/)
     : QGraphicsView()
 {
     scene = new QGraphicsScene();
@@ -356,7 +356,7 @@ void SimView::setLoco(int contactA, int contactB, int numLoco, int vitesseLoco)
     }
 }
 
-void SimView::askLoco(int contactA, int contactB)
+void SimView::askLoco(int /*contactA*/, int /*contactB*/)
 {
     //prompter un message demandant le numLoco et la vitesse.
 }

@@ -1,7 +1,7 @@
 #include <pthread.h>
 #include "ctrain_handler.h"
 #include <errno.h>
-
+#include <stdio.h>
 
 // structure qui definit une locomotive
 typedef struct
@@ -61,7 +61,7 @@ void cmain()
   diriger_aiguillage(1,TOUT_DROIT,0);
 
 
-  char* tmp = getCommand();
+  const char* tmp = getCommand();
   afficher_message(tmp);
 
   // Demarre la loco

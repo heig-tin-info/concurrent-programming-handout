@@ -15,12 +15,12 @@ public:
     QList<QList<Voie*>*> explorationContactAContact(Voie* voieAppelante);
     qreal getLongueurAParcourir();
     Voie* getVoieSuivante(Voie* voieArrivee);
-    void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante);
+    void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal, QPointF posActuelle, Voie *voieSuivante);
     void correctionPosition(qreal deltaX, qreal deltaY, Voie *v);
-    void correctionPositionLoco(qreal &x, qreal &y);
+    void correctionPositionLoco(qreal &, qreal &);
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void setEtat(int nouvelEtat);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
+    void setEtat(int);
 private:
     qreal angle, longueur;
 };

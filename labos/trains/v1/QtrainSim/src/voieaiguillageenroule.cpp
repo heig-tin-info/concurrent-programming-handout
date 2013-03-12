@@ -17,7 +17,7 @@ VoieAiguillageEnroule::VoieAiguillageEnroule(qreal angle, qreal rayon, qreal lon
     this->centreExterieur = new QPointF();
 }
 
-void VoieAiguillageEnroule::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+void VoieAiguillageEnroule::mousePressEvent ( QGraphicsSceneMouseEvent * /*event*/ )
 {
     setEtat(1-this->etat);
     update();
@@ -88,7 +88,7 @@ void VoieAiguillageEnroule::calculerAnglesEtCoordonnees(Voie *v)
 }
 
 
-void VoieAiguillageEnroule::correctionPositionLoco(qreal &x, qreal &y)
+void VoieAiguillageEnroule::correctionPositionLoco(qreal &/*x*/, qreal &/*y*/)
 {
     //TODO
 }
@@ -456,7 +456,7 @@ QRectF VoieAiguillageEnroule::boundingRect() const
     return rect;
 }
 
-void VoieAiguillageEnroule::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VoieAiguillageEnroule::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     QPen p1=this->pen();
     QPen p2=this->pen();

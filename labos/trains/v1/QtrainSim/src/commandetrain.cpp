@@ -112,7 +112,7 @@ void CommandeTrain::ajouter_loco(int no_loco)
 //    mainwindow->addLoco(no_loco);
 }
 
-void CommandeTrain::diriger_aiguillage(int no_aiguillage, int direction, int temps_alim)
+void CommandeTrain::diriger_aiguillage(int no_aiguillage, int direction, int /*temps_alim*/)
 {
     emit setVoieVariable(no_aiguillage, direction);
 }
@@ -138,7 +138,7 @@ void CommandeTrain::mettre_vitesse_progressive(int no_loco, int vitesse_future)
     emit setVitesseProgressiveLoco(no_loco, vitesse_future);
 }
 
-void CommandeTrain::mettre_fonction_loco(int no_loco, char etat)
+void CommandeTrain::mettre_fonction_loco(int /*no_loco*/, char /*etat*/)
 {
     //sans effets sur le simulateur.
 }
@@ -153,7 +153,7 @@ void CommandeTrain::mettre_vitesse_loco(int no_loco, int vitesse)
     emit setVitesseLoco(no_loco, vitesse);
 }
 
-void CommandeTrain::demander_loco(int contact_a, int contact_b, int *no_loco, int *vitesse)
+void CommandeTrain::demander_loco(int contact_a, int contact_b, int */*no_loco*/, int */*vitesse*/)
 {
     askLoco(contact_a, contact_b); //a refaire... pas adapte!
 }

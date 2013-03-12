@@ -17,11 +17,11 @@ public:
     Voie* getVoieSuivante(Voie* voieArrivee);
     void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante);
     void correctionPosition(qreal deltaX, qreal deltaY, Voie *v);
-    void correctionPositionLoco(qreal &x, qreal &y);
+    void correctionPositionLoco(qreal &, qreal &);
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 
-    virtual void mousePressEvent ( QGraphicsSceneMouseEvent * event );
+    virtual void mousePressEvent (QGraphicsSceneMouseEvent *);
 private:
     qreal rayonInterieur, rayonExterieur, angle, longueur, direction;
     QPointF* centreInterieur;

@@ -28,7 +28,7 @@ public:
     /** Constructeur de classe
       *
       */
-    explicit SimView(QWidget *parent =0);
+    explicit SimView(QWidget *);
 
     /** Permet d'ajouter une voie à la simulation.
       * \param v la voie à ajouter
@@ -152,7 +152,7 @@ public slots:
     /** pas implémenté.
       *
       */
-    void askLoco(int contactA, int contactB);
+    void askLoco(int, int);
 
     /** permet de changer la vitesse d'une loco.
       * \param numLoco le numéro de la loco à changer

@@ -102,7 +102,7 @@ Voie* VoieCourbe::getVoieSuivante(Voie *voieArrivee)
     return ordreLiaison.value((ordreLiaison.key(voieArrivee) +1) % 2);
 }
 
-void VoieCourbe::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante)
+void VoieCourbe::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF /*posActuelle*/, Voie *voieSuivante)
 {
     rayon = this->rayon;
 
@@ -184,7 +184,7 @@ void VoieCourbe::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
 }
 
 
-void VoieCourbe::correctionPositionLoco(qreal &x, qreal &y)
+void VoieCourbe::correctionPositionLoco(qreal &/*x*/, qreal &/*y*/)
 {
     //TODO
 }
@@ -196,7 +196,7 @@ QRectF VoieCourbe::boundingRect() const
                   QPointF(400.0, 400.0));
 }
 
-void VoieCourbe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VoieCourbe::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     painter->setPen(this->pen());
     painter->drawArc(QRectF(centre->x() - rayon, centre->y() - rayon, 2.0 * rayon, 2.0 * rayon),
@@ -211,7 +211,7 @@ void VoieCourbe::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
 */
 }
 
-void VoieCourbe::setEtat(int nouvelEtat)
+void VoieCourbe::setEtat(int /*nouvelEtat*/)
 {
     qDebug() << "Appel de setEtat sur une voie non variable.";
 }

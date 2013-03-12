@@ -12,15 +12,15 @@ public:
     VoieButtoir(qreal longueur);
     void calculerAnglesEtCoordonnees(Voie *v);
     void calculerPositionContact();
-    QList<QList<Voie*>*> explorationContactAContact(Voie *voieAppelante);
+    QList<QList<Voie*>*> explorationContactAContact(Voie *);
     qreal getLongueurAParcourir();
-    Voie* getVoieSuivante(Voie* voieArrivee);
-    void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante);
-    void correctionPosition(qreal deltaX, qreal deltaY, Voie *v);
-    void correctionPositionLoco(qreal &x, qreal &y);
+    Voie* getVoieSuivante(Voie*);
+    void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal, QPointF posActuelle, Voie *voieSuivante);
+    void correctionPosition(qreal deltaX, qreal deltaY, Voie *);
+    void correctionPositionLoco(qreal &, qreal &);
     QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    void setEtat(int nouvelEtat);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
+    void setEtat(int);
 
 private:
     qreal longueur;

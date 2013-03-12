@@ -137,7 +137,7 @@ Voie* VoieCroisement::getVoieSuivante(Voie *voieArrivee)
         return ordreLiaison.value(2);
 }
 
-void VoieCroisement::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante)
+void VoieCroisement::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal /*angleCumule*/, QPointF posActuelle, Voie *voieSuivante)
 {
     angle = 0.0;
     rayon = 0.0;
@@ -182,7 +182,7 @@ void VoieCroisement::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
 }
 
 
-void VoieCroisement::correctionPositionLoco(qreal &x, qreal &y)
+void VoieCroisement::correctionPositionLoco(qreal &/*x*/, qreal &/*y*/)
 {
     //TODO
 }
@@ -194,7 +194,7 @@ QRectF VoieCroisement::boundingRect() const
                   QPointF(400.0, 400.0));
 }
 
-void VoieCroisement::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VoieCroisement::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     painter->setPen(this->pen());
     painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
@@ -203,7 +203,7 @@ void VoieCroisement::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
 }
 
-void VoieCroisement::setEtat(int nouvelEtat)
+void VoieCroisement::setEtat(int /*nouvelEtat*/)
 {
     qDebug() << "Appel de setEtat sur une voie non variable.";
 }

@@ -24,7 +24,7 @@ VoieAiguillage::VoieAiguillage(qreal angle, qreal rayon, qreal longueur, qreal d
 }
 #include "ctrain_handler.h"
 
-void VoieAiguillage::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+void VoieAiguillage::mousePressEvent ( QGraphicsSceneMouseEvent * /*event*/ )
 {
     setEtat(1-this->etat);
 #ifdef MAQUETTE
@@ -323,7 +323,7 @@ void VoieAiguillage::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
 }
 
 
-void VoieAiguillage::correctionPositionLoco(qreal &x, qreal &y)
+void VoieAiguillage::correctionPositionLoco(qreal &/*x*/, qreal &/*y*/)
 {
     //TODO
 }
@@ -346,7 +346,7 @@ QRectF VoieAiguillage::boundingRect() const
     return rect;
 }
 
-void VoieAiguillage::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VoieAiguillage::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     QPen p1=this->pen();
     QPen p2=this->pen();
