@@ -61,6 +61,9 @@ void cmain()
   diriger_aiguillage(1,TOUT_DROIT,0);
 
 
+  char* tmp = getCommand();
+  afficher_message(tmp);
+
   // Demarre la loco
   mettre_vitesse_progressive(loco1.no, loco1.vitesse);
 

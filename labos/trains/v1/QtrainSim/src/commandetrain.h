@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 #include <general.h>
+#include <QMutex>
+#include <QWaitCondition>
 
 /**
   Toutes les methodes de cette classe doivent être reentrantes!!!!!!!
@@ -148,6 +150,11 @@ public:
 
     void afficher_message_loco(int numLoco,const char *message);
 
+    QString getCommand();
+
+public slots:
+    void commandSent(QString command);
+
 protected slots:
     void timerTrigger();
 
@@ -163,6 +170,12 @@ signals:
     void selectMaquette(QString maquette);
     void afficheMessage(QString message);
     void afficheMessageLoco(int numLoco,QString message);
+
+private:
+    QString command;
+    QWaitCondition* VarCond;
+    QMutex* mutex;
+    bool waitingOn;
 };
 
 #endif // COMMANDETRAIN_H

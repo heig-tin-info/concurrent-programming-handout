@@ -18,6 +18,10 @@ CommandeTrain *CommandeTrain::m_instance=0;
 
 CommandeTrain::CommandeTrain()
 {
+    command = "";
+    mutex = new QMutex();
+    VarCond = new QWaitCondition();
+    waitingOn=false;
 }
 
 CommandeTrain* CommandeTrain::getInstance()
@@ -180,3 +184,20 @@ void CommandeTrain::afficher_message_loco(int numLoco,const char *message)
     emit afficheMessageLoco(numLoco,mess);
 }
 
+void CommandeTrain::commandSent(QString command)
+{
+    this->command = command;
+    VarCond->wakeAll();
+}
+
+QString CommandeTrain::getCommand()
+{
+    mutex->lock();
+    waitingOn=true;
+    VarCond->wait(mutex);
+    QString tmp = command;
+    command = "";
+    waitingOn=false;
+    mutex->unlock();
+    return tmp;
+}

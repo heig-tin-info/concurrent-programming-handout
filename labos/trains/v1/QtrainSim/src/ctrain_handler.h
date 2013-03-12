@@ -161,7 +161,12 @@ void afficher_message(const char* message);
  */
 void afficher_message_loco(int numLoco,const char* message);
 
-
+/*
+ * Fonction bloquante permettant de recevoir la prochaine commande
+ * entree par l'utilisateur.
+ *   return : la commande entree par l'utilisateur
+ */
+const char* getCommand();
 
 #ifdef __cplusplus
 }
