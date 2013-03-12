@@ -12,6 +12,8 @@
 #include <QCoreApplication>
 #include <QDockWidget>
 #include <QCloseEvent>
+#include <QLineEdit>
+#include "commandetrain.h"
 
  void outcallback( const char* ptr, std::streamsize count, void* pTextBox )
  {
@@ -48,6 +50,13 @@ MainWindow::MainWindow(QWidget *parent) :
     dockGeneralConsole->setWidget(generalConsole);
     addDockWidget(Qt::BottomDockWidgetArea,dockGeneralConsole,Qt::Horizontal);
 
+    inputWidget = new QLineEdit("",this);
+    inputDock = new QDockWidget("Input", this);
+    inputDock->setWidget(inputWidget);
+    addDockWidget(Qt::TopDockWidgetArea, inputDock, Qt::Horizontal);
+    CONNECT(inputWidget, SIGNAL(returnPressed()), this, SLOT(onReturnPressed()));
+    CommandeTrain* ct = CommandeTrain::getInstance();
+    CONNECT(this, SIGNAL(commandSent(QString)), ct, SLOT(commandSent(QString)))
 
     myRedirector = new StdRedirector<>( std::cout, outcallback, generalConsole );
 
@@ -457,6 +466,8 @@ void MainWindow::createActions()
     viewLocoLogAct->setCheckable(true);
     CONNECT(viewLocoLogAct, SIGNAL(triggered()), this, SLOT(viewLocoLog()));
 
+    viewInputAct = inputDock->toggleViewAction();
+
     inertieAct = new QAction(tr("Inertia"), this);
     inertieAct->setShortcut(tr("Ctrl+I"));
     inertieAct->setStatusTip(tr("Enable inertia"));
@@ -489,6 +500,7 @@ void MainWindow::createMenus()
     view->addAction(viewLocoLogAct);
     view->addAction(viewContactNumberAct);
     view->addAction(viewAiguillageNumberAct);
+    view->addAction(viewInputAct);
 
     QMenu *settings=menuBar()->addMenu(tr("&Settings"));
     settings->addAction(inertieAct);
@@ -849,4 +861,10 @@ void MainWindow::selectionMaquette(QString maquette)
     }
     chargerMaquette(manager.fichierMaquette(maquette));
     semWaitMaquette.release();
+}
+
+void MainWindow::onReturnPressed()
+{
+    commandSent(inputWidget->text());
+    inputWidget->setText("");
 }

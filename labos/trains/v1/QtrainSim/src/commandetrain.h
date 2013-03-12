@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QString>
 #include <general.h>
+#include <QMutex>
+#include <QWaitCondition>
 
 /**
   Toutes les methodes de cette classe doivent être reentrantes!!!!!!!
@@ -63,7 +65,7 @@ public:
      * \param temps_alim     Temps l'alimentation minimal du bobinage de l'aiguillage.
      * Remarque : temps_alim n'a pas d'effet dans le simulateur.
      */
-    void diriger_aiguillage(int no_aiguillage, int direction, int temps_alim);
+    void diriger_aiguillage(int no_aiguillage, int direction, int);
 
     /**
      * Méthode bloquante, permettant d'attendre l'activation du contact voulu.
@@ -96,7 +98,7 @@ public:
      * Remarque : dans le simulateur, les phares sont toujours allumés.
      *            Cette méthode n'a pas d'effet.
      */
-    void mettre_fonction_loco(int no_loco, char etat);
+    void mettre_fonction_loco(int, char);
 
     /**
      * Inverse le sens d'une locomotive, en conservant ou retrouvant sa vitesse originale.
@@ -124,7 +126,7 @@ public:
      * Remarque : Cette méthode n'est pas implémentée dans le simulateur.
      *            Veuillez utiliser la méthode assigner_loco(...);
      */
-    void demander_loco(int contact_a, int contact_b, int *no_loco, int *vitesse);
+    void demander_loco(int contact_a, int contact_b, int *, int *);
 
 
     /**
@@ -148,6 +150,11 @@ public:
 
     void afficher_message_loco(int numLoco,const char *message);
 
+    QString getCommand();
+
+public slots:
+    void commandSent(QString command);
+
 protected slots:
     void timerTrigger();
 
@@ -163,6 +170,12 @@ signals:
     void selectMaquette(QString maquette);
     void afficheMessage(QString message);
     void afficheMessageLoco(int numLoco,QString message);
+
+private:
+    QString command;
+    QWaitCondition* VarCond;
+    QMutex* mutex;
+    bool waitingOn;
 };
 
 #endif // COMMANDETRAIN_H

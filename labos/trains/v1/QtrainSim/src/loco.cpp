@@ -12,7 +12,7 @@ QRectF panneauNumLoco::boundingRect() const
     return QRectF(- LARGEUR_LOCO * 0.4, - LARGEUR_LOCO * 0.4, LARGEUR_LOCO * 0.8, LARGEUR_LOCO * 0.8);
 }
 
-void panneauNumLoco::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void panneauNumLoco::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     painter->setPen(Qt::lightGray);
     painter->setBrush(Qt::lightGray);
@@ -109,7 +109,7 @@ QRectF Loco::boundingRect() const
                   LONGUEUR_LOCO + 2.0 * LONGUEUR_FEUX);
 }
 
-void Loco::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Loco::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
 
     painter->setBrush(*couleur);

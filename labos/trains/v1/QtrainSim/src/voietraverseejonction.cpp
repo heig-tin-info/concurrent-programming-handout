@@ -317,7 +317,7 @@ void VoieTraverseeJonction::correctionPosition(qreal deltaX, qreal deltaY, Voie 
 }
 
 
-void VoieTraverseeJonction::correctionPositionLoco(qreal &x, qreal &y)
+void VoieTraverseeJonction::correctionPositionLoco(qreal &/*x*/, qreal &/*y*/)
 {
     //TODO
 }
@@ -329,7 +329,7 @@ QRectF VoieTraverseeJonction::boundingRect() const
                   QPointF(400.0, 400.0));
 }
 
-void VoieTraverseeJonction::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VoieTraverseeJonction::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     QPen p1=this->pen();
     QPen p2=this->pen();
@@ -397,7 +397,7 @@ void VoieTraverseeJonction::paint(QPainter *painter, const QStyleOptionGraphicsI
     }
 }
 
-void VoieTraverseeJonction::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+void VoieTraverseeJonction::mousePressEvent ( QGraphicsSceneMouseEvent * /*event*/ )
 {
     setEtat(1-this->etat);
     update();

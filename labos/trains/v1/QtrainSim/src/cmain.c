@@ -1,6 +1,7 @@
 #include <pthread.h>
 #include "ctrain_handler.h"
 #include <errno.h>
+#include <stdio.h>
 
 //Engine definition
 typedef struct
@@ -69,11 +70,11 @@ void cmain()
     mettre_vitesse_progressive(loco1.no, loco1.vitesse);
     mettre_vitesse_progressive(loco2.no, loco2.vitesse);
 
-    // Attend que la loco passe sur les differents contacts de son parcours.
-    for (ct = 1; ct < NB_CONTACTS; ct++) {
-        attendre_contact(it1[ct]);
-        printf("Loco %d de vitesse %d a atteint le contact %d.\n", loco1.no, loco1.vitesse, ct);
-    }
+  const char* tmp = getCommand();
+  afficher_message(tmp);
+
+  // Demarre la loco
+  mettre_vitesse_progressive(loco1.no, loco1.vitesse);
 
     //Stop the engines
     arreter_loco(loco1.no);

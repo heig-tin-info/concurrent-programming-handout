@@ -120,7 +120,10 @@ public:
     QDockWidget *dockGeneralConsole;
     QTextEdit *generalConsole;
     StdRedirector<>* myRedirector;
+    StdRedirector<>* myOtherRedirector;
 
+    QDockWidget* inputDock;
+    QLineEdit* inputWidget;
 
     void readSettings();
     void writeSettings() const;
@@ -150,6 +153,7 @@ public:
     QAction *viewContactNumberAct;
     QAction *viewAiguillageNumberAct;
     QAction *viewLocoLogAct;
+    QAction *viewInputAct;
     QAction *inertieAct;
     QAction *emergencyStopAct;
     QAction *printAct;
@@ -162,6 +166,10 @@ public:
     QList<LocoCtrl *> locoCtrls;
 
     QLabel *statusLabel;
+
+signals:
+    void commandSent(QString command);
+
 private slots:
     void on_actionCharger_Maquette_triggered();
 
@@ -190,6 +198,7 @@ public slots:
     void afficherMessage(QString message);
     void afficherMessageLoco(int numLoco,QString message);
     void print();
+    void onReturnPressed();
 };
 
 #endif // MAINWINDOW_H

@@ -152,3 +152,9 @@ void afficher_message_loco(int numLoco,const char* message)
 {
     CMD_TRAIN->afficher_message_loco(numLoco,message);
 }
+
+const char *getCommand()
+{
+    const char* tmp = qPrintable(CMD_TRAIN->getCommand());
+    return tmp;
+}

@@ -39,7 +39,7 @@ void VoieButtoir::calculerPositionContact()
     this->contact->setPos(0.0,0.0);
 }
 
-QList<QList<Voie*>*> VoieButtoir::explorationContactAContact(Voie *voieAppelante)
+QList<QList<Voie*>*> VoieButtoir::explorationContactAContact(Voie */*voieAppelante*/)
 {
     QList<QList<Voie*>*> temp;
 
@@ -54,13 +54,13 @@ qreal VoieButtoir::getLongueurAParcourir()
     return longueur;
 }
 
-Voie* VoieButtoir::getVoieSuivante(Voie *voieArrivee)
+Voie* VoieButtoir::getVoieSuivante(Voie */*voieArrivee*/)
 {
     //A revoir!
     return NULL;
 }
 
-void VoieButtoir::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante)
+void VoieButtoir::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal /*angleCumule*/, QPointF posActuelle, Voie *voieSuivante)
 {
     angle = 0.0;
     rayon = 0.0;
@@ -95,7 +95,7 @@ void VoieButtoir::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angl
 
 
 
-void VoieButtoir::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
+void VoieButtoir::correctionPosition(qreal deltaX, qreal deltaY, Voie */*v*/)
 {
     //corrections...
     setPos(this->pos().x() + deltaX, this->pos().y() + deltaY);
@@ -105,7 +105,7 @@ void VoieButtoir::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
 }
 
 
-void VoieButtoir::correctionPositionLoco(qreal &x, qreal &y)
+void VoieButtoir::correctionPositionLoco(qreal &/*x*/, qreal &/*y*/)
 {
     //TODO
 }
@@ -126,7 +126,7 @@ QRectF VoieButtoir::boundingRect() const
 }
 
 
-void VoieButtoir::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VoieButtoir::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     painter->setPen(this->pen());
     QPointF* temp = new QPointF(- longueur * cos(getAngleRad(0)),
@@ -138,7 +138,7 @@ void VoieButtoir::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 }
 
-void VoieButtoir::setEtat(int nouvelEtat)
+void VoieButtoir::setEtat(int /*nouvelEtat*/)
 {
     qDebug() << "Appel de setEtat sur une voie non variable.";
 }

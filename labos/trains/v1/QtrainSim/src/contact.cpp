@@ -57,7 +57,7 @@ QRectF Contact::boundingRect() const
 
 #include <QGraphicsScene>
 
-void Contact::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Contact::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     if (waitingOn)
     {

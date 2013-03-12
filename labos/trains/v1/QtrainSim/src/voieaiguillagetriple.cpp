@@ -23,7 +23,7 @@ VoieAiguillageTriple::VoieAiguillageTriple(qreal angle, qreal rayon, qreal longu
     this->centreDroite = new QPointF();
 }
 
-void VoieAiguillageTriple::mousePressEvent ( QGraphicsSceneMouseEvent * event )
+void VoieAiguillageTriple::mousePressEvent ( QGraphicsSceneMouseEvent * /*event*/ )
 {
     setEtat(1 + this->etat);
     if(this->etat > 1)
@@ -329,7 +329,7 @@ void VoieAiguillageTriple::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, q
 }
 
 
-void VoieAiguillageTriple::correctionPositionLoco(qreal &x, qreal &y)
+void VoieAiguillageTriple::correctionPositionLoco(qreal &/*x*/, qreal &/*y*/)
 {
     //TODO
 }
@@ -418,7 +418,7 @@ QRectF VoieAiguillageTriple::boundingRect() const
     return rect;
 }
 
-void VoieAiguillageTriple::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VoieAiguillageTriple::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     QPen p1=this->pen();
     QPen p2=this->pen();

@@ -48,7 +48,7 @@ public:
     /** Méthode d'affichage. Appelée par QGraphicsView lors du dessin de la fenetre.
       * pas besoin de se préoccuper des parametres.
       */
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 
     /** retourne le numéro du contact.
       * \return le numéro du contact.

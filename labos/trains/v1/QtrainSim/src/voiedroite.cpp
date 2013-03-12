@@ -91,7 +91,7 @@ Voie* VoieDroite::getVoieSuivante(Voie *voieArrivee)
     return ordreLiaison.value((ordreLiaison.key(voieArrivee) +1) % 2);
 }
 
-void VoieDroite::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante)
+void VoieDroite::avanceLoco(qreal &dist, qreal &/*angle*/, qreal &/*rayon*/, qreal /*angleCumule*/, QPointF posActuelle, Voie *voieSuivante)
 {
     /*
     angle = 0.0;
@@ -189,7 +189,7 @@ QRectF VoieDroite::boundingRect() const
     return rect;
 }
 
-void VoieDroite::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void VoieDroite::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     painter->setPen(this->pen());
     painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
@@ -197,7 +197,7 @@ void VoieDroite::paint(QPainter *painter, const QStyleOptionGraphicsItem *option
     drawBoundingRect(painter);
 }
 
-void VoieDroite::setEtat(int nouvelEtat)
+void VoieDroite::setEtat(int /*nouvelEtat*/)
 {
     qDebug() << "Appel de setEtat sur une voie non variable.";
 }
