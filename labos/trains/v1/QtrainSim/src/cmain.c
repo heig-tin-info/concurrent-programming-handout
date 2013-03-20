@@ -70,9 +70,6 @@ void cmain()
     mettre_vitesse_progressive(loco1.no, loco1.vitesse);
     mettre_vitesse_progressive(loco2.no, loco2.vitesse);
 
-  const char* tmp = getCommand();
-  afficher_message(tmp);
-
   // Demarre la loco
   mettre_vitesse_progressive(loco1.no, loco1.vitesse);
 
