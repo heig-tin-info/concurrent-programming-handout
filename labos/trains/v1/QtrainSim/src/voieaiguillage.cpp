@@ -21,6 +21,7 @@ VoieAiguillage::VoieAiguillage(qreal angle, qreal rayon, qreal longueur, qreal d
     this->orientee = false;
     this->posee = false;
     this->centre = new QPointF();
+    this->lastDistDel = 1000.0;
 }
 #include "ctrain_handler.h"
 
@@ -280,6 +281,22 @@ void VoieAiguillage::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal a
                 }
             }
         }
+    }
+
+    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal x = posActuelle.x() - xLiaison;
+    qreal y = posActuelle.y() - yLiaison;
+    qreal distDel = sqrt((x*x) + (y*y));
+
+    if(lastDistDel > distDel)
+    {
+        lastDistDel = distDel;
+    }
+    else
+    {
+        lastDistDel = 1000.0;
+        dist = 0.1;
     }
 }
 

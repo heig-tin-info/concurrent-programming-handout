@@ -23,6 +23,7 @@ public:
     void setEtat(int);
 private:
     qreal longueur;
+    qreal lastDistDel;
 };
 
 #endif // VOIEDROITE_H

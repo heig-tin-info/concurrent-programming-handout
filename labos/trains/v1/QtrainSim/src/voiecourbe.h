@@ -15,7 +15,7 @@ public:
     QList<QList<Voie*>*> explorationContactAContact(Voie* voieAppelante);
     qreal getLongueurAParcourir();
     Voie* getVoieSuivante(Voie* voieArrivee);
-    void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF, Voie *voieSuivante);
+    void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante);
     void correctionPosition(qreal deltaX, qreal deltaY, Voie *v);
     void correctionPositionLoco(qreal &, qreal &);
     QRectF boundingRect() const;
@@ -26,6 +26,7 @@ private:
     QPointF* centre;
     qreal rayon, angle;
     int direction;
+    qreal lastDistDel;
 };
 
 #endif // VOIECOURBE_H

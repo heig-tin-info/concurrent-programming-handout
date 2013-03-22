@@ -15,6 +15,7 @@ VoieAiguillageEnroule::VoieAiguillageEnroule(qreal angle, qreal rayon, qreal lon
     this->posee = false;
     this->centreInterieur = new QPointF();
     this->centreExterieur = new QPointF();
+    this->lastDistDel = 1000.0;
 }
 
 void VoieAiguillageEnroule::mousePressEvent ( QGraphicsSceneMouseEvent * /*event*/ )
@@ -380,6 +381,23 @@ void VoieAiguillageEnroule::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, 
             }
         }
     }
+
+    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal x = posActuelle.x() - xLiaison;
+    qreal y = posActuelle.y() - yLiaison;
+    qreal distDel = sqrt((x*x) + (y*y));
+
+    if(lastDistDel > distDel)
+    {
+        lastDistDel = distDel;
+    }
+    else
+    {
+        dist = 0.1;
+    }
+    if(dist > 0.0)
+        lastDistDel = 1000.0;
 }
 
 void VoieAiguillageEnroule::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
@@ -391,7 +409,7 @@ void VoieAiguillageEnroule::correctionPosition(qreal deltaX, qreal deltaY, Voie 
         coordonneesLiaison[1]->setX(coordonneesLiaison[1]->x() - deltaX);
         coordonneesLiaison[1]->setY(coordonneesLiaison[1]->y() - deltaY);
         coordonneesLiaison[2]->setX(coordonneesLiaison[2]->x() - deltaX);
-        coordonneesLiaison[2]->setY(coordonneesLiaison[2]->y() - deltaY);        
+        coordonneesLiaison[2]->setY(coordonneesLiaison[2]->y() - deltaY);
     }
     else
     {

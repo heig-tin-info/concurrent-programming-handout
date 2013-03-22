@@ -45,7 +45,7 @@
 //! indication du nombre d'images à calculer par seconde.
 //! en cas de fort ralentissement, baisser cette valeur.
 //! Valeurs conseillées : 30-60.
-#define FRAME_RATE 60
+#define FRAME_RATE 30
 
 //! permet d'ajuster la vitesse des locos. Ne pas changer.
 #define FACTEUR_VITESSE 0.05

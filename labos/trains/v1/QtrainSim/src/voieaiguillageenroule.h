@@ -26,6 +26,7 @@ private:
     qreal rayonInterieur, rayonExterieur, angle, longueur, direction;
     QPointF* centreInterieur;
     QPointF* centreExterieur;
+    qreal lastDistDel;
 
 };
 

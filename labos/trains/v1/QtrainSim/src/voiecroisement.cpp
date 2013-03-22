@@ -8,6 +8,7 @@ VoieCroisement::VoieCroisement(qreal angle, qreal longueur)
     this->longueur = longueur;
     this->orientee = false;
     this->posee = false;
+    this->lastDistDel = 1000.0;
 }
 
 void VoieCroisement::calculerAnglesEtCoordonnees(Voie *v)
@@ -142,20 +143,31 @@ void VoieCroisement::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal /
     angle = 0.0;
     rayon = 0.0;
 
-    if(sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) *
-            (posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) +
-            (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()) *
-            (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y())) < dist)
+    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal x = posActuelle.x() - xLiaison;
+    qreal y = posActuelle.y() - yLiaison;
+    qreal distDel = sqrt((x*x) + (y*y));
+
+    if(distDel < dist)
     {
-        dist -= sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) *
-                     (posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) +
-                     (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()) *
-                     (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()));
+        dist -= distDel;
     }
     else
     {
         dist = 0.0;
     }
+
+    if(lastDistDel > distDel)
+    {
+        lastDistDel = distDel;
+    }
+    else
+    {
+        dist = 0.1;
+    }
+    if(dist > 0.0)
+        lastDistDel = 1000.0;
 }
 
 void VoieCroisement::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)

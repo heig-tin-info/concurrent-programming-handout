@@ -10,6 +10,7 @@ VoieCourbe::VoieCourbe(qreal angle, qreal rayon, int direction)
     this->centre = new QPointF();
     this->orientee = false;
     this->posee = false;
+    this->lastDistDel = 1000.0;
 }
 
 void VoieCourbe::calculerAnglesEtCoordonnees(Voie *v)
@@ -102,7 +103,7 @@ Voie* VoieCourbe::getVoieSuivante(Voie *voieArrivee)
     return ordreLiaison.value((ordreLiaison.key(voieArrivee) +1) % 2);
 }
 
-void VoieCourbe::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF /*posActuelle*/, Voie *voieSuivante)
+void VoieCourbe::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante)
 {
     rayon = this->rayon;
 
@@ -145,6 +146,23 @@ void VoieCourbe::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angle
             angle = angleAParcourir;
         }
     }
+
+    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal x = posActuelle.x() - xLiaison;
+    qreal y = posActuelle.y() - yLiaison;
+    qreal distDel = sqrt((x*x) + (y*y));
+
+    if(lastDistDel > distDel)
+    {
+        lastDistDel = distDel;
+    }
+    else
+    {
+        dist = 0.1;
+    }
+    if(dist > 0.0)
+        lastDistDel = 1000.0;
 }
 
 void VoieCourbe::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)

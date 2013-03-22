@@ -210,6 +210,8 @@ public:
     virtual void correctionPositionLoco(qreal &x, qreal &y)=0;
 
     void setIdVoie(int id);
+
+    int getIdVoie();
 protected:
     QMap<int, Voie*> ordreLiaison;
     QMap<int, QPointF*> coordonneesLiaison;

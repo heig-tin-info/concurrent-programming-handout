@@ -7,6 +7,7 @@ VoieDroite::VoieDroite(qreal longueur)
     this->longueur = longueur;
     this->orientee = false;
     this->posee = false;
+    this->lastDistDel = 1000.0;
 }
 
 void VoieDroite::calculerAnglesEtCoordonnees(Voie *v)
@@ -93,27 +94,6 @@ Voie* VoieDroite::getVoieSuivante(Voie *voieArrivee)
 
 void VoieDroite::avanceLoco(qreal &dist, qreal &/*angle*/, qreal &/*rayon*/, qreal /*angleCumule*/, QPointF posActuelle, Voie *voieSuivante)
 {
-    /*
-    angle = 0.0;
-    rayon = 0.0;
-
-    if(sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) *
-            (posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) +
-            (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()) *
-            (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y())) < dist)
-    {
-        dist -= sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) *
-                     (posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) +
-                     (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()) *
-                     (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()));
-    }
-    else
-    {
-        dist = 0.0;
-    }
-    */
-
-
     qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
     qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
     qreal x = posActuelle.x() - xLiaison;
@@ -124,6 +104,18 @@ void VoieDroite::avanceLoco(qreal &dist, qreal &/*angle*/, qreal &/*rayon*/, qre
         dist -= distDel;
     else
         dist = 0.0;
+
+
+    if(lastDistDel > distDel)
+    {
+        lastDistDel = distDel;
+    }
+    else
+    {
+        dist = 0.1;
+    }
+    if(dist > 0.0)
+        lastDistDel = 1000.0;
 }
 
 void VoieDroite::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)

@@ -25,6 +25,7 @@ private:
     qreal rayonGauche, rayonDroite, angle, longueur;
     QPointF* centreGauche;
     QPointF* centreDroite;
+    qreal lastDistDel;
 };
 
 #endif // VOIEAIGUILLAGETRIPLE_H
