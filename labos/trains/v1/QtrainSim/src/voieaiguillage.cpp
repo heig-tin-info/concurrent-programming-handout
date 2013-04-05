@@ -295,8 +295,11 @@ void VoieAiguillage::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal a
     }
     else
     {
-        lastDistDel = 1000.0;
         dist = 0.1;
+    }
+    if(dist > 0.0)
+    {
+        lastDistDel = 1000.0;
     }
 }
 
