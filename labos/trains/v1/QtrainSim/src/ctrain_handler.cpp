@@ -155,6 +155,8 @@ void afficher_message_loco(int numLoco,const char* message)
 
 const char *getCommand()
 {
-    const char* tmp = qPrintable(CMD_TRAIN->getCommand());
-    return tmp;
+    static QByteArray cmd;
+
+    cmd = CMD_TRAIN->getCommand().toLocal8Bit();
+    return cmd.data();
 }
