@@ -12,6 +12,7 @@ VoieTraverseeJonction::VoieTraverseeJonction(qreal angle, qreal rayon, qreal lon
     this->posee = false;
     this->centre03 = new QPointF();
     this->centre12 = new QPointF();
+    this->lastDistDel = 1000.0;
 }
 
 void VoieTraverseeJonction::setNumVoieVariable(int numVoieVariable)
@@ -250,6 +251,23 @@ void VoieTraverseeJonction::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, 
             }
         }
     }
+
+    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal x = posActuelle.x() - xLiaison;
+    qreal y = posActuelle.y() - yLiaison;
+    qreal distDel = sqrt((x*x) + (y*y));
+
+    if(lastDistDel > distDel)
+    {
+        lastDistDel = distDel;
+    }
+    else
+    {
+        dist = 0.1;
+    }
+    if(dist > 0.0)
+        lastDistDel = 1000.0;
 }
 
 void VoieTraverseeJonction::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)

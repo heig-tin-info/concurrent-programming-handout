@@ -26,6 +26,7 @@ public:
 private:
     qreal rayon, angle, longueur, direction;
     QPointF* centre;
+    qreal lastDistDel;
 };
 
 #endif // VOIEAIGUILLAGE_H

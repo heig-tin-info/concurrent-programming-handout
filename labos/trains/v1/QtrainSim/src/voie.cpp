@@ -220,6 +220,11 @@ void Voie::setIdVoie(int id)
 //    this->setToolTip(QString("Voie numéro: %1").arg(idVoie));
 }
 
+int Voie::getIdVoie()
+{
+    return idVoie;
+}
+
 /*
 #include "commandetrain.h"
 void Voie::mousePressEvent ( QGraphicsSceneMouseEvent * event )

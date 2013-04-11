@@ -23,6 +23,7 @@ public:
     void setEtat(int);
 private:
     qreal angle, longueur;
+    qreal lastDistDel;
 };
 
 #endif // VOIECROISEMENT_H

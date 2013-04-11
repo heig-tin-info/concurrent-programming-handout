@@ -21,6 +21,7 @@ VoieAiguillageTriple::VoieAiguillageTriple(qreal angle, qreal rayon, qreal longu
     this->posee = false;
     this->centreGauche = new QPointF();
     this->centreDroite = new QPointF();
+    this->lastDistDel = 1000.0;
 }
 
 void VoieAiguillageTriple::mousePressEvent ( QGraphicsSceneMouseEvent * /*event*/ )
@@ -326,6 +327,23 @@ void VoieAiguillageTriple::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, q
             }
         }
     }
+
+    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal x = posActuelle.x() - xLiaison;
+    qreal y = posActuelle.y() - yLiaison;
+    qreal distDel = sqrt((x*x) + (y*y));
+
+    if(lastDistDel > distDel)
+    {
+        lastDistDel = distDel;
+    }
+    else
+    {
+        dist = 0.1;
+    }
+    if(dist > 0.0)
+        lastDistDel = 1000.0;
 }
 
 

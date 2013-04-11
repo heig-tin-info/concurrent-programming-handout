@@ -28,6 +28,7 @@ private:
     qreal rayon03, rayon12, angle, longueur;
     QPointF* centre03;
     QPointF* centre12;
+    qreal lastDistDel;
 };
 
 #endif // VOIETRAVERSEEJONCTION_H
