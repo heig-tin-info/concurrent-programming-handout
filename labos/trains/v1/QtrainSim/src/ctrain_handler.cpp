@@ -160,3 +160,10 @@ const char *getCommand()
     cmd = CMD_TRAIN->getCommand().toLocal8Bit();
     return cmd.data();
 }
+
+void getCommandInArray(char *commande, int taille)
+{
+    QByteArray cmd(CMD_TRAIN->getCommand().toLocal8Bit());
+    strncpy(commande, cmd.data(), taille - 1);
+    commande[taille - 1] = '\0';
+}

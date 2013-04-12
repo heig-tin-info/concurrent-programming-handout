@@ -168,6 +168,14 @@ void afficher_message_loco(int numLoco,const char* message);
  */
 const char* getCommand();
 
+/*
+ * Copie le résultat de la commande saisie par l'utilisateur dans le
+ * tableau passé en paramètre
+ *   commande : tableau de caractères
+ *   taille : taille du tableau
+ */
+void getCommandInArray(char *commande, int taille);
+
 #ifdef __cplusplus
 }
 #endif
