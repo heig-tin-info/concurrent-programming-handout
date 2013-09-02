@@ -346,12 +346,12 @@ void SimView::setLoco(int contactA, int contactB, int numLoco, int vitesseLoco)
 
     if(l->getVoieSuivante() == l->getVoie()->getVoieVoisineDOrdre(0))
     {
-        l->rotate(- v->getAngleDeg(0));
+        l->setRotation(l->rotation() - v->getAngleDeg(0));
         l->setAngleCumule(l->getAngleCumule() + v->getAngleDeg(0));
     }
     else
     {
-        l->rotate((- v->getAngleDeg(0) - 180.0) < 0.0 ? (- v->getAngleDeg(0) + 180.0) : (- v->getAngleDeg(0) - 180.0));
+        l->setRotation(l->rotation() + (- v->getAngleDeg(0) - 180.0) < 0.0 ? (- v->getAngleDeg(0) + 180.0) : (- v->getAngleDeg(0) - 180.0));
         l->setAngleCumule(l->getAngleCumule() + ((v->getAngleDeg(0) - 180.0) < 0.0 ? (v->getAngleDeg(0) + 180.0) : (v->getAngleDeg(0) - 180.0)));
     }
 }

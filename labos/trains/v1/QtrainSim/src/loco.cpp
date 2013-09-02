@@ -45,7 +45,7 @@ Loco::Loco(int numLoco, QObject *parent) :
     this->numLoco2->setParentItem(this);
     this->numLoco2->setVisible(true);
     this->numLoco2->setPos(- LONGUEUR_LOCO * 0.3, 0.0);
-    this->numLoco2->rotate(180.0);
+    this->numLoco2->setRotation(this->numLoco2->rotation() + 180.0);
     this->vitesse = 0;
     this->vitesseFuture =0;
     this->active = true;
@@ -280,7 +280,7 @@ void Loco::avancerCourbe(qreal angle, qreal rayon)
     qreal angleAbs = angle < 0.0 ? -angle : angle;
     qreal dist = rayon * tan(angleAbs * PI / 360.0);
     avancerDroit(dist);
-    rotate(angle);
+    setRotation(rotation() + angle);
     avancerDroit(dist);
 }
 
@@ -323,7 +323,7 @@ void Loco::inverserSens()
     }
     else
     {
-        this->rotate(180.0);
+        this->setRotation(this->rotation() + 180.0);
         Voie* viensDe = voieSuivante;
         voieSuivante = voieActuelle->getVoieSuivante(viensDe);
         this->angleCumule -= 180.0;
@@ -335,9 +335,9 @@ void Loco::corrigerAngle(qreal nouvelAngle)
     QPointF avantLoco = mapToScene(LONGUEUR_LOCO / 2.0, 0.0);
     qreal angleReel = atan2(- avantLoco.y() + pos().y(), avantLoco.x() - pos().x()) * 180.0 / PI;
 
-    rotate(angleReel);
+    setRotation(rotation() + angleReel);
 
-    rotate(- nouvelAngle);
+    setRotation( rotation() - nouvelAngle);
 
     this->angleCumule = nouvelAngle;
 }
@@ -357,7 +357,7 @@ void Loco::voieVariableModifiee(Voie *v)
     {
         deraille = true;
         vitesse = vitesseFuture = 0;
-        rotate(20.0);
+        setRotation(rotation()+20.0);
     }
 }
 
@@ -369,7 +369,7 @@ void Loco::adapterVitesse()
             vitesse--;
         if(vitesse ==0)
         {
-            this->rotate(180.0);
+            this->setRotation(rotation()+180.0);
             Voie* viensDe = voieSuivante;
             voieSuivante = voieActuelle->getVoieSuivante(viensDe);
             this->angleCumule -= 180.0;

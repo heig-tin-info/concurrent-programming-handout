@@ -2,7 +2,7 @@
 # Project created by QtCreator 2011-07-05T10:48:02
 # -------------------------------------------------
 QT += core \
-    gui
+    gui widgets printsupport multimedia
 
 # DEFINES += DRAW_BOUNDINGRECT
 TARGET = QtrainSim

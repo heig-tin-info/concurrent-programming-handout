@@ -33,8 +33,6 @@ void emergency_stop()
 //Main function
 void cmain()
 {
-    //Itinary counter
-    int ct;
 
     //Engine 1 settings
     loco1.no = 1;
@@ -72,7 +70,7 @@ void cmain()
 
   // Demarre la loco
   mettre_vitesse_progressive(loco1.no, loco1.vitesse);
-
+return;
     //Stop the engines
     arreter_loco(loco1.no);
     arreter_loco(loco2.no);
