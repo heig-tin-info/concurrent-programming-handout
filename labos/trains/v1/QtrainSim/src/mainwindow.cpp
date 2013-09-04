@@ -36,11 +36,6 @@
 #include <QMessageBox>
 
 
-#ifdef Q_OS_MAC
-#define DATADIR QCoreApplication::applicationDirPath() + "/../../../../"
-#else
-#define DATADIR QCoreApplication::applicationDirPath() + "/../"
-#endif
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent)
@@ -64,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QFile fichierInfosVoies(DATADIR+"/infosVoies.txt");
     if (!fichierInfosVoies.open(QIODevice::ReadOnly))
     {
-        QMessageBox::critical(0,"Erreur",QString("Le fichier de description des voies ne peut être trouvé. Vérifiez qu'il est bien présent dans le répertoire parent de l'exécutable.\n Le nom du fichier est: %1").arg(fichierInfosVoies.fileName()));
+        QMessageBox::critical(0,"Erreur",QString("Le fichier de description des voies ne peut être trouvé. Vérifiez qu'il est bien présent dans le répertoire parent de l'exécutable.\n Le nom du fichier est: %1.\nAvez-vous effectué un \"make install\"?").arg(fichierInfosVoies.fileName()));
         exit(0);
     }
     QTextStream lecture(&fichierInfosVoies);

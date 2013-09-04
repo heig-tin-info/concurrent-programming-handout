@@ -9,6 +9,17 @@ TARGET = QtrainSim
 TEMPLATE = app
 CONFIG += debug
 #CONFIG += MAQUETTE
+DESTDIR = dist
+
+#Install the maquettes files
+maquettes.path  =  $$OUT_PWD/dist/data/Maquettes
+maquettes.files =  data/Maquettes/*
+INSTALLS    += maquettes
+
+#Install the file containing the infos about tracks
+infos.path  =  $$OUT_PWD/dist/data
+infos.files =  data/infosVoies.txt
+INSTALLS    += infos
 
 MAQUETTE: DEFINES += MAQUETTE
 
@@ -38,7 +49,7 @@ macx {
     OBJECTS_DIR = tmp/mac/obj
     RCC_DIR = tmp/mac/rcc
 }
-DESTDIR = bin
+
 INCLUDEPATH += src
 SOURCES += src/main.cpp \
     src/mainwindow.cpp \

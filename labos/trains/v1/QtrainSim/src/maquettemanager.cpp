@@ -1,15 +1,11 @@
 #include "maquettemanager.h"
+#include "general.h"
 
 #include <QStringList>
 #include <QDir>
 #include <QApplication>
 
 
-#ifdef Q_OS_MAC
-#define MAQUETTE_DIR "/../../../../Maquettes"
-#else
-#define MAQUETTE_DIR "/../Maquettes"
-#endif
 
 QList<MaquetteDesc*> MaquetteManager::listeMaquettes() const
 {
@@ -52,13 +48,13 @@ QString MaquetteManager::fichierMaquette(QString nomMaquette)
 
 QString MaquetteManager::dossierMaquette()
 {
-    QDir dir(QApplication::applicationDirPath()+MAQUETTE_DIR);
+    QDir dir(MAQUETTE_DIR);
     return dir.absolutePath();
 }
 
 bool MaquetteManager::chargerListeMaquettes()
 {
-    QDir dir(QApplication::applicationDirPath()+MAQUETTE_DIR);
+    QDir dir(MAQUETTE_DIR);
     dir.setFilter(QDir::Files);
 
     QFileInfoList list = dir.entryInfoList();

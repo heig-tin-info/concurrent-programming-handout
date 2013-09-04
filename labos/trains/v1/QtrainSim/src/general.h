@@ -88,4 +88,8 @@
 #define ALLUME 1
 
 
+#define DATADIR QCoreApplication::applicationDirPath()+"/data"
+
+#define MAQUETTE_DIR DATADIR+"/Maquettes"
+
 #endif // GENERAL_H

@@ -206,7 +206,11 @@ Voie* Voie::getVoieVoisineDOrdre(int n)
     return ordreLiaison.value(n);
 }
 
-void Voie::drawBoundingRect(QPainter *painter)
+void Voie::drawBoundingRect(QPainter *
+                            #ifdef DRAW_BOUNDINGRECT
+                            painter
+                            #endif
+                            )
 {
 #ifdef DRAW_BOUNDINGRECT
     painter->setPen(Qt::DashLine);
