@@ -122,7 +122,7 @@ void CommandeTrain::attendre_contact(int no_contact)
     Contact *c=simView->getContact(no_contact);
     if (c==0)
     {
-        QMessageBox::warning(0,"Error",QString("Attention, le numéro de contact %1 n'est pas valide").arg(no_contact));
+        QMessageBox::warning(0,"Error",QString("Attention, le numÃ©ro de contact %1 n'est pas valide").arg(no_contact));
     }
     else
         c->attendContact();

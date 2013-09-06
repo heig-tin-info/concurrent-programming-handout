@@ -4,7 +4,7 @@
 /** Constructeur de classe Contact.
   * @param numContact, le numero du contact.
   * @param numVoiePorteuse, le numero de la voie porteuse du contact.
-  * @param parent, l'objet creant le contact (pas utilisé pour le moment).
+  * @param parent, l'objet creant le contact (pas utilisÃ© pour le moment).
   */
 
 Contact::Contact(int numContact, int numVoiePorteuse, QObject *parent) :

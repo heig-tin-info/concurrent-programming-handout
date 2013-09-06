@@ -129,7 +129,7 @@ public:
     void writeSettings() const;
 
     /** Charge et construit la maquette dont le nom est filename
-      * \param filename le nom de la maquette à charger.
+      * \param filename le nom de la maquette Ã  charger.
       */
     void chargerMaquette(QString filename);
 

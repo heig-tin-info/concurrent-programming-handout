@@ -8,7 +8,7 @@
 #include <QWaitCondition>
 
 /**
-  Toutes les methodes de cette classe doivent être reentrantes!!!!!!!
+  Toutes les methodes de cette classe doivent Ãªtre reentrantes!!!!!!!
   */
 class CommandeTrain : public QObject
 {
@@ -52,9 +52,9 @@ public:
     /**
      * Ajoute une loco dans la simulation.
      * Remarque : n'a pas d'effet sur la maquette reelle.
-     * Remarque bis : Cette méthode est appelée automatiquement lors de l'appel de
+     * Remarque bis : Cette mÃ©thode est appelÃ©e automatiquement lors de l'appel de
      *                assigner_loco(...);
-     * \param no_loco Numéro de la locomotive.
+     * \param no_loco NumÃ©ro de la locomotive.
      */
     void ajouter_loco(int no_loco);
 
@@ -68,15 +68,15 @@ public:
     void diriger_aiguillage(int no_aiguillage, int direction, int);
 
     /**
-     * Méthode bloquante, permettant d'attendre l'activation du contact voulu.
-     * Remarque : le contact peut être activé par n'importe quelle locomotive.
-     * \param no_contact  Numéro du contact dont on attend l'activation.
+     * MÃ©thode bloquante, permettant d'attendre l'activation du contact voulu.
+     * Remarque : le contact peut Ãªtre activÃ© par n'importe quelle locomotive.
+     * \param no_contact  NumÃ©ro du contact dont on attend l'activation.
      */
     void attendre_contact(int no_contact);
 
     /**
-     * Arrete une locomotive (met sa vitesse à  VITESSE_NULLE).
-     * \param no_loco  Numéro de la loco à  stopper.
+     * Arrete une locomotive (met sa vitesse Ã   VITESSE_NULLE).
+     * \param no_loco  NumÃ©ro de la loco Ã   stopper.
      */
     void arreter_loco(int no_loco);
 
@@ -87,7 +87,7 @@ public:
      *
      * Remarque : Dans le simulateur cette procedure agit comme la
      *            fonction "Mettre_Vitesse_Loco". Le comportement
-     *            dépend de l'option "Inertie" dans le menu ad hoc.
+     *            dÃ©pend de l'option "Inertie" dans le menu ad hoc.
      */
     void mettre_vitesse_progressive(int no_loco, int vitesse_future);
 
@@ -95,53 +95,53 @@ public:
      * Permettre d'allumer ou d'eteindre les phares de la locomotive.
      * \param no_loco  No de la loco a controler.
      * \param etat     Nouvel etat des phares. (ETEINT ou ALLUME)
-     * Remarque : dans le simulateur, les phares sont toujours allumés.
-     *            Cette méthode n'a pas d'effet.
+     * Remarque : dans le simulateur, les phares sont toujours allumÃ©s.
+     *            Cette mÃ©thode n'a pas d'effet.
      */
     void mettre_fonction_loco(int, char);
 
     /**
      * Inverse le sens d'une locomotive, en conservant ou retrouvant sa vitesse originale.
-     * \param no_loco  Numéro de la loco à inverser.
-     * Remarque : Le comportement de la loco dépend du paramètre "Inertie"
+     * \param no_loco  NumÃ©ro de la loco Ã  inverser.
+     * Remarque : Le comportement de la loco dÃ©pend du paramÃ¨tre "Inertie"
      *            dans le menu ad hoc.
      */
     void inverser_sens_loco(int no_loco);
 
     /**
      * Change la vitesse d'une loco.
-     * \param no_loco  No de la loco à contrôler.
+     * \param no_loco  No de la loco Ã  contrÃ´ler.
      * \param vitesse  Nouvelle vitesse.
      */
     void mettre_vitesse_loco(int no_loco, int vitesse);
 
     /**
-     * Indique au simulateur de demander une loco à l'utilisateur. L'utilisateur
+     * Indique au simulateur de demander une loco Ã  l'utilisateur. L'utilisateur
      * entre le numero et la vitesse de la loco. Celle-ci est ensuite placee entre
      * les contacts "contact_a" et "contact_b".
      * \param contact_a    Contact vers lequel la loco va se diriger.
-     * \param contact_b    Contact à l'arriere de la loco.
+     * \param contact_b    Contact Ã  l'arriere de la loco.
      * \param numero_loco  Numero de loco choisi par l'utilisateur.
      * \param vitesse      Vitesse choisie par l'utilisateur.
-     * Remarque : Cette méthode n'est pas implémentée dans le simulateur.
-     *            Veuillez utiliser la méthode assigner_loco(...);
+     * Remarque : Cette mÃ©thode n'est pas implÃ©mentÃ©e dans le simulateur.
+     *            Veuillez utiliser la mÃ©thode assigner_loco(...);
      */
     void demander_loco(int contact_a, int contact_b, int *, int *);
 
 
     /**
-     * Indique au simulateur que la loco d'identifiant no_loco dont être utilisée.
-     * La méthode indique également entre quels contacts elle se trouve, ainsi que sa vitesse.
+     * Indique au simulateur que la loco d'identifiant no_loco dont Ãªtre utilisÃ©e.
+     * La mÃ©thode indique Ã©galement entre quels contacts elle se trouve, ainsi que sa vitesse.
      * \param contact_a  Identifiant du contact vers lequel la loco va se diriger.
-     * \param contact_b  Identifiant du contact à l'arrière de la loco.
-     * \param no_loco    Numéro de la loco choisie.
-     * \param vitesse    Vitesse à laquelle la loco devra se déplacer.
+     * \param contact_b  Identifiant du contact Ã  l'arriÃ¨re de la loco.
+     * \param no_loco    NumÃ©ro de la loco choisie.
+     * \param vitesse    Vitesse Ã  laquelle la loco devra se dÃ©placer.
      */
     void assigner_loco(int contact_a,int contact_b,int no_loco,int vitesse);
 
     /**
-      * Sélectionne la maquette à  utiliser.
-      * Cette fonction termine l'application si la maquette n'est pas trouvée.
+      * SÃ©lectionne la maquette Ã   utiliser.
+      * Cette fonction termine l'application si la maquette n'est pas trouvÃ©e.
       * \param maquette Nom de la maquette.
       */
     void selection_maquette(QString maquette);

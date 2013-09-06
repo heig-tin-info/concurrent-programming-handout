@@ -2,7 +2,7 @@
 #define GENERAL_H
 
 /**
-    Définitions de constantes.
+    DÃ©finitions de constantes.
 
     /!\ Lors de modifications, il faut recompiler l'entier du programme.
         Une simple compilation ne suffit pas.
@@ -19,15 +19,15 @@
 #define LONGUEUR_FEUX 30.0
 #define DIRECTION_LOCO_GAUCHE 1
 #define DIRECTION_LOCO_DROITE -1
-//! Inertie des locos. indiqué en millièmes de secondes entre chaque changement
+//! Inertie des locos. indiquÃ© en milliÃ¨mes de secondes entre chaque changement
 //! de la valeur de vitesse de 1.
 #define INERTIE_LOCO 100
 
-//! NE PAS CHANGER!!! nécessaire au calcul des poses de voies.
+//! NE PAS CHANGER!!! nÃ©cessaire au calcul des poses de voies.
 #define DIRECTION_VOIE_GAUCHE 1.0
 #define DIRECTION_VOIE_DROITE -1.0
 
-//! taille, couleur des contacts, et distance entre le contact et son numéro.
+//! taille, couleur des contacts, et distance entre le contact et son numÃ©ro.
 #define TAILLE_CONTACT 15.0
 #define COULEUR_CONTACT Qt::blue
 #define COULEUR_CONTACT_WAITING Qt::green
@@ -35,16 +35,16 @@
 #define FONTE_CONTACT QFont("Verdana", 30, 99)
 #define COULEUR_FONTE_CONTACT QColor(255,127,0)
 
-//! indications de l'ordre d'affichage des éléments.
-//! (les objets ayant de grandes valeurs de zval sont affichés dessus)
+//! indications de l'ordre d'affichage des Ã©lÃ©ments.
+//! (les objets ayant de grandes valeurs de zval sont affichÃ©s dessus)
 #define ZVAL_VOIE 1.0
 #define ZVAL_CONTACT 2.0
 #define ZVAL_EXPLOSION 4
 #define ZVAL_LOCO 3.0
 
-//! indication du nombre d'images à calculer par seconde.
+//! indication du nombre d'images Ã  calculer par seconde.
 //! en cas de fort ralentissement, baisser cette valeur.
-//! Valeurs conseillées : 30-60.
+//! Valeurs conseillÃ©es : 30-60.
 #define FRAME_RATE 60
 
 //! permet d'ajuster la vitesse des locos. Ne pas changer.

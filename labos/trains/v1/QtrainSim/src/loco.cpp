@@ -228,7 +228,7 @@ void Loco::avanceDUneVoie()
         voieActuelle->getContact()->active(); //pas ideal... A revoir.
         if (TrainSimSettings::getInstance()->getViewLocoLog())
         {
-            this->controller->console->append(QString("# Passe le contact numéro %1").arg(voieActuelle->getContact()->getNumContact()));
+            this->controller->console->append(QString("# Passe le contact numÃ©ro %1").arg(voieActuelle->getContact()->getNumContact()));
             std::cout << "Loco " << this->numLoco1->getNumLoco() << " : Passe le contact " << voieActuelle->getContact()->getNumContact() << std::endl;
         }
     }
@@ -347,7 +347,7 @@ void Loco::locoSurSegment(Segment *s)
     if(s == segmentActuel)
     {
         //Alerte collision!!!
-        //l'alerte proximité a été implémentée de manière differente...
+        //l'alerte proximitÃ© a Ã©tÃ© implÃ©mentÃ©e de maniÃ¨re differente...
     }
 }
 

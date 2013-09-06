@@ -32,7 +32,7 @@ public:
       */
     Voie* getPrecedentMilieu();
 
-    /** permet de vérifier si le segment relie les deux contacts passés en paramètre.
+    /** permet de vÃ©rifier si le segment relie les deux contacts passÃ©s en paramÃ¨tre.
       * \param c1 le premier contact.
       * \param c2 le second contact.
       * \return vrai si le segment relie c1 et c2, faux sinon.

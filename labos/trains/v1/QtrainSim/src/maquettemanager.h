@@ -19,7 +19,7 @@ public:
 /**
  * Gestionnaire des fichiers Maquette.
  * Il permet de charger la liste des maquettes disponibles, et de
- * récupérer le nom de fichier d'une maquette désignée par son nom.
+ * rÃ©cupÃ©rer le nom de fichier d'une maquette dÃ©signÃ©e par son nom.
  */
 class MaquetteManager
 {

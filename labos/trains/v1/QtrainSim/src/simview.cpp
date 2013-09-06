@@ -327,7 +327,7 @@ void SimView::setLoco(int contactA, int contactB, int numLoco, int vitesseLoco)
 
     if (s==0)
     {
-        QMessageBox::warning(this,"Error","Les numéros de contact entre lesquels se trouve la loco ne sont pas valides. Ils doivent être directement voisins.");
+        QMessageBox::warning(this,"Error","Les numÃ©ros de contact entre lesquels se trouve la loco ne sont pas valides. Ils doivent Ãªtre directement voisins.");
         return;
     }
 
@@ -373,7 +373,7 @@ void SimView::reverseLoco(int numLoco)
 
 void SimView::setVitesseProgressiveLoco(int numLoco, int vitesseLoco)
 {
-    this->Locos.value(numLoco)->setVitesse(vitesseLoco); //similaire à setVitesseLoco!
+    this->Locos.value(numLoco)->setVitesse(vitesseLoco); //similaire Ã  setVitesseLoco!
 }
 
 void SimView::stopLoco(int numLoco)

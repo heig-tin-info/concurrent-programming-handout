@@ -15,8 +15,8 @@ class panneauNumLoco : public QObject, public QAbstractGraphicsShapeItem
 {
     Q_OBJECT
 public:
-    /** Constructeur de classe. Sert à afficher le numéro des locos.
-      * \param numLoco, le numéro de la loco.
+    /** Constructeur de classe. Sert Ã  afficher le numÃ©ro des locos.
+      * \param numLoco, le numÃ©ro de la loco.
       */
     explicit panneauNumLoco(int numLoco, QObject *parent = 0);
 
@@ -25,13 +25,13 @@ public:
       */
     QRectF boundingRect() const;
 
-    /** méthode d'affichage.
+    /** mÃ©thode d'affichage.
       *
       */
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 
-    /** retourne le numéro de la loco.
-      * \return le numéro de la loco.
+    /** retourne le numÃ©ro de la loco.
+      * \return le numÃ©ro de la loco.
       */
     int getNumLoco();
 private:
@@ -46,14 +46,14 @@ class Loco : public QObject, public QAbstractGraphicsShapeItem
 public:
 
     /** Constructeur de classe.
-      * \param numLoco le numéro de la loco.
+      * \param numLoco le numÃ©ro de la loco.
       */
     explicit Loco(int numLoco, QObject *parent = 0);
 
     /** Permet de changer la vitesse de la loco.
-      * Le comportement dépend de l'option "Inertie" :
+      * Le comportement dÃ©pend de l'option "Inertie" :
       * avec l'inertie, le changement sera progressif.
-      * sans l'inertie, le changement sera immédiat.
+      * sans l'inertie, le changement sera immÃ©diat.
       * \param v la nouvelle vitesse de la loco.
       */
     void setVitesse(int v);
@@ -64,7 +64,7 @@ public:
     int getVitesse();
 
     /** permet de changer la direction de la loco.
-      * N'est pas utilisé : pour changer de sens, on effectue une rotation de 180°.
+      * N'est pas utilisÃ© : pour changer de sens, on effectue une rotation de 180Â°.
       * \param d la nouvelle direction (DIRECTION_LOCO_GAUCHE ou DIRECTION_LOCO_DROITE)
       */
     void setDirection(int d);
@@ -91,12 +91,12 @@ public:
       */
     QRectF boundingRect() const;
 
-    /** Méthode d'affichage.
+    /** MÃ©thode d'affichage.
       *
       */
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 
-    /** permet d'indiquer la voie sur laquelle la loco est posée.
+    /** permet d'indiquer la voie sur laquelle la loco est posÃ©e.
       * \param v la voie actuelle.
       */
     void setVoie(Voie* v);
@@ -106,27 +106,27 @@ public:
       */
     Voie* getVoie();
 
-    /** permet d'indiquer la voie vers laquelle la loco est dirigée.
-      * \param v la voie vers laquelle la loco est dirigée.
+    /** permet d'indiquer la voie vers laquelle la loco est dirigÃ©e.
+      * \param v la voie vers laquelle la loco est dirigÃ©e.
       */
     void setVoieSuivante(Voie* v);
 
-    /** retourne la voie vers laquelle la loco est dirigée.
-      * \return la voie vers laquelle la loco est dirigée.
+    /** retourne la voie vers laquelle la loco est dirigÃ©e.
+      * \return la voie vers laquelle la loco est dirigÃ©e.
       */
     Voie* getVoieSuivante();
 
-    /** permet d'activer ou desactiver une loco. Une loco non active ne sera pas affichée.
-      * \param active la valeur booléenne indiquant l'activation ou la desactivation de la loco.
+    /** permet d'activer ou desactiver une loco. Une loco non active ne sera pas affichÃ©e.
+      * \param active la valeur boolÃ©enne indiquant l'activation ou la desactivation de la loco.
       */
     void setActive(bool active);
 
-    /** retourne la valeur booléenne indiquant l'activation ou la desactivation de la loco.
-      * \return la valeur booléenne indiquant l'activation ou la desactivation de la loco.
+    /** retourne la valeur boolÃ©enne indiquant l'activation ou la desactivation de la loco.
+      * \return la valeur boolÃ©enne indiquant l'activation ou la desactivation de la loco.
       */
     bool getActive();
 
-    /** effectue la transition d'une voie à l'autre et repositionne la loco (corrige les imprécisions de calcul).
+    /** effectue la transition d'une voie Ã  l'autre et repositionne la loco (corrige les imprÃ©cisions de calcul).
       *
       */
     void avanceDUneVoie();
@@ -141,13 +141,13 @@ public:
       */
     void avancerDroit(qreal distance);
 
-    /** avance la loco selon une courbe, définie par un angle et un rayon.
+    /** avance la loco selon une courbe, dÃ©finie par un angle et un rayon.
       * \param angle l'angle de rotation
       * \param rayon le rayon de rotation
       */
     void avancerCourbe(qreal angle, qreal rayon);
 
-    /** permet de mettre à jour l'angle cumule
+    /** permet de mettre Ã  jour l'angle cumule
       * \param a la nouvelle valeur de l'angle cumule
       */
     void setAngleCumule(qreal a);
@@ -162,29 +162,29 @@ public:
       */
     void setSegmentActuel(Segment* s);
 
-    /** permet de changer la valeur booléenne d'alerte de proximité.
-      * \param b la nouvelle valeur booléenne d'alerte de proximité.
+    /** permet de changer la valeur boolÃ©enne d'alerte de proximitÃ©.
+      * \param b la nouvelle valeur boolÃ©enne d'alerte de proximitÃ©.
       */
     void setAlerteProximite(bool b);
 
-    /** retourne la valeur booléenne d'alerte de proximité.
-      * \return la valeur booléenne d'alerte de proximité.
+    /** retourne la valeur boolÃ©enne d'alerte de proximitÃ©.
+      * \return la valeur boolÃ©enne d'alerte de proximitÃ©.
       */
     bool getAlerteProximite();
 
-    /** retourne le contour de la loco en coordonnées de la scene.
-      * \return le contour de la loco en coordonnées de la scene.
+    /** retourne le contour de la loco en coordonnÃ©es de la scene.
+      * \return le contour de la loco en coordonnÃ©es de la scene.
       */
     QPolygonF getContour();
 
     /** Inverse le sens de la loco en conservant ou retrouvant la vitesse initiale.
-      * Le comportement dépend de l'option "Inertie" :
+      * Le comportement dÃ©pend de l'option "Inertie" :
       * avec l'inertie, le changement sera progressif.
-      * sans l'inertie, le changement sera immédiat.
+      * sans l'inertie, le changement sera immÃ©diat.
       */
     void inverserSens();
 
-    /** Permet de corriger l'angle de la loco suite à des imprécisions de calcul.
+    /** Permet de corriger l'angle de la loco suite Ã  des imprÃ©cisions de calcul.
       * \param nouvelAngle le nouvel angle.
       */
     void corrigerAngle(qreal nouvelAngle);
@@ -199,23 +199,23 @@ signals:
       */
     void nouveauSegment(Contact* ctc1, Contact* ctc2, Loco* l);
 
-    /** Signale un déraillement.
+    /** Signale un dÃ©raillement.
       * \param l la loco emettrice du signal.
       */
     void deraillement(Loco* l);
 public slots:
 
-    /** Reçoit l'indication qu'une loco est sur le segment s.
-      * \param s le segment signalé comme occupé.
+    /** ReÃ§oit l'indication qu'une loco est sur le segment s.
+      * \param s le segment signalÃ© comme occupÃ©.
       */
     void locoSurSegment(Segment* s);
 
-    /** Reçoit l'indication qu'une voie variable a été modifiée.
-      * \param v la voie variable modifiée.
+    /** ReÃ§oit l'indication qu'une voie variable a Ã©tÃ© modifiÃ©e.
+      * \param v la voie variable modifiÃ©e.
       */
     void voieVariableModifiee(Voie* v);
 
-    /** Reçoit le signal qu'il faut adapter la vitesse d'un incrément / décrément.
+    /** ReÃ§oit le signal qu'il faut adapter la vitesse d'un incrÃ©ment / dÃ©crÃ©ment.
       */
     void adapterVitesse();
 private:

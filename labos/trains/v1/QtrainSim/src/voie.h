@@ -24,47 +24,47 @@ public:
       */
     Voie();
 
-    /** Méthode permettant de calculer la position de la voie, en fonction d'une voie
-      * voisine déjà posée. S'il s'agit de la première voie posée, on lui attribue une position
-      * par défaut.
-      * \param v pointeur sur la voie voisine déjà posée.
+    /** MÃ©thode permettant de calculer la position de la voie, en fonction d'une voie
+      * voisine dÃ©jÃ  posÃ©e. S'il s'agit de la premiÃ¨re voie posÃ©e, on lui attribue une position
+      * par dÃ©faut.
+      * \param v pointeur sur la voie voisine dÃ©jÃ  posÃ©e.
       */
     void calculerPosition(Voie* v=0);
 
-    /** méthode virtuelle visant à calculer les angles et coordonnées (locales) de chaque extrémité
+    /** mÃ©thode virtuelle visant Ã  calculer les angles et coordonnÃ©es (locales) de chaque extrÃ©mitÃ©
       * de la voie.
-      * Cette méthode est appelée récursivement, jusqu'à ce que toutes les voies aient été orientées.
-      * \param v pointeur sur la voie voisine déjà orientée.
+      * Cette mÃ©thode est appelÃ©e rÃ©cursivement, jusqu'Ã  ce que toutes les voies aient Ã©tÃ© orientÃ©es.
+      * \param v pointeur sur la voie voisine dÃ©jÃ  orientÃ©e.
       */
     virtual void calculerAnglesEtCoordonnees(Voie* v=0)=0;
 
-    /** permet de lier deux voies, c'est-à-dire d'indiquer qu'elles doivent se connecter l'une à l'autre,
-      * et sur quelle extrémité.
-      * \param v pointeur sur la voie à lier.
-      * \param ordre indique l'extrémité sur laquelle v doit se fixer.
+    /** permet de lier deux voies, c'est-Ã -dire d'indiquer qu'elles doivent se connecter l'une Ã  l'autre,
+      * et sur quelle extrÃ©mitÃ©.
+      * \param v pointeur sur la voie Ã  lier.
+      * \param ordre indique l'extrÃ©mitÃ© sur laquelle v doit se fixer.
       */
     void lier(Voie* v, int ordre);
 
-    /** permet de savoir si la voie est orientée, à savoir si la méthode calculerAnglesEtCoordonnees(...)
-      * a déjà été appelée.
-      * \return vrai si la voie est déjà orientée, faux sinon.
+    /** permet de savoir si la voie est orientÃ©e, Ã  savoir si la mÃ©thode calculerAnglesEtCoordonnees(...)
+      * a dÃ©jÃ  Ã©tÃ© appelÃ©e.
+      * \return vrai si la voie est dÃ©jÃ  orientÃ©e, faux sinon.
       */
     bool estOrientee();
 
-    /** permet de savoir si la voie est posée, à savoir si la méthode calculerPosition(...)
-      * a déjà été appelée.
-      * \return vrai si la voie est déjà posée, faux sinon.
+    /** permet de savoir si la voie est posÃ©e, Ã  savoir si la mÃ©thode calculerPosition(...)
+      * a dÃ©jÃ  Ã©tÃ© appelÃ©e.
+      * \return vrai si la voie est dÃ©jÃ  posÃ©e, faux sinon.
       */
     bool estPosee();
 
-    /** retourne la position en coordonnées absolue de l'extrémité de la voie reliée à la voie passée en paramètre.
-      * \param v la voie reliée à l'extrémité dont la position est désirée.
-      * \return la position absolue de l'extrémité.
+    /** retourne la position en coordonnÃ©es absolue de l'extrÃ©mitÃ© de la voie reliÃ©e Ã  la voie passÃ©e en paramÃ¨tre.
+      * \param v la voie reliÃ©e Ã  l'extrÃ©mitÃ© dont la position est dÃ©sirÃ©e.
+      * \return la position absolue de l'extrÃ©mitÃ©.
       */
     QPointF* getPosAbsLiaison(Voie* v);
 
-    /** attribue le contact passé en paramètre à la voie.
-      * \param c le contact attribué.
+    /** attribue le contact passÃ© en paramÃ¨tre Ã  la voie.
+      * \param c le contact attribuÃ©.
       */
     void setContact(Contact* c);
 
@@ -78,78 +78,78 @@ public:
       */
     virtual void calculerPositionContact()=0;
 
-    /** Permet l'exploration récursive des voies en vue de la création des segments.
-      * \param voieAppelante pointeur sur la voie appelant récursivement celle-ci.
-      * \return Une liste de liste de voies, correspondant à tous chemins partant de cette voie
+    /** Permet l'exploration rÃ©cursive des voies en vue de la crÃ©ation des segments.
+      * \param voieAppelante pointeur sur la voie appelant rÃ©cursivement celle-ci.
+      * \return Une liste de liste de voies, correspondant Ã  tous chemins partant de cette voie
       *         et terminant sur un contact, sauf le chemin partant depuis la voie appelante.
       */
     virtual QList<QList<Voie*>*> explorationContactAContact(Voie* voieAppelante)=0;
 
-    /** Démarre l'exploration contact à contact en vue de la création des segments.
-      * \return Une liste de liste de voies, correspondant à tous chemins partant de cette voie
+    /** DÃ©marre l'exploration contact Ã  contact en vue de la crÃ©ation des segments.
+      * \return Une liste de liste de voies, correspondant Ã  tous chemins partant de cette voie
       *         et terminant sur un contact.
       */
     QList<QList<Voie*>*> startExplorationContactAContact();
 
-    /** retourne le nombre de liaisons (en d'autres termes d'extrémités) de la voie.
+    /** retourne le nombre de liaisons (en d'autres termes d'extrÃ©mitÃ©s) de la voie.
       * \return le nombre de liaisons de la voie.
       */
     int getNbreLiaisons() const;
 
-    /** retourne la valeur X de l'extrémité la plus à gauche de la voie.
-      * \return la valeur X de l'extrémité la plus à gauche de la voie.
+    /** retourne la valeur X de l'extrÃ©mitÃ© la plus Ã  gauche de la voie.
+      * \return la valeur X de l'extrÃ©mitÃ© la plus Ã  gauche de la voie.
       */
     qreal getXmin() const;
 
-    /** retourne la valeur X de l'extrémité la plus à droite de la voie.
-      * \return la valeur X de l'extrémité la plus à droite de la voie.
+    /** retourne la valeur X de l'extrÃ©mitÃ© la plus Ã  droite de la voie.
+      * \return la valeur X de l'extrÃ©mitÃ© la plus Ã  droite de la voie.
       */
     qreal getXmax() const;
 
-    /** retourne la valeur Y de l'extrémité la plus haute de la voie.
-      * \return la valeur Y de l'extrémité la plus haute de la voie.
+    /** retourne la valeur Y de l'extrÃ©mitÃ© la plus haute de la voie.
+      * \return la valeur Y de l'extrÃ©mitÃ© la plus haute de la voie.
       */
     qreal getYmin() const;
 
-    /** retourne la valeur Y de l'extrémité la plus basse de la voie.
-      * \return la valeur Y de l'extrémité la plus basse de la voie.
+    /** retourne la valeur Y de l'extrÃ©mitÃ© la plus basse de la voie.
+      * \return la valeur Y de l'extrÃ©mitÃ© la plus basse de la voie.
       */
     qreal getYmax() const;
 
-    /** permet de connaitre l'angle de l'extrémité connectant cette voie à la voisine.
+    /** permet de connaitre l'angle de l'extrÃ©mitÃ© connectant cette voie Ã  la voisine.
       * \param voisin la voie voisine.
-      * \return l'angle de liaison en degrés.
+      * \return l'angle de liaison en degrÃ©s.
       */
     qreal getAngleVoisin(Voie* voisin) const;
 
-    /** permet de connaitre l'angle réajusté lorsqu'une locomotive arrive sur une voie.
+    /** permet de connaitre l'angle rÃ©ajustÃ© lorsqu'une locomotive arrive sur une voie.
       * \param voisin la voie d'ou vient la loco.
-      * \return l'angle ajusté de la loco.
+      * \return l'angle ajustÃ© de la loco.
       */
     qreal getNouvelAngle(Voie* voisin) const;
 
-    /** retourne l'angle en degrés de l'extrémité d'ordre spécifié en paramètre.
-      * \param liaison l'ordre de l'extrémité dont on veut l'angle.
-      * \return l'angle en degrés.
+    /** retourne l'angle en degrÃ©s de l'extrÃ©mitÃ© d'ordre spÃ©cifiÃ© en paramÃ¨tre.
+      * \param liaison l'ordre de l'extrÃ©mitÃ© dont on veut l'angle.
+      * \return l'angle en degrÃ©s.
       */
     qreal getAngleDeg(int liaison) const;
 
-    /** retourne l'angle en radians de l'extrémité d'ordre spécifié en paramètre.
-      * \param liaison l'ordre de l'extrémité dont on veut l'angle.
+    /** retourne l'angle en radians de l'extrÃ©mitÃ© d'ordre spÃ©cifiÃ© en paramÃ¨tre.
+      * \param liaison l'ordre de l'extrÃ©mitÃ© dont on veut l'angle.
       * \return l'angle en radians.
       */
     qreal getAngleRad(int liaison) const;
 
-    /** permet de fixer l'angle de l'extrémité d'ordre spécifié en paramétre,
-      * en passant un angle en degrés.
-      * \param liaison l'ordre de l'extrémité
-      * \param l'angle en degrés.
+    /** permet de fixer l'angle de l'extrÃ©mitÃ© d'ordre spÃ©cifiÃ© en paramÃ©tre,
+      * en passant un angle en degrÃ©s.
+      * \param liaison l'ordre de l'extrÃ©mitÃ©
+      * \param l'angle en degrÃ©s.
       */
     void setAngleDeg(int liaison, qreal angle);
 
-    /** permet de fixer l'angle de l'extrémité d'ordre spécifié en paramétre,
+    /** permet de fixer l'angle de l'extrÃ©mitÃ© d'ordre spÃ©cifiÃ© en paramÃ©tre,
       * en passant un angle en radians.
-      * \param liaison l'ordre de l'extrémité
+      * \param liaison l'ordre de l'extrÃ©mitÃ©
       * \param l'angle en radians.
       */
     void setAngleRad(int liaison, qreal angle);
@@ -165,8 +165,8 @@ public:
       */
     virtual Voie* getVoieSuivante(Voie* voieArrivee)=0;
 
-    /** fournit les informations nécessaires a l'avancement de la locomotive d'une certaine distance.
-      * \param dist la distance à parcourir
+    /** fournit les informations nÃ©cessaires a l'avancement de la locomotive d'une certaine distance.
+      * \param dist la distance Ã  parcourir
       * \param angle l'angle de rotation
       * \param rayon le rayon de rotation
       * \param angleCumule l'angle actuel de la loco
@@ -175,13 +175,13 @@ public:
       */
     virtual void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie* voieSuivante)=0;
 
-    /** retourne la voie voisine spécifiée par son ordre.
+    /** retourne la voie voisine spÃ©cifiÃ©e par son ordre.
       * \param n l'ordre de la voie
       * \return la voie d'ordre n.
       */
     Voie* getVoieVoisineDOrdre(int n);
 
-    /** permet de spécifier la manière dont la voie sera dessinée.
+    /** permet de spÃ©cifier la maniÃ¨re dont la voie sera dessinÃ©e.
       * \param color la couleur de la voie.
       */
     void setNewPen(const QColor &color);
@@ -191,19 +191,19 @@ public:
       */
     virtual void setEtat(int nouvelEtat)=0;
 
-    /** permet de corriger la position de l'extrémité liant cette voie à la voie v.
+    /** permet de corriger la position de l'extrÃ©mitÃ© liant cette voie Ã  la voie v.
       * \param deltaX la correction en X
       * \param deltaY la correction en Y
-      * \param v la voie a l'extrémité à corriger.
+      * \param v la voie a l'extrÃ©mitÃ© Ã  corriger.
       */
     virtual void correctionPosition(qreal deltaX, qreal deltaY, Voie* v)=0;
 
-    /** permet d'afficher le rectangle englobant la voie. Utile pour le débuggage.
+    /** permet d'afficher le rectangle englobant la voie. Utile pour le dÃ©buggage.
       * \param painter l'outil de dessin.
       */
     void drawBoundingRect(QPainter *painter);
 
-    /** permet de corriger la position d'une locomotive par rapport à une voie.
+    /** permet de corriger la position d'une locomotive par rapport Ã  une voie.
       * \param x la correction en X
       * \param y la correction en Y
       */
@@ -217,9 +217,9 @@ protected:
     QMap<int, QPointF*> coordonneesLiaison;
     bool orientee, posee;
 
-    /** normalise l'angle entre 0 et 360 degrés.
-      * \param angle l'angle à normaliser
-      * \return l'angle normalisé
+    /** normalise l'angle entre 0 et 360 degrÃ©s.
+      * \param angle l'angle Ã  normaliser
+      * \return l'angle normalisÃ©
       */
     double normaliserAngle(double angle) const;
     QPointF* position;

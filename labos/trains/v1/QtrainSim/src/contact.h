@@ -16,42 +16,42 @@ class Contact : public QObject, public QAbstractGraphicsShapeItem
 public:
     /** Constructeur de Classe.
       * \param numContact le numero du contact.
-      * \param numVoiePorteuse le numéro de la voie porteuse du contact.
-      * \param parent le parent du contact. Pas utilisé à la construction.
+      * \param numVoiePorteuse le numÃ©ro de la voie porteuse du contact.
+      * \param parent le parent du contact. Pas utilisÃ© Ã  la construction.
       */
     explicit Contact(int numContact, int numVoiePorteuse, QObject *parent = 0);
 
-    /** Méthode bloquante, permettant d'attendre sur l'activation du contact.
+    /** MÃ©thode bloquante, permettant d'attendre sur l'activation du contact.
       */
     void attendContact();
 
-    /** Méthode appelée quand une loco passe sur le contact.
-      * Libère les threads en attente.
+    /** MÃ©thode appelÃ©e quand une loco passe sur le contact.
+      * LibÃ¨re les threads en attente.
       */
     void active();
 
-    /** retourne le numéro de la voie porteuse.
-      * \return le numéro de la voie porteuse.
+    /** retourne le numÃ©ro de la voie porteuse.
+      * \return le numÃ©ro de la voie porteuse.
       */
     int getNumVoiePorteuse();
 
-    /** Permet de spécifier selon quel angle le numéro du contact doit être décalé.
+    /** Permet de spÃ©cifier selon quel angle le numÃ©ro du contact doit Ãªtre dÃ©calÃ©.
       * \param angle l'angle en radians.
       */
     void setAngle(qreal angle);
 
-    /** retourne le rectangle englobant le contact. Nécessaire à l'affichage.
+    /** retourne le rectangle englobant le contact. NÃ©cessaire Ã  l'affichage.
       * \return le rectangle englobant le contact.
       */
     QRectF boundingRect() const;
 
-    /** Méthode d'affichage. Appelée par QGraphicsView lors du dessin de la fenetre.
-      * pas besoin de se préoccuper des parametres.
+    /** MÃ©thode d'affichage. AppelÃ©e par QGraphicsView lors du dessin de la fenetre.
+      * pas besoin de se prÃ©occuper des parametres.
       */
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *);
 
-    /** retourne le numéro du contact.
-      * \return le numéro du contact.
+    /** retourne le numÃ©ro du contact.
+      * \return le numÃ©ro du contact.
       */
     int getNumContact();
 signals:

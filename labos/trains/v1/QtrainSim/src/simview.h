@@ -30,35 +30,35 @@ public:
       */
     explicit SimView(QWidget *);
 
-    /** Permet d'ajouter une voie à la simulation.
-      * \param v la voie à ajouter
-      * \param ID le numéro de la voie
+    /** Permet d'ajouter une voie Ã  la simulation.
+      * \param v la voie Ã  ajouter
+      * \param ID le numÃ©ro de la voie
       */
     void addVoie(Voie* v, int ID);
 
-    /** Permet d'ajouter une voie variable à la liste idoine de la simulation.
-      * \param vv la voie variable à ajouter
-      * \param ID le numéro de la voie variable
-      * Remarque : une voie variable a donc deux numéros :
-      *            - son numéro de voie
-      *            - son numéro de voie variable
+    /** Permet d'ajouter une voie variable Ã  la liste idoine de la simulation.
+      * \param vv la voie variable Ã  ajouter
+      * \param ID le numÃ©ro de la voie variable
+      * Remarque : une voie variable a donc deux numÃ©ros :
+      *            - son numÃ©ro de voie
+      *            - son numÃ©ro de voie variable
       */
     void addVoieVariable(VoieVariable* vv, int ID);
 
-    /** Permet d'ajouter une contact à la simulation.
-      * \param c le contact à ajouter
-      * \param ID le numéro du contact
+    /** Permet d'ajouter une contact Ã  la simulation.
+      * \param c le contact Ã  ajouter
+      * \param ID le numÃ©ro du contact
       */
     void addContact(Contact* c, int ID);
 
-    /** Permet d'indiquer la première voie à poser, par rapport à laquelle
+    /** Permet d'indiquer la premiÃ¨re voie Ã  poser, par rapport Ã  laquelle
       * toutes les autres voies vont se positionner.
       * \param v le voie a poser en premier.
       */
     void setPremiereVoie(Voie* v);
 
     /** Permet de modifier une voie variable.
-      * \param n le numéro de la voie variable.
+      * \param n le numÃ©ro de la voie variable.
       * \param v l'etat de la voie variable (DEVIE ou TOUT_DROIT)
       */
     void modifierAiguillage(int n, int v);
@@ -71,20 +71,20 @@ public:
       */
     void viderMaquette();
 
-    /** Génére la liste des segments de la maquette.
+    /** GÃ©nÃ©re la liste des segments de la maquette.
       *
       */
     void genererSegments();
 
     /** Ajoute une locomotive.
-      * \param l la loco à ajouter.
-      * \param ID le numéro de la loco.
+      * \param l la loco Ã  ajouter.
+      * \param ID le numÃ©ro de la loco.
       */
     void addLoco(Loco* l, int ID);
 
-    /** Attribue des couleurs à chaque locomotive présente, de telle manière qu'il soit
+    /** Attribue des couleurs Ã  chaque locomotive prÃ©sente, de telle maniÃ¨re qu'il soit
       * le plus facile de les distinguer.
-      * Remarque : la première loco est toujours rouge.
+      * Remarque : la premiÃ¨re loco est toujours rouge.
       */
     void peintLocos();
 
@@ -93,18 +93,18 @@ public:
       */
     void zoomIn();
 
-    /** permet de dézoomer de la vue.
+    /** permet de dÃ©zoomer de la vue.
       *
       */
     void zoomOut();
 
-    /** ajuste le zoom de telle manière que la maquette soit entièrement affichée.
+    /** ajuste le zoom de telle maniÃ¨re que la maquette soit entiÃ¨rement affichÃ©e.
       *
       */
     void zoomFit();
 
-    /** retourne le contact ayant le numéro n.
-      * \param n le numéro du contact
+    /** retourne le contact ayant le numÃ©ro n.
+      * \param n le numÃ©ro du contact
       * \return le contact correspondant.
       */
     Contact* getContact(int n);
@@ -115,13 +115,13 @@ public:
     void redraw();
 signals:
 
-    /** Signale qu'une loco a changé de segment, et se trouve que le segment s.
-      * \param s, le segment occupé.
+    /** Signale qu'une loco a changÃ© de segment, et se trouve que le segment s.
+      * \param s, le segment occupÃ©.
       */
     void locoSurSegment(Segment* s);
 
-    /** Signale le changment d'état d'une voie variable.
-      * \param v la voie variable ayant changé.
+    /** Signale le changment d'Ã©tat d'une voie variable.
+      * \param v la voie variable ayant changÃ©.
       */
     void notificationVoieVariableModifiee(Voie* v);
 public slots:
@@ -131,7 +131,7 @@ public slots:
       */
     void animationStep();
 
-    /** démarre l'animation
+    /** dÃ©marre l'animation
       *
       */
     void animationStart();
@@ -141,55 +141,55 @@ public slots:
       */
     void animationStop();
 
-    /** prépare la locomotive au départ.
-      * \param contactA le premier contact définissant le segment sur lequel se trouve la loco.
-      * \param contactB le second contact définissant le segment sur lequel se trouve la loco.
-      * \param numLoco le numéro de la loco à placer.
+    /** prÃ©pare la locomotive au dÃ©part.
+      * \param contactA le premier contact dÃ©finissant le segment sur lequel se trouve la loco.
+      * \param contactB le second contact dÃ©finissant le segment sur lequel se trouve la loco.
+      * \param numLoco le numÃ©ro de la loco Ã  placer.
       * \param vitesseLoco la vitesse de la loco.
       */
     void setLoco(int contactA, int contactB, int numLoco, int vitesseLoco);
 
-    /** pas implémenté.
+    /** pas implÃ©mentÃ©.
       *
       */
     void askLoco(int, int);
 
     /** permet de changer la vitesse d'une loco.
-      * \param numLoco le numéro de la loco à changer
+      * \param numLoco le numÃ©ro de la loco Ã  changer
       * \param vitesseLoco la nouvelle vitesse de la loco.
       */
     void setVitesseLoco(int numLoco, int vitesseLoco);
 
     /** Inverse le sens de la loco.
-      * \param numLoco le numéro de la loco à inverser.
+      * \param numLoco le numÃ©ro de la loco Ã  inverser.
       */
     void reverseLoco(int numLoco);
 
     /** permet de changer la vitesse d'une loco.
-      * \param numLoco le numéro de la loco à changer
+      * \param numLoco le numÃ©ro de la loco Ã  changer
       * \param vitesseLoco la nouvelle vitesse de la loco.
       */
     void setVitesseProgressiveLoco(int numLoco, int vitesseLoco);
 
     /** arrete la loco
-      * \param numLoco le numéro de la loco.
+      * \param numLoco le numÃ©ro de la loco.
       */
     void stopLoco(int numLoco);
 
     /** modifie l'etat d'une voie variable.
-      * \param numVoieVariable le numéro de la voie variable.
+      * \param numVoieVariable le numÃ©ro de la voie variable.
       * \param direction la nouvelle direction de la voie (DEVIE ou TOUT_DROIT)
       */
     void setVoieVariable(int numVoieVariable, int direction);
 
-    /** reçoit l'information qu'une loco a changé de segment.
-      * \param ctc1 et ctc2 définissent le segment.
-      * \param l la loco ayant changé de segment.
+    /** reÃ§oit l'information qu'une loco a changÃ© de segment.
+      * \param ctc1 et ctc2 dÃ©finissent le segment.
+      * \param l la loco ayant changÃ© de segment.
       */
     void locoSurNouveauSegment(Contact* ctc1, Contact* ctc2, Loco* l);
 
-    /** reçoit l'information qu'une voie variable a été modifiée.
-      * \param v la voie variable modifiée.
+    /** reÃ§oit l'information qu'une voie variable a Ã©tÃ© modifiÃ©e.
+      * \param v la voie variable modifiÃ©e.
       */
     void voieVariableModifiee(Voie* v);
 
@@ -203,8 +203,8 @@ private:
     QMap<int, Loco*> Locos;
     QList<Segment*> segments;
 
-    /** retourne le segment correspondant à la paire de contacts passée en paramètre
-      * \param contactA et contactB les contacts définissant les segment.
+    /** retourne le segment correspondant Ã  la paire de contacts passÃ©e en paramÃ¨tre
+      * \param contactA et contactB les contacts dÃ©finissant les segment.
       * \return le segment correspondant.
       */
     Segment* getSegmentByContacts(int contactA, int contactB);

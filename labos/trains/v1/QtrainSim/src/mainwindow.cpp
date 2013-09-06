@@ -59,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QFile fichierInfosVoies(DATADIR+"/infosVoies.txt");
     if (!fichierInfosVoies.open(QIODevice::ReadOnly))
     {
-        QMessageBox::critical(0,"Erreur",QString("Le fichier de description des voies ne peut être trouvé. Vérifiez qu'il est bien présent dans le répertoire parent de l'exécutable.\n Le nom du fichier est: %1.\nAvez-vous effectué un \"make install\"?").arg(fichierInfosVoies.fileName()));
+        QMessageBox::critical(0,"Erreur",QString("Le fichier de description des voies ne peut Ãªtre trouvÃ©. VÃ©rifiez qu'il est bien prÃ©sent dans le rÃ©pertoire parent de l'exÃ©cutable.\n Le nom du fichier est: %1.\nAvez-vous effectuÃ© un \"make install\"?").arg(fichierInfosVoies.fileName()));
         exit(0);
     }
     QTextStream lecture(&fichierInfosVoies);
@@ -329,7 +329,7 @@ void MainWindow::afficherMessageLoco(int numLoco,QString message)
             locoCtrls.at(i)->console->append(message);
             return;
         }
-    QMessageBox::warning(this,"Numéro de loco",QString(
+    QMessageBox::warning(this,"NumÃ©ro de loco",QString(
                              "Attention, pour l'affichage dans la console, le\
                              numero de loco %1 n'est pas valide").arg(numLoco));
 }
@@ -743,7 +743,7 @@ void MainWindow::chargerMaquette(QString filename)
             IDVoies.insert(IDvoie, vae);
             voiesALier.insert(vae, new QList<int>());
             voiesALier[vae]->append(listeTemporaire.at(2).toInt());
-            voiesALier[vae]->append(listeTemporaire.at(4).toInt()); //ordre inversé, pour la cohérence du code...
+            voiesALier[vae]->append(listeTemporaire.at(4).toInt()); //ordre inversÃ©, pour la cohÃ©rence du code...
             voiesALier[vae]->append(listeTemporaire.at(3).toInt());
             this->simView->addVoie(vae, listeTemporaire.at(0).toInt());
         }

@@ -71,7 +71,7 @@ void VoieButtoir::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal /*an
                                    (posActuelle.y() - this->pos().y()));
     if (distanceAuContact + LONGUEUR_LOCO / 2.0 > longueur)
     {
-        //déclarer un deraillement.
+        //dÃ©clarer un deraillement.
     }
     else
     {
