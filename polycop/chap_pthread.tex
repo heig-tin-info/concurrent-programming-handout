@@ -51,6 +51,16 @@ Fonction & page & description succincte \\
 \ccode{pthread_detach()} & \pageref{func:pthread_detach} & Détache un thread \\
 \ccode{pthread_equal()} & \pageref{func:pthread_equal} & Compare deux identifiants de thread \\
 \ccode{pthread_self()} & \pageref{func:pthread_self} & Retourne l'identifiant du thread courant \\
+\ccode{pthread_cancel()} & \pageref{func:pthread_cancel} & Annule un autre thread \\
+\ccode{pthread_setcancelstate()} & \pageref{func:pthread_setcancelstate} & Défini la politique d'annulation d'un thread \\
+\ccode{pthread_setcanceltype()} & \pageref{func:pthread_setcanceltype} & Défini le type d'annulation d'un thread \\
+\ccode{pthread_testcancel()} & \pageref{func:pthread_testcancel} & Test une annulation différée d'un thread \\
+\ccode{sem_init()} & \pageref{func:sem_init} & Initialise un sémaphore \\
+\ccode{sem_destroy()} & \pageref{func:sem_destroy} & Détruit un sémaphore \\
+\ccode{sem_post()} & \pageref{func:sem_post} & Incrémente un sémaphore \\
+\ccode{sem_wait()} & \pageref{func:sem_wait} & Décrémente un sémaphore \\
+\ccode{sem_trywait()} & \pageref{func:sem_trywait} & Tente de décrémenter un sémaphore \\
+\ccode{sem_getvalue()} & \pageref{func:sem_getvalue} & Récupère la valeur d'un sémaphore \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -372,7 +382,7 @@ int main(int argc,char *argv[])
 pthread_t pthread_cancel(
 	pthread_t thread);
 \end{lstlisting}
-Cette fonction permet d'annuler un autre thread. La terminaison du thread se fait en accord avec sa politique d'annulation.
+Cette fonction permet d'annuler un autre thread. La terminaison du thread se fait en accord avec sa politique d'annulation, et plus spéficiquement sur un point d'annulation.
 \begin{lstlisting}[frame=trBL]
 int counter1 = 1;
 int counter2 = 1;
@@ -433,6 +443,77 @@ int main(int argc,char *argv[])
 					counter1,counter2,counter3);
 	pthread_exit(NULL);
 	return EXIT_SUCCESS;
+}
+\end{lstlisting}
+
+
+\function{pthread\_setcancelstate()}\label{func:pthread_setcancelstate}
+
+\begin{lstlisting}
+int pthread_setcancelstate(
+	int state,
+	int *oldstate);
+\end{lstlisting}
+Cette fonction permet de définir la politique d'annulation du thread appelant. Le paramètre \ccode{state} peut prendre deux valeurs:
+\begin{itemize}
+	\item \ccode{PTHREAD_CANCEL_ENABLE}: Autorise l'annulation du thread par un autre
+	\item \ccode{PTHREAD_CANCEL_DISABLE}: Interdit l'annulation du thread par un autre
+\end{itemize}
+
+Au retour de la fonction, \ccode{*oldstate} contient l'ancienne valeur d'enable.
+
+
+\function{pthread\_setcanceltype()}\label{func:pthread_setcanceltype}
+
+\begin{lstlisting}
+int pthread_setcanceltype(
+	int type,
+	int *oldtype);
+\end{lstlisting}
+Cette fonction permet de définir le type d'annulation du thread appelant. Le paramètre \ccode{type} peut prendre deux valeurs:
+\begin{itemize}
+	\item \ccode{PTHREAD_CANCEL_DEFFERED}: Autorise l'annulation du thread en des points d'annulation précis (annulation différée)
+	\item \ccode{PTHREAD_CANCEL_ASYNCHRONOUS}: Autorise l'annulation du thread à n'importe quel instant
+\end{itemize}
+
+Au retour de la fonction, \ccode{*oldtype} contient l'ancienne valeur de type. Il faut \^etre très vigilant sur le type d'annulation supportée. En effet, le type asychrone fait que le thread peut \^etre interrompu à n'importe quel instant, et donc potentiellement laisser l'application dans un état instable ou non cohérent. De manière générale il sera préférable d'utiliser une annulation différée, qui permet de contrôler les points du code où le thread peut être annulé.
+
+
+\function{pthread\_testcancel()}\label{func:pthread_testcancel}
+
+\begin{lstlisting}
+void pthread_testcancel(void);
+\end{lstlisting}
+
+Cette fonction est à utiliser lorsque le thread définit un type d'annulation différée. Elle vérifie alors si une demande d'annulation a été effectuée, et si oui, elle termine le thread. Elle permet donc de contr\^oler de manière précise les points du code o\`u le thread peut se terminer en garantissant une terminaison propre.
+
+Attention, il est à noter que certains appels système sont des points d'annulation. Par exemple la fonction \ccode{write()} qui est exploitée par \ccode{printf()} est un point d'annulation. L'usage de \ccode{printf()} dans le code fait donc que le thread pourrait se terminer au moment de cet appel.
+
+
+
+\begin{lstlisting}[frame=trBL]
+int counter1 = 1;
+
+void *tache1(void *arg) {
+    int ancien_etat, ancien_type;
+    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,&ancien_etat);
+    pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,&ancien_type);
+    while (true) {
+        counter1++;
+        if (counter1 % 100 == 0)
+            pthread_testcancel();
+    }
+}
+
+int main(int argc,char *argv[]) {
+    pthread_t thread1;
+    pthread_create(&thread1,NULL,tache1,NULL);
+    void *statut1;
+    usleep(50);
+    pthread_cancel(thread1);
+    pthread_join(thread1,&statut1);
+    printf("Counter1: %d\n",counter1);
+    return EXIT_SUCCESS;
 }
 \end{lstlisting}
 
