@@ -17,6 +17,7 @@ DESTDIR = dist
 CONFIG += debug
 #CONFIG += MAQUETTE
 
+
 #DEFINES += DRAW_BOUNDINGRECT
 
 #Install the maquettes files
@@ -57,6 +58,9 @@ macx {
     RCC_DIR = tmp/mac/rcc
 }
 
+CDEVELOP : SOURCES += src/cmain.c
+!CDEVELOP : SOURCES += src/cppmain.cpp
+
 INCLUDEPATH += src
 SOURCES += \
     src/main.cpp \
@@ -78,7 +82,9 @@ SOURCES += \
     src/maquettemanager.cpp \
     src/voieaiguillageenroule.cpp \
     src/voieaiguillagetriple.cpp \
-    src/ctrain_handler.cpp \
+    src/ctrain_handler.cpp
+
+
     src/cmain.c
 
 HEADERS += \

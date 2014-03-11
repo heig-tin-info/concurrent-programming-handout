@@ -263,9 +263,13 @@ void MainWindow::toggleSimulation()
     updateMenus();
 }
 
+#ifdef CDEVELOP
 extern "C" {
 void emergency_stop();
 }
+#else
+void emergency_stop();
+#endif
 
 void MainWindow::emergencyStop()
 {
