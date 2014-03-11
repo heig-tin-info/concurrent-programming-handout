@@ -59,7 +59,7 @@ void CommandeTrain::init_maquette(void)
 
 #include <QThread>
 
-extern "C" void cmain();
+extern "C" int cmain();
 
 class UserThread : public QThread
 {

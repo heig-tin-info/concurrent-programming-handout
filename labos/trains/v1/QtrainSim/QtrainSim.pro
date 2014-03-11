@@ -1,20 +1,23 @@
 
-#version check qt
+#Qt version check
 !contains(QT_VERSION, ^5\\.*\\..*) {
-message("Cannot build Quotations with Qt version $${QT_VERSION}.")
-error("Use at least Qt 5.0.")
+    message("Cannot build Quotations with Qt version $${QT_VERSION}.")
+    error("Use at least Qt 5.0.")
 }
 
+#Qt modules
+QT += core gui widgets printsupport multimedia
 
-QT += core \
-    gui widgets printsupport multimedia
-
-# DEFINES += DRAW_BOUNDINGRECT
+#Target and template
 TARGET = QtrainSim
 TEMPLATE = app
+DESTDIR = dist
+
+#Configuration
 CONFIG += debug
 #CONFIG += MAQUETTE
-DESTDIR = dist
+
+#DEFINES += DRAW_BOUNDINGRECT
 
 #Install the maquettes files
 maquettes.path  =  $$OUT_PWD/dist/data/Maquettes
@@ -27,8 +30,7 @@ infos.files =  data/infosVoies.txt
 INSTALLS    += infos
 
 MAQUETTE: DEFINES += MAQUETTE
-
-MAQUETTE : LIBS += -lmarklin
+MAQUETTE: LIBS += -lmarklin
 
 RESOURCES += qtrainsim.qrc
 
@@ -38,7 +40,7 @@ win32 {
     MOC_DIR = tmp/win/moc
     OBJECTS_DIR = tmp/win/obj
     RCC_DIR = tmp/win/rcc
-    LIBS += -lpthreadGC2
+    LIBS += -lpthread
 }
 unix {
     DEFINES += ON_LINUX
@@ -56,7 +58,8 @@ macx {
 }
 
 INCLUDEPATH += src
-SOURCES += src/main.cpp \
+SOURCES += \
+    src/main.cpp \
     src/mainwindow.cpp \
     src/voie.cpp \
     src/voiedroite.cpp \
@@ -78,7 +81,8 @@ SOURCES += src/main.cpp \
     src/ctrain_handler.cpp \
     src/cmain.c
 
-HEADERS += src/mainwindow.h \
+HEADERS += \
+    src/mainwindow.h \
     src/voie.h \
     src/voiedroite.h \
     src/voiecourbe.h \

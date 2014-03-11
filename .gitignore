@@ -1,6 +1,7 @@
 *.o
 moc_*
 *~
-
+*.orig
 *.user
 qrc_*.cpp
+dist/

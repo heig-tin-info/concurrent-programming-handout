@@ -1,80 +1,74 @@
-#include <pthread.h>
 #include "ctrain_handler.h"
+
+#include <pthread.h>
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-//Engine definition
+//Contacts a parcourir
+#define NB_CONTACTS 11
+static int parcours[] = {7, 15, 14, 7, 6, 5, 34, 33, 32, 25, 24};
+
+//Définition d'une locomotive
 typedef struct
 {
     int no;
     int vitesse;
 } Locomotive;
 
+//Declaration d'une locomotive
+static Locomotive loco1;
 
-//Engines declaration
-Locomotive loco1;
-Locomotive loco2;
-
-//Engines itineraries
-#define NB_CONTACTS 7
-int it1[] = {6, 11, 10, 13, 14, 19, 3};
-int it2[] = {6, 11, 10, 13, 14, 19, 3};
-
-//Emergency stop for the engines
+//Procédure d'arrêt d'urgence
 void emergency_stop()
 {
-    afficher_message("\nEMERGENCY STOP!!");
-
-    //Stop the engines
+    printf("\nSTOP!");
     arreter_loco(loco1.no);
-    arreter_loco(loco2.no);
 }
 
-//Main function
-void cmain()
+int cmain()
 {
+    int cpt;
 
-    //Engine 1 settings
+    //Numéro et de la vitesse de la locomotive
     loco1.no = 1;
     loco1.vitesse = 12;
 
-    //Engine 2 settings
-    loco2.no = 2;
-    loco2.vitesse = 12;
+    //Allumage des phares de la locomotive
+    mettre_fonction_loco(loco1.no, ALLUME);
 
-    //Initializes the maquet
-    selection_maquette("MAQUET_B");
+    //Sélection et initialisation de la maquette
+    selection_maquette("MAQUET_A");
     afficher_message("Et c'est parti!!");
 
-    //Initializes engine 1 initial position
-    assigner_loco(11, 6, loco1.no, loco1.vitesse);
+    //Placement de la locomotive entre les contacts 11 et 6
+    assigner_loco(16, 23, loco1.no, loco1.vitesse);
     afficher_message_loco(loco1.no,"Hello, je suis la loco 1");
 
-    //Initializes engine 2 initial position
-    assigner_loco(4, 9, loco2.no, loco2.vitesse);
-    afficher_message_loco(loco2.no,"Hello, je suis la loco 2");
+    //Initialisation des aiguillages du parcours
+    diriger_aiguillage(8,  DEVIE,       0);
+    diriger_aiguillage(2,  DEVIE,       0);
+    diriger_aiguillage(20, DEVIE,       0);
+    diriger_aiguillage(14, DEVIE,       0);
+    diriger_aiguillage(11, TOUT_DROIT,  0);
+    diriger_aiguillage(17, TOUT_DROIT,  0);
+    diriger_aiguillage(23, TOUT_DROIT,  0);
 
-    //Initializes the points
-    diriger_aiguillage(7,TOUT_DROIT,0);
-    diriger_aiguillage(8,DEVIE,0);
-    diriger_aiguillage(5,TOUT_DROIT,0);
-    diriger_aiguillage(9,TOUT_DROIT,0);
-    diriger_aiguillage(10,TOUT_DROIT,0);
-    diriger_aiguillage(14,TOUT_DROIT,0);
-    diriger_aiguillage(13,TOUT_DROIT,0);
-    diriger_aiguillage(1,TOUT_DROIT,0);
-
-    //Start the engines
+    //Demarrage de la locomotive
     mettre_vitesse_progressive(loco1.no, loco1.vitesse);
-    mettre_vitesse_progressive(loco2.no, loco2.vitesse);
 
-  // Demarre la loco
-  mettre_vitesse_progressive(loco1.no, loco1.vitesse);
-return;
-    //Stop the engines
+    //Attente du passage de la locomotive sur chacun des contacts du parcours
+    for (cpt = 1; cpt < NB_CONTACTS; cpt++) {
+        attendre_contact(parcours[cpt]);
+        printf("Une locomotive a atteint le contact no '%d'.\n", parcours[cpt]);
+    }
+
+    //Arrêt de la locomotive
     arreter_loco(loco1.no);
-    arreter_loco(loco2.no);
 
-    //Shutdown the maquet
+    //Fin de la simulation (nécessaire sur les maquettes réelles)
     mettre_maquette_hors_service();
+
+    //Return success
+    return EXIT_SUCCESS;
 }
