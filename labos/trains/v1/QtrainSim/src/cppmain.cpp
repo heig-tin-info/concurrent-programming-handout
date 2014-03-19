@@ -22,7 +22,7 @@ static Locomotive loco1;
 //Procédure d'arrêt d'urgence
 void emergency_stop()
 {
-    printf("\nSTOP!");
+    afficher_message("\nSTOP!");
     arreter_loco(loco1.no);
 }
 
@@ -60,7 +60,11 @@ int cmain()
     //Attente du passage de la locomotive sur chacun des contacts du parcours
     for (cpt = 1; cpt < NB_CONTACTS; cpt++) {
         attendre_contact(parcours[cpt]);
-        printf("Une locomotive a atteint le contact no '%d'.\n", parcours[cpt]);
+        char message[256];
+        sprintf(message,"La locomotive %d a atteint le contact no '%d'.", loco1.no, parcours[cpt]);
+        afficher_message(message);
+        sprintf(message,"La locomotive a atteint le contact no '%d'.", parcours[cpt]);
+        afficher_message_loco(loco1.no,message);
     }
 
     //Arrêt de la locomotive
@@ -68,6 +72,11 @@ int cmain()
 
     //Fin de la simulation (nécessaire sur les maquettes réelles)
     mettre_maquette_hors_service();
+
+    afficher_message("Entrez une commande quelconque dans le champ d'input");
+    const char *command = getCommand();
+    afficher_message("Voici la commande: ");
+    afficher_message(command);
 
     //Return success
     return EXIT_SUCCESS;

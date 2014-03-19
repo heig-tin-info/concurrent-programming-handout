@@ -42,7 +42,7 @@
 \author{Kevin Georgy, Jéremie Ecoffey, Daniel Molla, Yann Thoma}
 
 
-\date{5 mars 2012}
+\date{19 mars 2014}
 
 \maketitle
 \newpage{}
@@ -65,6 +65,8 @@
 05/03/12 & v1.2 & DMO & Mise à niveau de la documentation pour l'application Qt\tabularnewline
 \hline 
 22/03/12 & v1.3 & YTA & Nouvelles fonctionnalités de l'application et refonte d'une partie du document\tabularnewline
+\hline
+19/03/14 & v1.4 & YTA & Documentation de l'entrée clavier, passage à Qt5 et développement en C ou C++\tabularnewline
 \hline
 \end{tabular}
 \par\end{centering}
@@ -116,7 +118,7 @@ plate-formes disponibles et comment l'utiliser.
 
 \section{Mise en place}
 
-Cette documentation se base sur l'environnement \noun{Qt SDK} 4.7.3. A priori le code devrait être fonctionnel sur des version postérieurs du \noun{Qt SDK}. Le simulateur est écrit en C++, en exploitant les différentes classes offertes par le \noun{Qt SDK}.
+Cette documentation se base sur l'environnement \noun{Qt SDK} 5.0. A priori le code devrait être fonctionnel sur des version postérieurs du \noun{Qt SDK}. Le simulateur est écrit en C++, en exploitant les différentes classes offertes par le \noun{Qt SDK}.
 
 Un projet démontrant un fonctionnement basique peut \^etre récupéré sur le site web du reds: \url{http://reds.heig-vd.ch}. Le répertoire du projet contient:
 
@@ -152,7 +154,7 @@ Fichier de description des voies
 \end{minipage}}.
 }
 
-Le projet peut \^etre compilé en ligne de commande ou via \noun{QtCreator}, l'IDE fourni avec l'environnement Qt.
+Le projet peut \^etre compilé en ligne de commande ou via \noun{QtCreator}, l'IDE fourni avec l'environnement Qt. 
 
 En ligne de commande, une fois placé dans le répertoire \folder{QTrainSim}, exécuter les commandes suivantes:
 
@@ -175,7 +177,20 @@ Les opérations de compilation peuvent également \^etre exécutées gr\^ace à l'env
 
 \newcommand{\attention}{\includegraphics[height=1em]{fig/attention}\hspace{.2cm}}
 
-\attention Attention, sous \noun{QtCreator} il faut désactiver l'option "Shadow build". Ceci ce fait via l'onglet "Projects", dans la barre de gauche, puis en sélectionnant les "Build settings". Il y est possible de désactiver cette option. Ceci n'a pas lieu d'être en ligne de commande.
+\attention Attention, avec \noun{QtCreator}, la compilation peut se faire en \emph{shadow build} ou non. Par défaut c'est le mode \emph{shadow build} qui est utilisé. Dans ce cas, il faut ajouter une étape de déploiement dans le panel \emph{Projects}, sous l'onglet \emph{Run}. Il faut simplement appeler 
+
+\begin{lstlisting}[style=cmd]
+make install
+\end{lstlisting}
+
+au déploiement, afin que tous les fichiers maquettes soient copiés dans le répertoire de destination. L'autre option consiste à décocher l'option \emph{shadow build} dans l'onglet \emph{Build} du panel \emph{Projects}.
+
+
+Finalement, il est possible de développer en C ou C++. Pour un développement en C++, il faut travailler sur le fichier cppmain.cpp. Pour développer en C, il faut travailler dans cmain.c, et ajouter la ligne suivante dans le fichier \file{QtrainSim.pro}:
+
+\begin{lstlisting}
+CONFIG += CDEVELOP
+\end{lstlisting}
 
 
 \section{Écriture d'un programme}
@@ -358,6 +373,10 @@ Il est possible d'agir sur les aiguillages en cliquant dessus. Les aiguillages c
 Lors de l'appel à la fonction \ccode{attendre_contact()}, le contact devient vert et le reste jusqu'à ce qu'une locomotive passe dessus.
 
 Les locomotives peuvent être articifiellement placées en pause en cliquant sur le bouton correspondant. Attention, cette fonctionnalité n'est valable qu'en simulation.
+
+\subsubsection{Entrée utilisateur}
+
+Un champ texte est présent en haut de l'interface utilisateur. Il permet d'entrer du texte qui peut ensuite \^etre récupéré par le contr\^ole des locomotives, via la fonction \ccode{getCommand()} ou la fonction \ccode{getCommandInArray()}. Attention, ces 2 fonctions sont bloquantes.
 
 \chapter{Plan des maquettes}
 
