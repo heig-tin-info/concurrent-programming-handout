@@ -15,9 +15,14 @@ DESTDIR = dist
 
 #Configuration
 CONFIG += debug
+
+#Use maquettes instead of sim
 #CONFIG += MAQUETTE
 
+#Use cmain instead of cppmain
+#CONFIG += CDEVELOP
 
+#Use alternate painting style
 #DEFINES += DRAW_BOUNDINGRECT
 
 #Install the maquettes files
@@ -58,8 +63,9 @@ macx {
     RCC_DIR = tmp/mac/rcc
 }
 
-CDEVELOP : SOURCES += src/cmain.c
-!CDEVELOP : SOURCES += src/cppmain.cpp
+CDEVELOP: DEFINES += CDEVELOP
+CDEVELOP: SOURCES += src/cmain.c
+!CDEVELOP: SOURCES += src/cppmain.cpp
 
 INCLUDEPATH += src
 SOURCES += \
@@ -83,9 +89,6 @@ SOURCES += \
     src/voieaiguillageenroule.cpp \
     src/voieaiguillagetriple.cpp \
     src/ctrain_handler.cpp
-
-
-    src/cmain.c
 
 HEADERS += \
     src/mainwindow.h \
