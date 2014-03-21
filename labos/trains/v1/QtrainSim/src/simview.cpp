@@ -363,26 +363,36 @@ void SimView::askLoco(int /*contactA*/, int /*contactB*/)
 
 void SimView::setVitesseLoco(int numLoco, int vitesseLoco)
 {
+    if (!checkLoco(numLoco))
+        return;
     this->Locos.value(numLoco)->setVitesse(vitesseLoco);
 }
 
 void SimView::reverseLoco(int numLoco)
 {
+    if (!checkLoco(numLoco))
+        return;
     this->Locos.value(numLoco)->inverserSens();
 }
 
 void SimView::setVitesseProgressiveLoco(int numLoco, int vitesseLoco)
 {
+    if (!checkLoco(numLoco))
+        return;
     this->Locos.value(numLoco)->setVitesse(vitesseLoco); //similaire à setVitesseLoco!
 }
 
 void SimView::stopLoco(int numLoco)
 {
+    if (!checkLoco(numLoco))
+        return;
     this->Locos.value(numLoco)->setVitesse(0);
 }
 
 void SimView::setVoieVariable(int numVoieVariable, int direction)
 {
+    if (!checkVoieVariable(numVoieVariable))
+        return;
     this->VoiesVariables.value(numVoieVariable)->setEtat(direction);
 }
 
@@ -394,4 +404,25 @@ void SimView::locoSurNouveauSegment(Contact *ctc1, Contact *ctc2, Loco *l)
 void SimView::voieVariableModifiee(Voie *v)
 {
     notificationVoieVariableModifiee(v);
+}
+
+
+bool SimView::checkLoco(int numLoco)
+{
+    if (!this->VoiesVariables.contains(numLoco))
+    {
+        QMessageBox::critical(this,"Erreur",QString("La loco %1 n'existe pas!").arg(numLoco));
+        return false;
+    }
+    return true;
+}
+
+bool SimView::checkVoieVariable(int numVoie)
+{
+    if (!this->VoiesVariables.contains(numVoie))
+    {
+        QMessageBox::critical(this,"Erreur",QString("La voie variable %1 n'existe pas sur la maquette sélectionnée!").arg(numVoie));
+        return false;
+    }
+    return true;
 }

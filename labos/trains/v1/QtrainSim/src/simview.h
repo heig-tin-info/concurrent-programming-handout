@@ -193,6 +193,7 @@ public slots:
       */
     void voieVariableModifiee(Voie* v);
 
+
 private:
     QTimer* timer;
     QGraphicsScene * scene;
@@ -208,6 +209,10 @@ private:
       * \return le segment correspondant.
       */
     Segment* getSegmentByContacts(int contactA, int contactB);
+
+    bool checkLoco(int numLoco);
+
+    bool checkVoieVariable(int numVoie);
 };
 
 #endif // SIMVIEW_H
