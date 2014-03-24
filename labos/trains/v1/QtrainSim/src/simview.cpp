@@ -327,8 +327,8 @@ void SimView::setLoco(int contactA, int contactB, int numLoco, int vitesseLoco)
 
     if (s==0)
     {
-        QMessageBox::warning(this,"Error","Les numéros de contact entre lesquels se trouve la loco ne sont pas valides. Ils doivent être directement voisins.");
-        return;
+        QMessageBox::warning(this,"Error",QString("Les numéros de contact (%1,%2) entre lesquels se trouve la loco ne sont pas valides. Ils doivent être directement voisins.\nL'application va se terminer.").arg(contactA).arg(contactB));
+        exit(-1);
     }
 
     Voie* v = s->getMilieu();
@@ -411,8 +411,8 @@ bool SimView::checkLoco(int numLoco)
 {
     if (!this->VoiesVariables.contains(numLoco))
     {
-        QMessageBox::critical(this,"Erreur",QString("La loco %1 n'existe pas!").arg(numLoco));
-        return false;
+        QMessageBox::critical(this,"Erreur",QString("La loco %1 n'existe pas!\nL'application va se terminer.").arg(numLoco));
+        exit(-1);
     }
     return true;
 }
@@ -421,8 +421,8 @@ bool SimView::checkVoieVariable(int numVoie)
 {
     if (!this->VoiesVariables.contains(numVoie))
     {
-        QMessageBox::critical(this,"Erreur",QString("La voie variable %1 n'existe pas sur la maquette sélectionnée!").arg(numVoie));
-        return false;
+        QMessageBox::critical(this,"Erreur",QString("La voie variable %1 n'existe pas sur la maquette sélectionnée!\nL'application va se terminer.").arg(numVoie));
+        exit(-1);
     }
     return true;
 }
