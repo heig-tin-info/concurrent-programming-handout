@@ -10,11 +10,12 @@
 static int parcours[] = {7, 15, 14, 7, 6, 5, 34, 33, 32, 25, 24};
 
 //Définition d'une locomotive
-typedef struct
+class Locomotive
 {
+public:
     int no;
     int vitesse;
-} Locomotive;
+};
 
 //Declaration d'une locomotive
 static Locomotive loco1;

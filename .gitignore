@@ -5,10 +5,13 @@ moc_*
 *.user
 qrc_*.cpp
 dist/
+build-*/
 
 *.aux
 *.log
 *.toc
 *.aux
 *.out
+*.bbl
+*.blg
 *.synctex.gz
