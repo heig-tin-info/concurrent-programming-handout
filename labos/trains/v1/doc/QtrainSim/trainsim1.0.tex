@@ -130,6 +130,18 @@ Un projet démontrant un fonctionnement basique peut \^etre récupéré sur le site 
 .3 src \DTcomment{ \begin{minipage}[t]{10cm}
 Contient les fichiers sources
 \end{minipage}}.
+.4 studentcpp \DTcomment{ \begin{minipage}[t]{10cm}
+Contient les fichiers à modifier pour un projet C++
+\end{minipage}}.
+.5 cppmain.cpp \DTcomment{ \begin{minipage}[t]{10cm}
+Fichier à modifier pour un projet C++
+\end{minipage}}.
+.4 studentc \DTcomment{ \begin{minipage}[t]{10cm}
+Contient les fichiers à modifier pour un projet C
+\end{minipage}}.
+.5 cmain.c \DTcomment{ \begin{minipage}[t]{10cm}
+Fichier à modifier pour un projet C
+\end{minipage}}.
 .4 ....
 .3 images\DTcomment{ \begin{minipage}[t]{10cm}
 Contient les images
@@ -186,7 +198,7 @@ make install
 au déploiement, afin que tous les fichiers maquettes soient copiés dans le répertoire de destination. L'autre option consiste à décocher l'option \emph{shadow build} dans l'onglet \emph{Build} du panel \emph{Projects}.
 
 
-Finalement, il est possible de développer en C ou C++. Pour un développement en C++, il faut travailler sur le fichier cppmain.cpp. Pour développer en C, il faut travailler dans cmain.c, et ajouter la ligne suivante dans le fichier \file{QtrainSim.pro}:
+Finalement, il est possible de développer en C ou C++. Pour un développement en C++, il faut travailler sur le fichier \file{src/studentcpp/cppmain.cpp}. Pour développer en C, il faut travailler dans \file{src/studentc/cmain.c}, et ajouter la ligne suivante dans le fichier \file{QtrainSim.pro}:
 
 \begin{lstlisting}
 CONFIG += CDEVELOP
@@ -215,12 +227,21 @@ Les fonctions fournies par la librairie sont définies dans \texttt{src/ctrain\_h
 
 \lstinputlisting[caption={ctrain\_handler.h},label={lst_ctrainhandler},language=C,style=stdCode]{../../QtrainSim/src/ctrain_handler.h}
 
-Le \emph{listing} \ref{lst_min_main} montre un fichier source minimal
-pour l'utilisation de la librairie. On remarque l'inclusion \ccode{#include "ctrain_handler.h"} qui fournit l'accès au fonctions. L'appel à \ccode{init_maquette()}
+
+Le \emph{listing} \ref{lst_min_main_cpp} montre un fichier source minimal
+pour l'utilisation de la librairie via du C++. On remarque l'inclusion \ccode{#include "ctrain_handler.h"} qui fournit l'accès au fonctions. L'appel à \ccode{init_maquette()}
 et \ccode{mettre_maquette_hors_service()} sont à effectuer obligatoirement
 en début et fin de programme.
 
-\lstinputlisting[caption={Fichier source minimal},label={lst_min_main},language=C,style=stdCode]{lst/main_minimal.c}
+\lstinputlisting[caption={Fichier source C++ minimal},label={lst_min_main_cpp},language=C++,style=stdCode]{lst/main_minimal.cpp}
+
+
+Le \emph{listing} \ref{lst_min_main} montre un fichier source minimal
+pour l'utilisation de la librairievia du C.
+
+\lstinputlisting[caption={Fichier source C minimal},label={lst_min_main},language=C,style=stdCode]{lst/main_minimal.c}
+
+
 
 
 \chapter{Utilisation}
@@ -229,16 +250,13 @@ en début et fin de programme.
 \section{Généralité}
 
 Pour programmer le comportement des locomotives dans QTrainSim, il
-faut utiliser le langage C ou C++ (possibilité d'utiliser la librairie Qt). Toutefois, le projet est structuré de telle manière
-que l'utilisation la plus simple consiste en la complétion
-en C de la méthode run() utilisée par le thread \textit{User} dans
-\file{main.cpp}. En aucun cas il n'est nécessaire, ni même
-souhaitable de modifier les autres fichiers du projet. En cas de modification,
-il faut savoir que le programme pourrait ne pas fonctionner sur la
-maquette physique. Toutes les fonctions nécessaires se trouvent dans
+faut utiliser le langage C ou C++ (possibilité d'utiliser la librairie Qt). Toutes les fonctions nécessaires se trouvent dans
 l'API représetée par le fichier \file{ctrain\_handler.h}.
 Ces fonctions peuvent être appelées directement et sans préfixe depuis
-\file{cmain.c}.
+\file{cmain.c} ou \file{cmaincpp.cpp}. En aucun cas il n'est nécessaire, ni même
+souhaitable de modifier les autres fichiers du projet. En cas de modification,
+il faut savoir que le programme pourrait ne pas fonctionner sur la
+maquette physique.
 
 Le simulateur se lance directement à partir de \noun{QtCreator}. Afin
 d'indiquer au simulateur la maquette et les locomotives à utiliser,
@@ -286,7 +304,7 @@ différentes actions définies :
 \begin{itemize}
 \item \submenu{Actions}{Resume/Pause} permet de démarrer ou mettre en pause
 le système en fonction de l'état de celui-ci. Cette action n'est applicable qu'en simulation, qui doit notamment être lancée via ce biais. Sur la maquette l'expérience débute immédiatement au lancement du programme.
-\item \submenu{Actions}{Emergency stop} fait appelle à la fonction \emph{emergency\_stop()} située à l'intérieur du fichier \texttt{cmain.c}. C'est la responsabilité de l'utilisateur de placer le code spécifique à cet appel.
+\item \submenu{Actions}{Emergency stop} fait appelle à la fonction \ccode{emergency\_stop()} située à l'intérieur du fichier \texttt{cmain.c} (ou \file{cppmain.cpp}). C'est la responsabilité de l'utilisateur de placer le code spécifique à cet appel.
 \item \submenu{Actions}{Pause loco n/Restart loco n} permettent de mettre en
 pause ou de redémarrer une locomotive spécifique représentée par le
 numéro $n$ en fonction de son état actuel.
