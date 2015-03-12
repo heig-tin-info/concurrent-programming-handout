@@ -434,7 +434,7 @@ void MainWindow::createActions()
     zoomFitAct = new QAction(tr("Zoom &fit"), this);
     //     zoomFitAct->setShortcut(tr("Ctrl+L"));
     zoomFitAct->setStatusTip(tr("Zoom fit"));
-    CONNECT(zoomFitAct, SIGNAL(triggered()), this, SLOT(zoomFit()))
+    CONNECT(zoomFitAct, SIGNAL(triggered()), this, SLOT(zoomFit()));
 
     rotatePlusAct = new QAction(tr("Rotate +"), this);
     rotatePlusAct->setShortcut(tr("Ctrl+R"));
