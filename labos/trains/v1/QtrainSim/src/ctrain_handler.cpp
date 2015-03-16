@@ -10,7 +10,6 @@
  */
  
 #include "ctrain_handler.h"
-
 #include "commandetrain.h"
 
 #define CMD_TRAIN CommandeTrain::getInstance()

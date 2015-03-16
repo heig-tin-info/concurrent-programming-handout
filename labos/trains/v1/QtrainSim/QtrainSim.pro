@@ -46,7 +46,7 @@ win32 {
     MOC_DIR = tmp/win/moc
     OBJECTS_DIR = tmp/win/obj
     RCC_DIR = tmp/win/rcc
-    LIBS += -lpthread
+    CDEVELOP: LIBS += -lpthread
 }
 unix {
     DEFINES += ON_LINUX
@@ -64,10 +64,14 @@ macx {
 }
 
 CDEVELOP: DEFINES += CDEVELOP
-CDEVELOP: SOURCES += src/cmain.c
-!CDEVELOP: SOURCES += src/cppmain.cpp
+CDEVELOP: SOURCES += src/student_c/cmain.c
+!CDEVELOP: SOURCES += src/student_cpp/cppmain.cpp
 
-INCLUDEPATH += src
+INCLUDEPATH += \
+    src \
+    src/student_c \
+    src/student_cpp
+
 SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
@@ -88,7 +92,8 @@ SOURCES += \
     src/maquettemanager.cpp \
     src/voieaiguillageenroule.cpp \
     src/voieaiguillagetriple.cpp \
-    src/ctrain_handler.cpp
+    src/ctrain_handler.cpp \
+    src/student_cpp/locomotive.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -111,6 +116,7 @@ HEADERS += \
     src/maquettemanager.h \
     src/voieaiguillageenroule.h \
     src/voieaiguillagetriple.h \
-    src/ctrain_handler.h
+    src/ctrain_handler.h \
+    src/student_cpp/locomotive.h
 
 OTHER_FILES += infosVoies.txt
