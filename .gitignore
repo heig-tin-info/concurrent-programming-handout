@@ -15,3 +15,6 @@ build-*/
 *.bbl
 *.blg
 *.synctex.gz
+
+*.Debug
+*.Release

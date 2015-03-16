@@ -1,5 +1,4 @@
 #ifndef H_CTRAIN_HANDLER
-
 #define H_CTRAIN_HANDLER
 
 /*
@@ -18,6 +17,12 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+// Maquette A
+#define MAQUETTE_A "MAQUET_A"
+
+// Maquette B
+#define MAQUETTE_B "MAQUET_B"
 
 // Vitesse a l'arret
 #define	VITESSE_NULLE 0
