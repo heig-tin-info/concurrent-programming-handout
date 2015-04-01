@@ -210,7 +210,7 @@ void Loco::avanceDUneVoie()
     if(voieActuelle->getContact() != NULL)
     {
         Contact* ctc1 = voieActuelle->getContact();
-        Contact* ctc2;
+        Contact* ctc2 = NULL;
         viensDe = voieActuelle;
         Voie* v1 = voieSuivante;
         Voie* v2 = v1->getVoieSuivante(viensDe);
