@@ -45,7 +45,8 @@ int cmain()
     //Attente du passage sur les contacts
     for (int i = 1; i < parcours.size(); i++) {
         attendre_contact(parcours.at(i));
-        afficher_message(qPrintable(QString("The engine no. %1 has reached contact no. %2.").arg(locomotive.numero()).arg(parcours.at(i))));
+        afficher_message(qPrintable(QString("The engine no. %1 has reached contact no. %2.")
+                                    .arg(locomotive.numero()).arg(parcours.at(i))));
         locomotive.afficherMessage(QString("I've reached contact no. %1.").arg(parcours.at(i)));
     }
 
