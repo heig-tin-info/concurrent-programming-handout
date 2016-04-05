@@ -61,6 +61,8 @@ macx {
     MOC_DIR = tmp/mac/moc
     OBJECTS_DIR = tmp/mac/obj
     RCC_DIR = tmp/mac/rcc
+    # Avoid to create a bundle that causes troubles with the maquette files
+    CONFIG -= app_bundle
 }
 
 CDEVELOP: DEFINES += CDEVELOP
