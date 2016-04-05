@@ -71,3 +71,8 @@ void Locomotive::arreter()
     arreter_loco(_numero);
     _enFonction = false;
 }
+
+void Locomotive::inverserSens()
+{
+    inverser_sens_loco(_numero);
+}

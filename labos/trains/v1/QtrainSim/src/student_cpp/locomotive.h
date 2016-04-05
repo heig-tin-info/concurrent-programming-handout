@@ -65,6 +65,9 @@ public:
     //! Arrete la locomotive.
     void arreter();
 
+    //! Change le sens de marche de la locomotive.
+    void inverserSens();
+
 private:
     int _numero;
     int _vitesse;
