@@ -409,7 +409,7 @@ void SimView::voieVariableModifiee(Voie *v)
 
 bool SimView::checkLoco(int numLoco)
 {
-    if (!this->VoiesVariables.contains(numLoco))
+    if (!this->Locos.contains(numLoco))
     {
         QMessageBox::critical(this,"Erreur",QString("La loco %1 n'existe pas!\nL'application va se terminer.").arg(numLoco));
         exit(-1);
