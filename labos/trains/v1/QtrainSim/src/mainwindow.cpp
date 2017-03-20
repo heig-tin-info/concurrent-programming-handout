@@ -245,7 +245,9 @@ void MainWindow::toggleSimulation()
         toggleSimAct->setText(tr("&Pause"));
         toggleSimAct->setShortcut(tr("Ctrl+P"));
         toggleSimAct->setStatusTip(tr("Pause the simulation"));
+#ifndef ON_MACOS
         toggleSimAct->setIcon(QIcon(":images/simulate_break.png"));
+#endif // ON_MACOS
         statusLabel->setText(tr("Running"));
         m_state=RUNNING;
     }
@@ -255,7 +257,9 @@ void MainWindow::toggleSimulation()
         toggleSimAct->setText(tr("&Resume"));
         toggleSimAct->setShortcut(tr("Ctrl+R"));
         toggleSimAct->setStatusTip(tr("Resume the simulation"));
+#ifndef ON_MACOS
         toggleSimAct->setIcon(QIcon(":images/simulate_start.png"));
+#endif // ON_MACOS
         m_state=PAUSE;
         statusLabel->setText(tr("Pause"));
     }
@@ -295,15 +299,19 @@ void MainWindow::setLocoState(LocoCtrl *loco,LocoCtrl::STATE state)
             loco->ptrLoco->setActive(false);
             loco->toggle->setText(tr("Restart the loco %1").arg(loco->loco));
             loco->toggle->setStatusTip(tr("Restart the loco %1").arg(loco->loco));
+#ifndef ON_MACOS
             loco->toggle->setIcon(QIcon(":images/simulate_start.png"));
-        } break;
+#endif // ON_MACOS
+    } break;
         case LocoCtrl::RUNNING: {
             loco->state=LocoCtrl::RUNNING;
             loco->ptrLoco->setActive(true);
             loco->toggle->setText(QString("Pause loco %1").arg(loco->loco));
             loco->toggle->setStatusTip(tr("Pause the loco"));
+#ifndef ON_MACOS
             loco->toggle->setIcon(QIcon(":images/simulate_break.png"));
-        } break;
+#endif // ON_MACOS
+    } break;
     }
 }
 
@@ -378,25 +386,30 @@ void MainWindow::createActions()
     exitAct = new QAction(tr("E&xit"), this);
     exitAct->setShortcut(tr("Ctrl+Q"));
     exitAct->setStatusTip(tr("Exit the application"));
+#ifndef ON_MACOS
     exitAct->setIcon(QIcon(":images/simulate_exit.png"));
+#endif // ON_MACOS
     CONNECT(exitAct, SIGNAL(triggered()), qApp, SLOT(closeAllWindows()));
 
     printAct = new QAction(tr("&Print"), this);
     printAct->setShortcut(tr("Ctrl+P"));
     printAct->setStatusTip(tr("Print the map"));
-//    printAct->setIcon(QIcon(":images/simulate_exit.png"));
     CONNECT(printAct, SIGNAL(triggered()), this, SLOT(print()));
 
     toggleSimAct = new QAction(tr("&Pause"), this);
     toggleSimAct->setShortcut(tr("Ctrl+P"));
     toggleSimAct->setStatusTip(tr("Pause the simulation"));
+#ifndef ON_MACOS
     toggleSimAct->setIcon(QIcon(":images/simulate_break.png"));
+#endif // ON_MACOS
     CONNECT(toggleSimAct, SIGNAL(triggered()), this, SLOT(toggleSimulation()));
 
     emergencyStopAct = new QAction(tr("&Emergency stop"),this);
     emergencyStopAct->setShortcut(tr("Ctrl+E"));
     emergencyStopAct->setStatusTip(tr("Executes an emergency stop. Has to be implemented by the students"));
+#ifndef ON_MACOS
     emergencyStopAct->setIcon(QIcon(":images/simulate_end.png"));
+#endif // ON_MACOS
     CONNECT(emergencyStopAct, SIGNAL(triggered()), this, SLOT(emergencyStop()));
 
 
@@ -418,14 +431,20 @@ void MainWindow::createActions()
     CONNECT(chargerMaquetteAct, SIGNAL(triggered()), this, SLOT(on_actionCharger_Maquette_triggered()));
 
 
-    zoomInAct = new QAction(QIcon(":/images/zoomin.png"),tr("Zoom &in"), this);
+    zoomInAct = new QAction(tr("Zoom &in"), this);
+#ifndef ON_MACOS
+    zoomInAct->setIcon(QIcon(":/images/zoomin.png"));
+#endif // ON_MACOS
     zoomInAct->setShortcut(QKeySequence::ZoomIn);
 //    zoomInAct->setShortcut(tr("Ctrl+K"));
     zoomInAct->setStatusTip(tr("Zoom in"));
     CONNECT(zoomInAct, SIGNAL(triggered()), this, SLOT(zoomIn()));
 
 
-    zoomOutAct = new QAction(QIcon(":/images/zoomout.png"),tr("Zoom &out"), this);
+    zoomOutAct = new QAction(tr("Zoom &out"), this);
+#ifndef ON_MACOS
+    zoomOutAct->setIcon(QIcon(":/images/zoomout.png"));
+#endif // ON_MACOS
     zoomOutAct->setShortcut(tr("Ctrl+L"));
     zoomOutAct->setStatusTip(tr("Zoom out"));
     CONNECT(zoomOutAct, SIGNAL(triggered()), this, SLOT(zoomOut()));

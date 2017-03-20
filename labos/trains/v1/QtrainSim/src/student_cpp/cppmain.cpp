@@ -23,7 +23,7 @@ int cmain()
 
     //Initialisation d'un parcours
     QList<int> parcours;
-    parcours << 7 << 15 << 14 << 7 << 6 << 5 << 34 << 33 << 32 << 25 << 24;
+    parcours << 16 << 15 << 14 << 7 << 6 << 5 << 34 << 33 << 32 << 25 << 24;
 
     //Initialisation des aiguillages
     diriger_aiguillage(8,  DEVIE,       0);
@@ -43,7 +43,7 @@ int cmain()
     locomotive.afficherMessage("Ready!");
 
     //Attente du passage sur les contacts
-    for (int i = 1; i < parcours.size(); i++) {
+    for (int i = 0; i < parcours.size(); i++) {
         attendre_contact(parcours.at(i));
         afficher_message(qPrintable(QString("The engine no. %1 has reached contact no. %2.")
                                     .arg(locomotive.numero()).arg(parcours.at(i))));
