@@ -19,6 +19,7 @@
 #include <QTextEdit>
 #include <contact.h>
 #include <QSemaphore>
+#include <ios>
 
 template< class Elem = char, class Tr = std::char_traits< Elem > >
  class StdRedirector : public std::basic_streambuf< Elem, Tr >
