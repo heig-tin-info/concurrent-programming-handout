@@ -195,9 +195,12 @@ void SimView::animationStart()
 
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
-#include <QSound>
 #include <QThread>
 #include <QApplication>
+
+#ifdef WITHSOUND
+#include <QSound>
+
 
 class SoundThread : public QThread
 {
@@ -216,6 +219,8 @@ protected:
 //        QSound::play(":/sound/explosion.wav");
     }
 };
+
+#endif // WITHSOUND
 
 void SimView::animationStep()
 {
@@ -276,8 +281,10 @@ void SimView::animationStep()
                         item->setZValue(ZVAL_EXPLOSION);
                         item->show();
                         animationGroup->start();
+#ifdef WITHSOUND
                         SoundThread *thread=new SoundThread(this);
                         thread->start();
+#endif // WITHSOUND
                     }
                 }
             }

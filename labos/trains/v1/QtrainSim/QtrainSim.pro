@@ -5,16 +5,8 @@
     error("Use at least Qt 5.0.")
 }
 
-#Qt modules
-QT += core gui widgets printsupport multimedia
-
-#Target and template
-TARGET = QtrainSim
-TEMPLATE = app
-DESTDIR = dist
-
-#Configuration
-CONFIG += debug
+# Compile without link to sound when loco have an accident
+# CONFIG += NOSOUND
 
 #Use maquettes instead of sim
 #CONFIG += MAQUETTE
@@ -24,6 +16,21 @@ CONFIG += debug
 
 #Use alternate painting style
 #DEFINES += DRAW_BOUNDINGRECT
+
+#Qt modules
+QT += core gui widgets printsupport
+
+!NOSOUND : QT += multimedia
+!NOSOUND : DEFINES += WITHSOUND
+
+#Target and template
+TARGET = QtrainSim
+TEMPLATE = app
+DESTDIR = dist
+
+#Configuration
+CONFIG += debug
+
 
 #Install the maquettes files
 maquettes.path  =  $$OUT_PWD/dist/data/Maquettes
