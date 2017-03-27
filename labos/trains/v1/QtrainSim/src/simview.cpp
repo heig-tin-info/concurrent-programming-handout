@@ -252,10 +252,8 @@ void SimView::animationStep()
                         l->setActive(false);
                         otherLoco->setActive(false);
                         ExplosionItem *item=new ExplosionItem();
-#ifndef ON_MACOS
                         QPixmap img(":images/explosion.png");
                         item->setPixmap(img);
-#endif // ON_MACOS
                         scene->addItem(item);
                         QPointF debPoint((l->pos().x()+otherLoco->pos().x())/2,
                                     (l->pos().y()+otherLoco->pos().y())/2);
