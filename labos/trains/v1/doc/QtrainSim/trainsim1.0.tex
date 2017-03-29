@@ -74,6 +74,8 @@
 \hline
 19/04/16 & v1.7 & YTA & Les maquettes sont maintenant les nouvelles maquettes telles que présentées dans le simulateur \tabularnewline
 \hline
+29/03/17 & v1.8 & YTA & Ajout d'un mot sur la gestion des sons, notamment pour les utilisateurs de Linux \tabularnewline
+\hline
 \end{tabular}
 \par\end{centering}
 
@@ -124,7 +126,7 @@ plate-formes disponibles et comment l'utiliser.
 
 \section{Mise en place}
 
-Cette documentation se base sur l'environnement \noun{Qt SDK} 5.0. A priori le code devrait être fonctionnel sur des version postérieurs du \noun{Qt SDK}. Le simulateur est écrit en C++, en exploitant les différentes classes offertes par le \noun{Qt SDK}.
+Cette documentation se base sur l'environnement \noun{Qt SDK} 5.0-5.8. A priori le code devrait être fonctionnel sur des version postérieurs du \noun{Qt SDK}. Le simulateur est écrit en C++, en exploitant les différentes classes offertes par le \noun{Qt SDK}.
 
 Un projet démontrant un fonctionnement basique peut \^etre récupéré sur le site web du reds: \url{http://reds.heig-vd.ch}. Le répertoire du projet contient:
 
@@ -210,6 +212,18 @@ Finalement, il est possible de développer en C ou C++. Pour un développement en 
 CONFIG += CDEVELOP
 \end{lstlisting}
 
+
+Pour les utilisateurs de Linux, l'audio nécessite pulse audio. Il est possible de l'installer (sous les distributions Debian) ainsi:
+
+\begin{lstlisting}[style=cmd]
+sudo apt-get install libpulse-dev liglib2-dev
+\end{lstlisting}
+
+Si l'usage des sons n'est pas désiré, il suffit de lancer \noun{qmake} avec la configuration suivante:
+
+\begin{lstlisting}
+CONFIG += NOSOUND
+\end{lstlisting}
 
 \section{Écriture d'un programme}
 
