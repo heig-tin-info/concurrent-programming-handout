@@ -73,13 +73,39 @@ macx {
 }
 
 CDEVELOP: DEFINES += CDEVELOP
-CDEVELOP: SOURCES += src/student_c/cmain.c
-!CDEVELOP: SOURCES += src/student_cpp/cppmain.cpp
 
-INCLUDEPATH += \
-    src \
-    src/student_c \
-    src/student_cpp
+config_solution {
+    config_solution1 {
+        HEADERS +=  \
+            ../QtrainSimSolution/solution1/locomotive.h
+
+        SOURCES +=  \
+            ../QtrainSimSolution/solution1/locomotive.cpp \
+            ../QtrainSimSolution/solution1/cppmain.cpp
+
+    }
+}
+
+!config_solution {
+    SOURCES +=  \
+        src/student_cpp/locomotive.cpp
+
+
+    CDEVELOP: {
+        SOURCES += src/student_c/cmain.c
+        INCLUDEPATH += src/student_c
+    }
+    !CDEVELOP: {
+        SOURCES += src/student_cpp/cppmain.cpp
+        INCLUDEPATH += src/student_cpp
+    }
+
+    HEADERS +=  \
+        src/student_cpp/locomotive.h
+}
+
+
+INCLUDEPATH += src
 
 SOURCES += \
     src/main.cpp \
@@ -101,8 +127,7 @@ SOURCES += \
     src/maquettemanager.cpp \
     src/voieaiguillageenroule.cpp \
     src/voieaiguillagetriple.cpp \
-    src/ctrain_handler.cpp \
-    src/student_cpp/locomotive.cpp
+    src/ctrain_handler.cpp
 
 HEADERS += \
     src/mainwindow.h \
@@ -125,7 +150,6 @@ HEADERS += \
     src/maquettemanager.h \
     src/voieaiguillageenroule.h \
     src/voieaiguillagetriple.h \
-    src/ctrain_handler.h \
-    src/student_cpp/locomotive.h
+    src/ctrain_handler.h
 
 OTHER_FILES += infosVoies.txt
