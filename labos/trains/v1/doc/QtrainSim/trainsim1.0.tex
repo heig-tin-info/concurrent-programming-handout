@@ -78,6 +78,8 @@
 \hline
 21/03/18 & v1.9 & YTA & Ajout d'un mot sur le fichier locomotive.h/cpp \tabularnewline
 \hline
+28/03/18 & v1.10 & YTA & Ajout d'un mot sur le déploiement \tabularnewline
+\hline
 \end{tabular}
 \par\end{centering}
 
@@ -200,13 +202,23 @@ Les opérations de compilation peuvent également \^etre exécutées gr\^ace à l'env
 
 \newcommand{\attention}{\includegraphics[height=1em]{fig/attention}\hspace{.2cm}}
 
-\attention Attention, avec \noun{QtCreator}, la compilation peut se faire en \emph{shadow build} ou non. Par défaut c'est le mode \emph{shadow build} qui est utilisé. Dans ce cas, il faut ajouter une étape de déploiement dans le panel \emph{Projects}, sous l'onglet \emph{Run}. Il faut simplement appeler 
+\attention Attention, avec \noun{QtCreator}, la compilation peut se faire en \emph{shadow build} ou non. Par défaut c'est le mode \emph{shadow build} qui est utilisé. Dans ce cas, il faut ajouter une étape de déploiement dans le panel \emph{Projects}, sous l'onglet \emph{Run}.
+
+Il faut ajouter une étape de déploiement "Add Deploy Step->Custom Process Step", et renseigner les champs comme dans l'image ci-dessous.
+
+Attention, pour Windows, il faut écrire mingw32-make au lieu de make.
+
+\begin{center}
+	\includegraphics[width=.7\textwidth]{fig/deploy}
+\end{center} 
+
+En ligne de commande il est possible de taper la commande suivante dans le répertoire de build:
 
 \begin{lstlisting}[style=cmd]
 make install
 \end{lstlisting}
 
-au déploiement, afin que tous les fichiers maquettes soient copiés dans le répertoire de destination. L'autre option consiste à décocher l'option \emph{shadow build} dans l'onglet \emph{Build} du panel \emph{Projects}.
+De cette manière tous les fichiers maquettes sont copiés dans le répertoire de destination. L'autre option consiste à décocher l'option \emph{shadow build} dans l'onglet \emph{Build} du panel \emph{Projects}.
 
 
 Finalement, il est possible de développer en C ou C++. Pour un développement en C++, il faut travailler sur le fichier \file{src/studentcpp/cppmain.cpp}. Pour développer en C, il faut travailler dans \file{src/studentc/cmain.c}, et ajouter la ligne suivante dans le fichier \file{QtrainSim.pro}:
