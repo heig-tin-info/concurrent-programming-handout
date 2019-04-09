@@ -47,10 +47,9 @@ Loco::Loco(int numLoco, QObject *parent) :
     this->numLoco2->setPos(- LONGUEUR_LOCO * 0.3, 0.0);
     this->numLoco2->setRotation(this->numLoco2->rotation() + 180.0);
     this->vitesse = 0;
-    this->vitesseFuture =0;
+    this->vitesseFuture = 0;
     this->active = true;
     this->direction = DIRECTION_LOCO_GAUCHE;
-    this->couleur = new QColor();
     this->angleCumule = 0.0;
     this->alerteProximite = false;
     this->inverser = false;
@@ -93,12 +92,12 @@ int Loco::getDirection()
 
 void Loco::setCouleur(int r, int g, int b)
 {
-    couleur = new QColor(r,g,b);
+    couleur = QColor(r,g,b);
 }
 
-QColor* Loco::getCouleur()
+QColor Loco::getCouleur()
 {
-    return this->couleur;
+    return couleur;
 }
 
 QRectF Loco::boundingRect() const
@@ -112,7 +111,7 @@ QRectF Loco::boundingRect() const
 void Loco::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
 
-    painter->setBrush(*couleur);
+    painter->setBrush(couleur);
 
     painter->drawRect(QRectF(-LONGUEUR_LOCO / 2.0, -LARGEUR_LOCO / 2.0, LONGUEUR_LOCO, LARGEUR_LOCO));
 
@@ -203,19 +202,19 @@ void Loco::avanceDUneVoie()
 
     voieSuivante = voieActuelle->getVoieSuivante(viensDe);
 
-    setPos(*voieActuelle->getPosAbsLiaison(viensDe));
+    setPos(voieActuelle->getPosAbsLiaison(viensDe));
 
     corrigerAngle(voieActuelle->getNouvelAngle(viensDe));
 
-    if(voieActuelle->getContact() != NULL)
+    if(voieActuelle->getContact() != nullptr)
     {
         Contact* ctc1 = voieActuelle->getContact();
-        Contact* ctc2 = NULL;
+        Contact* ctc2 = nullptr;
         viensDe = voieActuelle;
         Voie* v1 = voieSuivante;
         Voie* v2 = v1->getVoieSuivante(viensDe);
 
-        while (ctc2 == NULL)
+        while (ctc2 == nullptr)
         {
             ctc2 = v1->getContact();
             viensDe = v1;

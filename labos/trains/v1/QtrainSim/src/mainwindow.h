@@ -1,25 +1,26 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <connect.h>
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QDir>
 #include <QDebug>
-#include <simview.h>
 #include <QSignalMapper>
-#include <voieaiguillage.h>
-#include <voieaiguillageenroule.h>
-#include <voieaiguillagetriple.h>
-#include <voiebuttoir.h>
-#include <voiecourbe.h>
-#include <voiecroisement.h>
-#include <voiedroite.h>
-#include <voietraverseejonction.h>
 #include <QTextEdit>
-#include <contact.h>
 #include <QSemaphore>
 #include <ios>
+
+#include "voieaiguillage.h"
+#include "voieaiguillageenroule.h"
+#include "voieaiguillagetriple.h"
+#include "voiebuttoir.h"
+#include "voiecourbe.h"
+#include "voiecroisement.h"
+#include "voiedroite.h"
+#include "voietraverseejonction.h"
+#include "simview.h"
+#include "contact.h"
+#include "connect.h"
 
 template< class Elem = char, class Tr = std::char_traits< Elem > >
  class StdRedirector : public std::basic_streambuf< Elem, Tr >

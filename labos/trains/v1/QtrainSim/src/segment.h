@@ -2,9 +2,10 @@
 #define SEGMENT_H
 
 #include <QObject>
-#include <contact.h>
-#include <voie.h>
 #include <QDebug>
+
+#include "contact.h"
+#include "voie.h"
 
 class Segment : public QObject
 {

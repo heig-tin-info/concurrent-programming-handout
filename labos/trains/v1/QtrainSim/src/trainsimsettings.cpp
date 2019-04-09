@@ -7,11 +7,11 @@ TrainSimSettings::TrainSimSettings()
     viewAiguillageNumber=false;
 }
 
-TrainSimSettings *TrainSimSettings::instance=0;
+TrainSimSettings *TrainSimSettings::instance = nullptr;
 
 TrainSimSettings* ::TrainSimSettings::getInstance()
 {
-    if (instance==0)
+    if (instance == nullptr)
         instance=new TrainSimSettings();
     return instance;
 }

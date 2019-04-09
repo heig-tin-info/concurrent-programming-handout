@@ -7,7 +7,6 @@ VoieCourbe::VoieCourbe(qreal angle, qreal rayon, int direction)
     this->rayon = rayon;
     this->angle = angle;
     this->direction = direction;
-    this->centre = new QPointF();
     this->orientee = false;
     this->posee = false;
     this->lastDistDel = 1000.0;
@@ -16,7 +15,7 @@ VoieCourbe::VoieCourbe(qreal angle, qreal rayon, int direction)
 void VoieCourbe::calculerAnglesEtCoordonnees(Voie *v)
 {
     int ordreVoieFixe;
-    if(v==NULL)
+    if(v == nullptr)
     {
         ordreVoieFixe = 0;
         setAngleDeg(0, 0.0);
@@ -38,16 +37,16 @@ void VoieCourbe::calculerAnglesEtCoordonnees(Voie *v)
     }
 
     //calculer coordonnees du centre.
-    centre->setX(rayon * cos(getAngleRad(0) - (direction / 2.0) * PI));
-    centre->setY(- rayon * sin(getAngleRad(0) - (direction / 2.0) * PI));
+    centre.setX(rayon * cos(getAngleRad(0) - (direction / 2.0) * PI));
+    centre.setY(- rayon * sin(getAngleRad(0) - (direction / 2.0) * PI));
 
     //calculer position relative de 0 et 1.
     coordonneesLiaison[0]->setX(0.0);
     coordonneesLiaison[0]->setY(0.0);
-    coordonneesLiaison[1]->setX(centre->x() + rayon * cos(getAngleRad(1) - (direction / 2.0) * PI));
-    coordonneesLiaison[1]->setY(centre->y() - rayon * sin(getAngleRad(1) - (direction / 2.0) * PI));
+    coordonneesLiaison[1]->setX(centre.x() + rayon * cos(getAngleRad(1) - (direction / 2.0) * PI));
+    coordonneesLiaison[1]->setY(centre.y() - rayon * sin(getAngleRad(1) - (direction / 2.0) * PI));
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
     {
         calculerPositionContact();
     }
@@ -62,8 +61,8 @@ void VoieCourbe::calculerAnglesEtCoordonnees(Voie *v)
 
 void VoieCourbe::calculerPositionContact()
 {
-    this->contact->setPos(centre->x() + rayon * cos(getAngleRad(1) - direction * (PI + angle * PI / 180.0) / 2.0),
-                          centre->y() - rayon * sin(getAngleRad(1) - direction * (PI + angle * PI / 180.0) / 2.0));
+    this->contact->setPos(centre.x() + rayon * cos(getAngleRad(1) - direction * (PI + angle * PI / 180.0) / 2.0),
+                          centre.y() - rayon * sin(getAngleRad(1) - direction * (PI + angle * PI / 180.0) / 2.0));
     this->contact->setAngle(atan2(- coordonneesLiaison[1]->y(), - coordonneesLiaison[1]->x()) + direction * PI / 2.0);
 }
 
@@ -71,7 +70,7 @@ QList<QList<Voie*>*> VoieCourbe::explorationContactAContact(Voie* voieAppelante)
 {
     QList<QList<Voie*>*> temp;
 
-    if(this->contact == NULL)
+    if(this->contact == nullptr)
     {
         if(ordreLiaison.key(voieAppelante) == 0)
             temp.append(ordreLiaison.value(1)->explorationContactAContact(this));
@@ -147,8 +146,8 @@ void VoieCourbe::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angle
         }
     }
 
-    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
-    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal xLiaison = getPosAbsLiaison(voieSuivante).x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante).y();
     qreal x = posActuelle.x() - xLiaison;
     qreal y = posActuelle.y() - yLiaison;
     qreal distDel = sqrt((x*x) + (y*y));
@@ -190,14 +189,14 @@ void VoieCourbe::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
                             direction * ((180.0 - angle) / 360.0) * PI;
 
     //calculer coordonnees du centre.
-    centre->setX(- rayon * cos(anglePourCentre));
-    centre->setY(- rayon * sin(anglePourCentre));
+    centre.setX(- rayon * cos(anglePourCentre));
+    centre.setY(- rayon * sin(anglePourCentre));
 
-    setAngleRad(0, atan2(- centre->y(), centre->x()) + direction * PI / 2.0);
+    setAngleRad(0, atan2(- centre.y(), centre.x()) + direction * PI / 2.0);
 
     setAngleDeg(1, getAngleDeg(0) + 180.0 + direction * angle);
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 }
 
@@ -217,9 +216,9 @@ QRectF VoieCourbe::boundingRect() const
 void VoieCourbe::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     painter->setPen(this->pen());
-    painter->drawArc(QRectF(centre->x() - rayon, centre->y() - rayon, 2.0 * rayon, 2.0 * rayon),
-                     (int) ((getAngleDeg(0) - (direction * 270.0)) * 16.0),
-                     (int) ((direction * angle) *16.0));
+    painter->drawArc(QRectF(centre.x() - rayon, centre.y() - rayon, 2.0 * rayon, 2.0 * rayon),
+                     static_cast<int>((getAngleDeg(0) - (direction * 270.0)) * 16.0),
+                     static_cast<int>((direction * angle) *16.0));
     drawBoundingRect(painter);
 
 /*    QPainterPath path;

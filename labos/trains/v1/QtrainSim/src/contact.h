@@ -6,9 +6,10 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include <QPainter>
-#include <general.h>
 #include <QDebug>
 #include <math.h>
+
+#include "general.h"
 
 class Contact : public QObject, public QAbstractGraphicsShapeItem
 {

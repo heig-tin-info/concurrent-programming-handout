@@ -19,8 +19,6 @@ VoieAiguillageTriple::VoieAiguillageTriple(qreal angle, qreal rayon, qreal longu
     this->etat = 0;
     this->orientee = false;
     this->posee = false;
-    this->centreGauche = new QPointF();
-    this->centreDroite = new QPointF();
     this->lastDistDel = 1000.0;
 }
 
@@ -40,7 +38,7 @@ void VoieAiguillageTriple::setNumVoieVariable(int numVoieVariable)
 void VoieAiguillageTriple::calculerAnglesEtCoordonnees(Voie *v)
 {
     int ordreVoieFixe;
-    if(v==NULL)
+    if(v == nullptr)
     {
         ordreVoieFixe = 0;
         setAngleDeg(0, 0.0);
@@ -77,22 +75,22 @@ void VoieAiguillageTriple::calculerAnglesEtCoordonnees(Voie *v)
     }
 
     //calculer coordonnees des centres.
-    centreGauche->setX(rayonGauche * cos(getAngleRad(0) - (PI / 2.0)));
-    centreGauche->setY(- rayonGauche * sin(getAngleRad(0) - (PI / 2.0)));
-    centreDroite->setX(rayonDroite * cos(getAngleRad(0) + (PI / 2.0)));
-    centreDroite->setY(- rayonDroite * sin(getAngleRad(0) + (PI / 2.0)));
+    centreGauche.setX(rayonGauche * cos(getAngleRad(0) - (PI / 2.0)));
+    centreGauche.setY(- rayonGauche * sin(getAngleRad(0) - (PI / 2.0)));
+    centreDroite.setX(rayonDroite * cos(getAngleRad(0) + (PI / 2.0)));
+    centreDroite.setY(- rayonDroite * sin(getAngleRad(0) + (PI / 2.0)));
 
     //calculer position relative de 0 et 1.
     coordonneesLiaison[0]->setX(0.0);
     coordonneesLiaison[0]->setY(0.0);
     coordonneesLiaison[1]->setX(longueur * cos(getAngleRad(1)));
     coordonneesLiaison[1]->setY(- longueur * sin(getAngleRad(1)));
-    coordonneesLiaison[2]->setX(centreGauche->x() + rayonGauche * cos(getAngleRad(2) - (PI / 2.0)));
-    coordonneesLiaison[2]->setY(centreGauche->y() - rayonGauche * sin(getAngleRad(2) - (PI / 2.0)));
-    coordonneesLiaison[3]->setX(centreDroite->x() + rayonDroite * cos(getAngleRad(3) + (PI / 2.0)));
-    coordonneesLiaison[3]->setY(centreDroite->y() - rayonDroite * sin(getAngleRad(3) + (PI / 2.0)));
+    coordonneesLiaison[2]->setX(centreGauche.x() + rayonGauche * cos(getAngleRad(2) - (PI / 2.0)));
+    coordonneesLiaison[2]->setY(centreGauche.y() - rayonGauche * sin(getAngleRad(2) - (PI / 2.0)));
+    coordonneesLiaison[3]->setX(centreDroite.x() + rayonDroite * cos(getAngleRad(3) + (PI / 2.0)));
+    coordonneesLiaison[3]->setY(centreDroite.y() - rayonDroite * sin(getAngleRad(3) + (PI / 2.0)));
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 
     orientee = true;
@@ -117,7 +115,7 @@ QList<QList<Voie*>*> VoieAiguillageTriple::explorationContactAContact(Voie* voie
 {
     QList<QList<Voie*>*> temp;
 
-    if(this->contact == NULL)
+    if(this->contact == nullptr)
     {
         if(ordreLiaison.key(voieAppelante) == 0)
         {
@@ -172,15 +170,15 @@ void VoieAiguillageTriple::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, q
             angle = 0.0;
             rayon = 0.0;
 
-            if(sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) *
-                    (posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) +
-                    (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()) *
-                    (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y())) < dist)
+            if(sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) *
+                    (posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) +
+                    (posActuelle.y() - getPosAbsLiaison(voieSuivante).y()) *
+                    (posActuelle.y() - getPosAbsLiaison(voieSuivante).y())) < dist)
             {
-                dist -= sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) *
-                             (posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) +
-                             (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()) *
-                             (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()));
+                dist -= sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) *
+                             (posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) +
+                             (posActuelle.y() - getPosAbsLiaison(voieSuivante).y()) *
+                             (posActuelle.y() - getPosAbsLiaison(voieSuivante).y()));
             }
             else
             {
@@ -189,14 +187,14 @@ void VoieAiguillageTriple::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, q
         }
         else
         {
-            if(sqrt((positionLocoRelative.x() - centreGauche->x()) *
-                    (positionLocoRelative.x() - centreGauche->x()) +
-                    (positionLocoRelative.y() - centreGauche->y()) *
-                    (positionLocoRelative.y() - centreGauche->y())) - rayonGauche < 0.1 &&
-               sqrt((positionLocoRelative.x() - centreGauche->x()) *
-                    (positionLocoRelative.x() - centreGauche->x()) +
-                    (positionLocoRelative.y() - centreGauche->y()) *
-                    (positionLocoRelative.y() - centreGauche->y())) - rayonGauche > -0.1)
+            if(sqrt((positionLocoRelative.x() - centreGauche.x()) *
+                    (positionLocoRelative.x() - centreGauche.x()) +
+                    (positionLocoRelative.y() - centreGauche.y()) *
+                    (positionLocoRelative.y() - centreGauche.y())) - rayonGauche < 0.1 &&
+               sqrt((positionLocoRelative.x() - centreGauche.x()) *
+                    (positionLocoRelative.x() - centreGauche.x()) +
+                    (positionLocoRelative.y() - centreGauche.y()) *
+                    (positionLocoRelative.y() - centreGauche.y())) - rayonGauche > -0.1)
             {
                 rayon = this->rayonGauche;
             }
@@ -253,15 +251,15 @@ void VoieAiguillageTriple::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, q
             angle = 0.0;
             rayon = 0.0;
 
-            if(sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) *
-                    (posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) +
-                    (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()) *
-                    (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y())) < dist)
+            if(sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) *
+                    (posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) +
+                    (posActuelle.y() - getPosAbsLiaison(voieSuivante).y()) *
+                    (posActuelle.y() - getPosAbsLiaison(voieSuivante).y())) < dist)
             {
-                dist -= sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) *
-                             (posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) +
-                             (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()) *
-                             (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()));
+                dist -= sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) *
+                             (posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) +
+                             (posActuelle.y() - getPosAbsLiaison(voieSuivante).y()) *
+                             (posActuelle.y() - getPosAbsLiaison(voieSuivante).y()));
             }
             else
             {
@@ -270,14 +268,14 @@ void VoieAiguillageTriple::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, q
         }
         else
         {
-            if(sqrt((positionLocoRelative.x() - centreGauche->x()) *
-                    (positionLocoRelative.x() - centreGauche->x()) +
-                    (positionLocoRelative.y() - centreGauche->y()) *
-                    (positionLocoRelative.y() - centreGauche->y())) - rayonGauche < 0.1 &&
-               sqrt((positionLocoRelative.x() - centreGauche->x()) *
-                    (positionLocoRelative.x() - centreGauche->x()) +
-                    (positionLocoRelative.y() - centreGauche->y()) *
-                    (positionLocoRelative.y() - centreGauche->y())) - rayonGauche > -0.1)
+            if(sqrt((positionLocoRelative.x() - centreGauche.x()) *
+                    (positionLocoRelative.x() - centreGauche.x()) +
+                    (positionLocoRelative.y() - centreGauche.y()) *
+                    (positionLocoRelative.y() - centreGauche.y())) - rayonGauche < 0.1 &&
+               sqrt((positionLocoRelative.x() - centreGauche.x()) *
+                    (positionLocoRelative.x() - centreGauche.x()) +
+                    (positionLocoRelative.y() - centreGauche.y()) *
+                    (positionLocoRelative.y() - centreGauche.y())) - rayonGauche > -0.1)
             {
                 rayon = this->rayonGauche;
             }
@@ -328,8 +326,8 @@ void VoieAiguillageTriple::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, q
         }
     }
 
-    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
-    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal xLiaison = getPosAbsLiaison(voieSuivante).x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante).y();
     qreal x = posActuelle.x() - xLiaison;
     qreal y = posActuelle.y() - yLiaison;
     qreal distDel = sqrt((x*x) + (y*y));
@@ -383,8 +381,8 @@ void VoieAiguillageTriple::correctionPosition(qreal deltaX, qreal deltaY, Voie *
                             ((180.0 - angle) / 360.0) * PI;
 
     //calculer coordonnees du centre gauche.
-    centreGauche->setX(- rayonGauche * cos(anglePourCentre));
-    centreGauche->setY(- rayonGauche * sin(anglePourCentre));
+    centreGauche.setX(- rayonGauche * cos(anglePourCentre));
+    centreGauche.setY(- rayonGauche * sin(anglePourCentre));
 
     //modifications pour courbe droite.
     nouvelleCorde = sqrt(coordonneesLiaison[3]->x() *
@@ -398,21 +396,21 @@ void VoieAiguillageTriple::correctionPosition(qreal deltaX, qreal deltaY, Voie *
 
 
     //calculer coordonees du centre droit.
-    centreDroite->setX(- rayonDroite * cos(anglePourCentre));
-    centreDroite->setY(- rayonDroite * sin(anglePourCentre));
+    centreDroite.setX(- rayonDroite * cos(anglePourCentre));
+    centreDroite.setY(- rayonDroite * sin(anglePourCentre));
 
-    setAngleRad(0, atan2(- centreGauche->y(), centreGauche->x()) + PI / 2.0);
+    setAngleRad(0, atan2(- centreGauche.y(), centreGauche.x()) + PI / 2.0);
 
     setAngleDeg(1, atan2(- coordonneesLiaison[1]->y(), -coordonneesLiaison[1]->x()));
 
-    setAngleRad(2, atan2(- centreGauche->y() + coordonneesLiaison[2]->y(),
-                         centreGauche->x() - coordonneesLiaison[2]->x()) - PI / 2.0);
+    setAngleRad(2, atan2(- centreGauche.y() + coordonneesLiaison[2]->y(),
+                         centreGauche.x() - coordonneesLiaison[2]->x()) - PI / 2.0);
 
-    setAngleRad(3, atan2(- centreDroite->y() + coordonneesLiaison[3]->y(),
-                         centreDroite->x() - coordonneesLiaison[3]->x()) + PI / 2.0);
+    setAngleRad(3, atan2(- centreDroite.y() + coordonneesLiaison[3]->y(),
+                         centreDroite.x() - coordonneesLiaison[3]->x()) + PI / 2.0);
 
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 }
 
@@ -446,10 +444,10 @@ void VoieAiguillageTriple::paint(QPainter *painter, const QStyleOptionGraphicsIt
     if (etat == 0)
     {
         painter->setPen(p2);
-        painter->drawArc(QRectF(centreGauche->x() - rayonGauche, centreGauche->y() - rayonGauche, 2.0 * rayonGauche, 2.0 * rayonGauche),
+        painter->drawArc(QRectF(centreGauche.x() - rayonGauche, centreGauche.y() - rayonGauche, 2.0 * rayonGauche, 2.0 * rayonGauche),
                      (int) (getAngleDeg(0) *16.0 - 4320.0),
                      (int) (angle *16.0));
-        painter->drawArc(QRectF(centreDroite->x() - rayonDroite, centreDroite->y() - rayonDroite, 2.0 * rayonDroite, 2.0 * rayonDroite),
+        painter->drawArc(QRectF(centreDroite.x() - rayonDroite, centreDroite.y() - rayonDroite, 2.0 * rayonDroite, 2.0 * rayonDroite),
                      (int) -(getAngleDeg(0) *16.0 - 4320.0),
                      (int) -(angle *16.0));
         painter->setPen(p1);
@@ -459,11 +457,11 @@ void VoieAiguillageTriple::paint(QPainter *painter, const QStyleOptionGraphicsIt
     {
         painter->setPen(p2);
         painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
-        painter->drawArc(QRectF(centreDroite->x() - rayonDroite, centreDroite->y() - rayonDroite, 2.0 * rayonDroite, 2.0 * rayonDroite),
+        painter->drawArc(QRectF(centreDroite.x() - rayonDroite, centreDroite.y() - rayonDroite, 2.0 * rayonDroite, 2.0 * rayonDroite),
                      (int) -(getAngleDeg(0) *16.0 - 4320.0),
                      (int) -(angle *16.0));
         painter->setPen(p1);
-        painter->drawArc(QRectF(centreGauche->x() - rayonGauche, centreGauche->y() - rayonGauche, 2.0 * rayonGauche, 2.0 * rayonGauche),
+        painter->drawArc(QRectF(centreGauche.x() - rayonGauche, centreGauche.y() - rayonGauche, 2.0 * rayonGauche, 2.0 * rayonGauche),
                      (int) (getAngleDeg(0) *16.0 - 4320.0),
                      (int) (angle *16.0));
     }
@@ -471,11 +469,11 @@ void VoieAiguillageTriple::paint(QPainter *painter, const QStyleOptionGraphicsIt
     {
         painter->setPen(p2);
         painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
-        painter->drawArc(QRectF(centreGauche->x() - rayonGauche, centreGauche->y() - rayonGauche, 2.0 * rayonGauche, 2.0 * rayonGauche),
+        painter->drawArc(QRectF(centreGauche.x() - rayonGauche, centreGauche.y() - rayonGauche, 2.0 * rayonGauche, 2.0 * rayonGauche),
                      (int) (getAngleDeg(0) *16.0 - 4320.0),
                      (int) (angle *16.0));
         painter->setPen(p1);
-        painter->drawArc(QRectF(centreDroite->x() - rayonDroite, centreDroite->y() - rayonDroite, 2.0 * rayonDroite, 2.0 * rayonDroite),
+        painter->drawArc(QRectF(centreDroite.x() - rayonDroite, centreDroite.y() - rayonDroite, 2.0 * rayonDroite, 2.0 * rayonDroite),
                      (int) -(getAngleDeg(0) *16.0 - 4320.0),
                      (int) -(angle *16.0));
     }

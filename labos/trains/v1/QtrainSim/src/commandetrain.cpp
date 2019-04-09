@@ -14,7 +14,7 @@ SimView* simView;
 
 
 
-CommandeTrain *CommandeTrain::m_instance=0;
+CommandeTrain *CommandeTrain::m_instance = nullptr;
 
 CommandeTrain::CommandeTrain()
 {
@@ -26,7 +26,7 @@ CommandeTrain::CommandeTrain()
 
 CommandeTrain* CommandeTrain::getInstance()
 {
-    if (m_instance==0)
+    if (m_instance == nullptr)
         m_instance=new CommandeTrain();
     return m_instance;
 }
@@ -124,9 +124,9 @@ void CommandeTrain::diriger_aiguillage(int no_aiguillage, int direction, int /*t
 void CommandeTrain::attendre_contact(int no_contact)
 {
     Contact *c=simView->getContact(no_contact);
-    if (c==0)
+    if (c == nullptr)
     {
-        QMessageBox::warning(0,"Error",QString("Attention, le numéro de contact %1 n'est pas valide").arg(no_contact));
+        QMessageBox::warning(nullptr,"Error",QString("Attention, le numéro de contact %1 n'est pas valide").arg(no_contact));
     }
     else
         c->attendContact();

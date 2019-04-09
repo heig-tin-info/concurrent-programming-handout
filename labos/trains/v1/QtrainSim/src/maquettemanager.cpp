@@ -1,11 +1,20 @@
-#include "maquettemanager.h"
-#include "general.h"
 
 #include <QStringList>
 #include <QDir>
 #include <QApplication>
 
+#include "maquettemanager.h"
+#include "general.h"
 
+
+MaquetteManager::~MaquetteManager()
+{
+    while (!maquettes.isEmpty()) {
+        MaquetteDesc *desc = maquettes.at(0);
+        delete desc;
+        maquettes.pop_front();
+    }
+}
 
 QList<MaquetteDesc*> MaquetteManager::listeMaquettes() const
 {

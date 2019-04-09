@@ -1,6 +1,3 @@
-#include "mainwindow.h"
-#include "trainsimsettings.h"
-
 
 #include <iostream>
 #include <QAction>
@@ -13,7 +10,11 @@
 #include <QDockWidget>
 #include <QCloseEvent>
 #include <QLineEdit>
+
 #include "commandetrain.h"
+#include "mainwindow.h"
+#include "trainsimsettings.h"
+#include "maquettemanager.h"
 
  void outcallback( const char* ptr, std::streamsize count, void* pTextBox )
  {
@@ -827,6 +828,13 @@ void MainWindow::chargerMaquette(QString filename)
 
     this->simView->repaint();
 
+    // On détruit la map qui contient des pointeurs sur des QList
+    QMapIterator<Voie*, QList<int>*> it(voiesALier);
+    while (it.hasNext()) {
+        it.next();
+        delete it.value();
+    }
+
     this->maquetteFinie.release();
 }
 
@@ -835,7 +843,6 @@ void MainWindow::afficherMessage(QString message)
     this->generalConsole->append(message);
 }
 
-#include "maquettemanager.h"
 
 void MainWindow::selectionMaquette(QString maquette)
 {

@@ -25,6 +25,9 @@ class MaquetteManager
 {
 public:
     MaquetteManager(){isCharge=false;};
+
+    ~MaquetteManager();
+
     bool chargerListeMaquettes();
 
     QList<MaquetteDesc*> listeMaquettes() const;

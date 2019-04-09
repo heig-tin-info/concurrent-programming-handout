@@ -1,7 +1,8 @@
-#include "ctrain_handler.h"
-#include "locomotive.h"
 
 #include <QList>
+
+#include "ctrain_handler.h"
+#include "locomotive.h"
 
 //Creation d'une locomotive
 static Locomotive locomotive;

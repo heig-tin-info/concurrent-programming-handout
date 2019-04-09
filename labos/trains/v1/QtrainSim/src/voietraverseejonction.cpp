@@ -10,8 +10,6 @@ VoieTraverseeJonction::VoieTraverseeJonction(qreal angle, qreal rayon, qreal lon
     this->etat = 0;
     this->orientee = false;
     this->posee = false;
-    this->centre03 = new QPointF();
-    this->centre12 = new QPointF();
     this->lastDistDel = 1000.0;
 }
 
@@ -23,7 +21,7 @@ void VoieTraverseeJonction::setNumVoieVariable(int numVoieVariable)
 void VoieTraverseeJonction::calculerAnglesEtCoordonnees(Voie *v)
 {
     int ordreVoieFixe;
-    if(v==NULL)
+    if(v == nullptr)
     {
         ordreVoieFixe = 0;
         setAngleDeg(0, 0.0);
@@ -70,14 +68,14 @@ void VoieTraverseeJonction::calculerAnglesEtCoordonnees(Voie *v)
     coordonneesLiaison[3]->setY(- ((longueur / 2.0) * (sin(getAngleRad(1)) + sin(getAngleRad(3)))));
 
     //calculer coordonnees du centre12.
-    centre12->setX(coordonneesLiaison.value(1)->x() + rayon12 * cos(getAngleRad(1) - PI / 2.0));
-    centre12->setY(coordonneesLiaison.value(1)->y() +- rayon12 * sin(getAngleRad(1) - PI / 2.0));
+    centre12.setX(coordonneesLiaison.value(1)->x() + rayon12 * cos(getAngleRad(1) - PI / 2.0));
+    centre12.setY(coordonneesLiaison.value(1)->y() +- rayon12 * sin(getAngleRad(1) - PI / 2.0));
     //calculer coordonnees du centre03.
-    centre03->setX(rayon03 * cos(getAngleRad(0) - PI / 2.0));
-    centre03->setY(- rayon03 * sin(getAngleRad(0) - PI / 2.0));
+    centre03.setX(rayon03 * cos(getAngleRad(0) - PI / 2.0));
+    centre03.setY(- rayon03 * sin(getAngleRad(0) - PI / 2.0));
 
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 
     orientee = true;
@@ -102,7 +100,7 @@ QList<QList<Voie*>*> VoieTraverseeJonction::explorationContactAContact(Voie* voi
 {
     QList<QList<Voie*>*> temp;
 
-    if(this->contact == NULL)
+    if(this->contact == nullptr)
     {
         if(ordreLiaison.key(voieAppelante) == 0 || ordreLiaison.key(voieAppelante) == 2)
         {
@@ -179,15 +177,15 @@ void VoieTraverseeJonction::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, 
         angle = 0.0;
         rayon = 0.0;
 
-        if(sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) *
-                (posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) +
-                (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()) *
-                (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y())) < dist)
+        if(sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) *
+                (posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) +
+                (posActuelle.y() - getPosAbsLiaison(voieSuivante).y()) *
+                (posActuelle.y() - getPosAbsLiaison(voieSuivante).y())) < dist)
         {
-            dist -= sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) *
-                         (posActuelle.x() - getPosAbsLiaison(voieSuivante)->x()) +
-                         (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()) *
-                         (posActuelle.y() - getPosAbsLiaison(voieSuivante)->y()));
+            dist -= sqrt((posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) *
+                         (posActuelle.x() - getPosAbsLiaison(voieSuivante).x()) +
+                         (posActuelle.y() - getPosAbsLiaison(voieSuivante).y()) *
+                         (posActuelle.y() - getPosAbsLiaison(voieSuivante).y()));
         }
         else
         {
@@ -196,14 +194,14 @@ void VoieTraverseeJonction::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, 
     }
     else
     {
-        if(sqrt((positionLocoRelative.x() - centre03->x()) *
-                (positionLocoRelative.x() - centre03->x()) +
-                (positionLocoRelative.y() - centre03->y()) *
-                (positionLocoRelative.y() - centre03->y())) - rayon03 < 0.1 &&
-           sqrt((positionLocoRelative.x() - centre03->x()) *
-                (positionLocoRelative.x() - centre03->x()) +
-                (positionLocoRelative.y() - centre03->y()) *
-                (positionLocoRelative.y() - centre03->y())) - rayon03 > -0.1)
+        if(sqrt((positionLocoRelative.x() - centre03.x()) *
+                (positionLocoRelative.x() - centre03.x()) +
+                (positionLocoRelative.y() - centre03.y()) *
+                (positionLocoRelative.y() - centre03.y())) - rayon03 < 0.1 &&
+           sqrt((positionLocoRelative.x() - centre03.x()) *
+                (positionLocoRelative.x() - centre03.x()) +
+                (positionLocoRelative.y() - centre03.y()) *
+                (positionLocoRelative.y() - centre03.y())) - rayon03 > -0.1)
         {
             rayon = this->rayon03;
         }
@@ -252,8 +250,8 @@ void VoieTraverseeJonction::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, 
         }
     }
 
-    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
-    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal xLiaison = getPosAbsLiaison(voieSuivante).x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante).y();
     qreal x = posActuelle.x() - xLiaison;
     qreal y = posActuelle.y() - yLiaison;
     qreal distDel = sqrt((x*x) + (y*y));
@@ -300,8 +298,8 @@ void VoieTraverseeJonction::correctionPosition(qreal deltaX, qreal deltaY, Voie 
                             ((180.0 - angle) / 360.0) * PI;
 
     //calculer coordonnees du centre 03.
-    centre03->setX(- rayon03 * cos(anglePourCentre));
-    centre03->setY(- rayon03 * sin(anglePourCentre));
+    centre03.setX(- rayon03 * cos(anglePourCentre));
+    centre03.setY(- rayon03 * sin(anglePourCentre));
 
     //modifications pour courbe 12.
     nouvelleCorde = sqrt((coordonneesLiaison[1]->x() - coordonneesLiaison[2]->x()) *
@@ -315,21 +313,21 @@ void VoieTraverseeJonction::correctionPosition(qreal deltaX, qreal deltaY, Voie 
 
 
     //calculer coordonnees du centre 12.
-    centre12->setX(coordonneesLiaison[2]->x() - rayon12 * cos(anglePourCentre));
-    centre12->setY(coordonneesLiaison[2]->y() - rayon12 * sin(anglePourCentre));
+    centre12.setX(coordonneesLiaison[2]->x() - rayon12 * cos(anglePourCentre));
+    centre12.setY(coordonneesLiaison[2]->y() - rayon12 * sin(anglePourCentre));
 
-    setAngleRad(0, atan2(- centre03->y(), centre03->x()) + PI / 2.0);
+    setAngleRad(0, atan2(- centre03.y(), centre03.x()) + PI / 2.0);
 
-    setAngleRad(1, atan2(- centre12->y() + coordonneesLiaison[1]->y(),
-                         centre12->x() - coordonneesLiaison[1]->x()) + PI / 2.0);
+    setAngleRad(1, atan2(- centre12.y() + coordonneesLiaison[1]->y(),
+                         centre12.x() - coordonneesLiaison[1]->x()) + PI / 2.0);
 
-    setAngleRad(2, atan2(- centre12->y() + coordonneesLiaison[2]->y(),
-                         centre12->x() - coordonneesLiaison[2]->x()) - PI / 2.0);
+    setAngleRad(2, atan2(- centre12.y() + coordonneesLiaison[2]->y(),
+                         centre12.x() - coordonneesLiaison[2]->x()) - PI / 2.0);
 
-    setAngleRad(3, atan2(- centre03->y() + coordonneesLiaison[3]->y(),
-                         centre03->x() - coordonneesLiaison[3]->x()) - PI / 2.0);
+    setAngleRad(3, atan2(- centre03.y() + coordonneesLiaison[3]->y(),
+                         centre03.x() - coordonneesLiaison[3]->x()) - PI / 2.0);
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 
 }
@@ -357,10 +355,10 @@ void VoieTraverseeJonction::paint(QPainter *painter, const QStyleOptionGraphicsI
     if (etat)
     {
         painter->setPen(p2);
-        painter->drawArc(QRectF(centre12->x() - rayon12, centre12->y() - rayon12, 2.0 * rayon12, 2.0 * rayon12),
+        painter->drawArc(QRectF(centre12.x() - rayon12, centre12.y() - rayon12, 2.0 * rayon12, 2.0 * rayon12),
                      (int) (getAngleDeg(1) - 270.0) *16,
                      (int) angle *16);
-        painter->drawArc(QRectF(centre03->x() - rayon03, centre03->y() - rayon03, 2.0 * rayon03, 2.0 * rayon03),
+        painter->drawArc(QRectF(centre03.x() - rayon03, centre03.y() - rayon03, 2.0 * rayon03, 2.0 * rayon03),
                      (int) (getAngleDeg(3) + 270.0) *16,
                      (int) - angle *16);
         painter->setPen(p1);
@@ -373,10 +371,10 @@ void VoieTraverseeJonction::paint(QPainter *painter, const QStyleOptionGraphicsI
         painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
         painter->drawLine(*coordonneesLiaison[2], *coordonneesLiaison[3]);
         painter->setPen(p1);
-        painter->drawArc(QRectF(centre12->x() - rayon12, centre12->y() - rayon12, 2.0 * rayon12, 2.0 * rayon12),
+        painter->drawArc(QRectF(centre12.x() - rayon12, centre12.y() - rayon12, 2.0 * rayon12, 2.0 * rayon12),
                      (int) (getAngleDeg(1) - 270.0) *16,
                      (int) angle *16);
-        painter->drawArc(QRectF(centre03->x() - rayon03, centre03->y() - rayon03, 2.0 * rayon03, 2.0 * rayon03),
+        painter->drawArc(QRectF(centre03.x() - rayon03, centre03.y() - rayon03, 2.0 * rayon03, 2.0 * rayon03),
                      (int) (getAngleDeg(3) + 270.0) *16,
                      (int) - angle *16);
     }

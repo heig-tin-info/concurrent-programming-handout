@@ -13,7 +13,7 @@ VoieDroite::VoieDroite(qreal longueur)
 void VoieDroite::calculerAnglesEtCoordonnees(Voie *v)
 {
     int ordreVoieFixe;
-    if(v==NULL)
+    if(v==nullptr)
     {
         ordreVoieFixe = 0;
         setAngleDeg(0, 0.0);
@@ -39,7 +39,7 @@ void VoieDroite::calculerAnglesEtCoordonnees(Voie *v)
     coordonneesLiaison[1]->setX(longueur * cos(getAngleRad(1)));
     coordonneesLiaison[1]->setY(- longueur * sin(getAngleRad(1)));
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 
     orientee = true;
@@ -60,7 +60,7 @@ QList<QList<Voie*>*> VoieDroite::explorationContactAContact(Voie* voieAppelante)
 {
     QList<QList<Voie*>*> temp;
 
-    if(this->contact == NULL)
+    if(this->contact == nullptr)
     {
         if(ordreLiaison.key(voieAppelante) == 0)
             temp.append(ordreLiaison.value(1)->explorationContactAContact(this));
@@ -94,8 +94,8 @@ Voie* VoieDroite::getVoieSuivante(Voie *voieArrivee)
 
 void VoieDroite::avanceLoco(qreal &dist, qreal &/*angle*/, qreal &/*rayon*/, qreal /*angleCumule*/, QPointF posActuelle, Voie *voieSuivante)
 {
-    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
-    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal xLiaison = getPosAbsLiaison(voieSuivante).x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante).y();
     qreal x = posActuelle.x() - xLiaison;
     qreal y = posActuelle.y() - yLiaison;
     qreal distDel = sqrt((x*x) + (y*y));
@@ -137,7 +137,7 @@ void VoieDroite::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
 //    setAngleRad(1, atan2(-coordonneesLiaison[1]->y(), -coordonneesLiaison[1]->x()));
 
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 }
 
@@ -175,8 +175,8 @@ QRectF VoieDroite::boundingRect() const
 {
     QRectF rect(min(coordonneesLiaison[0]->x(),coordonneesLiaison[1]->x()),
                 min(coordonneesLiaison[0]->y(),coordonneesLiaison[1]->y()),
-                abs(coordonneesLiaison[0]->x()-coordonneesLiaison[1]->x()),
-                abs(coordonneesLiaison[0]->y()-coordonneesLiaison[1]->y()));
+                fabs(coordonneesLiaison[0]->x()-coordonneesLiaison[1]->x()),
+                fabs(coordonneesLiaison[0]->y()-coordonneesLiaison[1]->y()));
     rect.adjust(-10,-10,10,10);
     return rect;
 }

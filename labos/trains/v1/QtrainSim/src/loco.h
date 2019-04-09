@@ -5,11 +5,12 @@
 #include <QAbstractGraphicsShapeItem>
 #include <QStaticText>
 #include <QPainter>
-#include <general.h>
-#include <voie.h>
-#include <segment.h>
-#include <connect.h>
 #include <QTimer>
+
+#include "general.h"
+#include "voie.h"
+#include "segment.h"
+#include "connect.h"
 
 class panneauNumLoco : public QObject, public QAbstractGraphicsShapeItem
 {
@@ -84,7 +85,7 @@ public:
     /** retourne la couleur principale de la loco
       * \return la couleur principale de la loco
       */
-    QColor* getCouleur();
+    QColor getCouleur();
 
     /** Retourne le rectangle englobant la loco.
       * \return le rectangle englobant la loco.
@@ -226,7 +227,7 @@ private:
     int vitesse;
     int vitesseFuture;
     int direction;
-    QColor* couleur;
+    QColor couleur;
     Voie* voieActuelle;
     Voie* voieSuivante;
     Segment* segmentActuel;

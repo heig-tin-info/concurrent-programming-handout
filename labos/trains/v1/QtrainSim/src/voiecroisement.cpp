@@ -14,7 +14,7 @@ VoieCroisement::VoieCroisement(qreal angle, qreal longueur)
 void VoieCroisement::calculerAnglesEtCoordonnees(Voie *v)
 {
     int ordreVoieFixe;
-    if(v==NULL)
+    if(v == nullptr)
     {
         ordreVoieFixe = 0;
         setAngleDeg(0, 0.0);
@@ -60,7 +60,7 @@ void VoieCroisement::calculerAnglesEtCoordonnees(Voie *v)
     coordonneesLiaison[3]->setX((longueur / 2.0) * (cos(getAngleRad(1)) + cos(getAngleRad(3))));
     coordonneesLiaison[3]->setY(-((longueur / 2.0) * (sin(getAngleRad(1)) + sin(getAngleRad(3)))));
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 
     orientee = true;
@@ -85,7 +85,7 @@ QList<QList<Voie*>*> VoieCroisement::explorationContactAContact(Voie* voieAppela
 {
     QList<QList<Voie*>*> temp;
 
-    if(this->contact == NULL)
+    if(this->contact == nullptr)
     {
         if(ordreLiaison.key(voieAppelante) == 0)
         {
@@ -143,8 +143,8 @@ void VoieCroisement::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal /
     angle = 0.0;
     rayon = 0.0;
 
-    qreal xLiaison = getPosAbsLiaison(voieSuivante)->x();
-    qreal yLiaison = getPosAbsLiaison(voieSuivante)->y();
+    qreal xLiaison = getPosAbsLiaison(voieSuivante).x();
+    qreal yLiaison = getPosAbsLiaison(voieSuivante).y();
     qreal x = posActuelle.x() - xLiaison;
     qreal y = posActuelle.y() - yLiaison;
     qreal distDel = sqrt((x*x) + (y*y));
@@ -189,7 +189,7 @@ void VoieCroisement::correctionPosition(qreal deltaX, qreal deltaY, Voie *v)
         coordonneesLiaison[ordreLiaison.key(v)]->setY(coordonneesLiaison[ordreLiaison.key(v)]->y() + deltaY);
     }
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 }
 

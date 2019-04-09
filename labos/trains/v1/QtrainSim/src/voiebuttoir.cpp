@@ -11,7 +11,7 @@ VoieButtoir::VoieButtoir(qreal longueur)
 
 void VoieButtoir::calculerAnglesEtCoordonnees(Voie *v)
 {
-    if(v == NULL)
+    if(v == nullptr)
     {
         setAngleDeg(0, 0.0);
     }
@@ -24,7 +24,7 @@ void VoieButtoir::calculerAnglesEtCoordonnees(Voie *v)
     coordonneesLiaison[0]->setX(0.0);
     coordonneesLiaison[0]->setY(0.0);
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 
     orientee = true;
@@ -57,7 +57,7 @@ qreal VoieButtoir::getLongueurAParcourir()
 Voie* VoieButtoir::getVoieSuivante(Voie */*voieArrivee*/)
 {
     //A revoir!
-    return NULL;
+    return nullptr;
 }
 
 void VoieButtoir::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal /*angleCumule*/, QPointF posActuelle, Voie *voieSuivante)
@@ -75,7 +75,7 @@ void VoieButtoir::avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal /*an
     }
     else
     {
-        if(voieSuivante == NULL)
+        if(voieSuivante == nullptr)
         {
             dist = 0.0;
         }
@@ -100,7 +100,7 @@ void VoieButtoir::correctionPosition(qreal deltaX, qreal deltaY, Voie */*v*/)
     //corrections...
     setPos(this->pos().x() + deltaX, this->pos().y() + deltaY);
 
-    if(this->contact != NULL)
+    if(this->contact != nullptr)
         calculerPositionContact();
 }
 
@@ -115,12 +115,12 @@ void VoieButtoir::correctionPositionLoco(qreal &/*x*/, qreal &/*y*/)
 
 QRectF VoieButtoir::boundingRect() const
 {
-    QPointF* temp = new QPointF(- longueur * cos(getAngleRad(0)),
+    QPointF temp = QPointF(- longueur * cos(getAngleRad(0)),
                                 longueur * sin(getAngleRad(0)));
-    QRectF rect(min(coordonneesLiaison[0]->x(),temp->x()),
-                min(coordonneesLiaison[0]->y(),temp->y()),
-                abs(coordonneesLiaison[0]->x()-temp->x()),
-                abs(coordonneesLiaison[0]->y()-temp->y()));
+    QRectF rect(min(coordonneesLiaison[0]->x(),temp.x()),
+                min(coordonneesLiaison[0]->y(),temp.y()),
+                fabs(coordonneesLiaison[0]->x()-temp.x()),
+                fabs(coordonneesLiaison[0]->y()-temp.y()));
     rect.adjust(-10,-10,10,10);
     return rect;
 }
@@ -129,11 +129,11 @@ QRectF VoieButtoir::boundingRect() const
 void VoieButtoir::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
 {
     painter->setPen(this->pen());
-    QPointF* temp = new QPointF(- longueur * cos(getAngleRad(0)),
+    QPointF temp = QPointF(- longueur * cos(getAngleRad(0)),
                                 longueur * sin(getAngleRad(0)));
 
-    painter->drawLine(*coordonneesLiaison[0], *temp);
-    painter->drawEllipse(*temp, 5.0, 5.0);
+    painter->drawLine(*coordonneesLiaison[0], temp);
+    painter->drawEllipse(temp, 5.0, 5.0);
     drawBoundingRect(painter);
 
 }

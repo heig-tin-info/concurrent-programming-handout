@@ -3,9 +3,10 @@
 
 #include <QObject>
 #include <QString>
-#include <general.h>
 #include <QMutex>
 #include <QWaitCondition>
+
+#include "general.h"
 
 /**
   Toutes les methodes de cette classe doivent être reentrantes!!!!!!!

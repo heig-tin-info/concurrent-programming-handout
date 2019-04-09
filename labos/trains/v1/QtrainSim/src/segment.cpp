@@ -24,7 +24,7 @@ Voie* Segment::getMilieu()
             indiceMilieu += delta;
 
             if(indiceMilieu < 0 || indiceMilieu >= voies.length())
-                return NULL;
+                return nullptr;
 
             delta *= -1;
             if(delta < 0)

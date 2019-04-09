@@ -1,8 +1,8 @@
 #ifndef VOIEVARIABLE_H
 #define VOIEVARIABLE_H
 
-#include <voie.h>
-#include <loco.h>
+#include "voie.h"
+#include "loco.h"
 
 class VoieVariable : public Voie
 {
@@ -10,19 +10,15 @@ class VoieVariable : public Voie
 
 public:
     VoieVariable();
-    virtual void calculerAnglesEtCoordonnees(Voie *v=0)=0;
-    virtual QList<QList<Voie*>*> explorationContactAContact(Voie* voieAppelante)=0;
-    virtual void avanceLoco(qreal &dist, qreal &angle, qreal &rayon, qreal angleCumule, QPointF posActuelle, Voie *voieSuivante)=0;
-    void setEtat(int nouvelEtat);
-    /** permet d'indiquer à la voie variable quel est son numéro.
-      * \param numVoieVariable le numéro de la voie variable.
+
+    void setEtat(int nouvelEtat) override;
+    /** permet d'indiquer Ã  la voie variable quel est son numÃ©ro.
+      * \param numVoieVariable le numÃ©ro de la voie variable.
       */
-    virtual void setNumVoieVariable(int numVoieVariable)=0;
-    virtual void correctionPosition(qreal deltaX, qreal deltaY, Voie* v)=0;
-    virtual void correctionPositionLoco(qreal &x, qreal &y)=0;
+    virtual void setNumVoieVariable(int numVoieVariable) = 0;
 signals:
-    /** signale que la voie variable a été modifiée.
-      * \param v la voie modifiée.
+    /** signale que la voie variable a Ã©tÃ© modifiÃ©e.
+      * \param v la voie modifiÃ©e.
       */
     void etatModifie(Voie* v);
 public slots:

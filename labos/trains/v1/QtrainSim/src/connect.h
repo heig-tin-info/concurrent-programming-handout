@@ -17,7 +17,7 @@
                         {\
                                 QString mess;\
                                 mess =QString("Signal connection error in file %1, line %2. %3: %4::%5").arg(__FILE__).arg(__LINE__).arg(__FUNCTION__).arg(#a).arg(#b);\
-                                QMessageBox::warning(0, "Ubichip Manager",mess);\
+                                QMessageBox::warning(nullptr, "QTrainSim",mess);\
                         }
 
 

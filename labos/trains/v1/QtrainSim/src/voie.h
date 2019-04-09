@@ -1,19 +1,21 @@
 #ifndef VOIE_H
 #define VOIE_H
 
+#include <math.h>
+
 #include <QObject>
 #include <QList>
 #include <QMap>
 #include <QPointF>
-#include <math.h>
 #include <QDebug>
 #include <QRectF>
 #include <QAbstractGraphicsShapeItem>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #include <QMap>
-#include <general.h>
-#include <contact.h>
+
+#include "general.h"
+#include "contact.h"
 
 class Voie : public QObject, public QAbstractGraphicsShapeItem
 {
@@ -29,14 +31,14 @@ public:
       * par défaut.
       * \param v pointeur sur la voie voisine déjà posée.
       */
-    void calculerPosition(Voie* v=0);
+    void calculerPosition(Voie* v = nullptr);
 
     /** méthode virtuelle visant à calculer les angles et coordonnées (locales) de chaque extrémité
       * de la voie.
       * Cette méthode est appelée récursivement, jusqu'à ce que toutes les voies aient été orientées.
       * \param v pointeur sur la voie voisine déjà orientée.
       */
-    virtual void calculerAnglesEtCoordonnees(Voie* v=0)=0;
+    virtual void calculerAnglesEtCoordonnees(Voie* v = nullptr) = 0;
 
     /** permet de lier deux voies, c'est-à-dire d'indiquer qu'elles doivent se connecter l'une à l'autre,
       * et sur quelle extrémité.
@@ -61,14 +63,14 @@ public:
       * \param v la voie reliée à l'extrémité dont la position est désirée.
       * \return la position absolue de l'extrémité.
       */
-    QPointF* getPosAbsLiaison(Voie* v);
+    QPointF getPosAbsLiaison(Voie* v);
 
     /** attribue le contact passé en paramètre à la voie.
       * \param c le contact attribué.
       */
     void setContact(Contact* c);
 
-    /** retourne le contact de la voie. retourne NULL s'il n'y a pas de contact.
+    /** retourne le contact de la voie. retourne nullptr s'il n'y a pas de contact.
       * \return pointeur sur le contact de la voie.
       */
     Contact* getContact() const;

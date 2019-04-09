@@ -6,7 +6,7 @@
   */
 Voie::Voie()
 {
-    this->contact = NULL;
+    this->contact = nullptr;
     setZValue(ZVAL_VOIE);
 }
 
@@ -23,16 +23,16 @@ void Voie::setNewPen(const QColor &color)
 
 void Voie::calculerPosition(Voie *v)
 {
-    if(v == NULL)
+    if(v == nullptr)
     {
         setPos(0.0, 0.0);
     }
     else
     {
-        QPointF* positionLiaison = v->getPosAbsLiaison(this);
+        QPointF positionLiaison = v->getPosAbsLiaison(this);
 
-        setPos(positionLiaison->x() - coordonneesLiaison[ordreLiaison.key(v)]->x(),
-               positionLiaison->y() - coordonneesLiaison[ordreLiaison.key(v)]->y());
+        setPos(positionLiaison.x() - coordonneesLiaison[ordreLiaison.key(v)]->x(),
+               positionLiaison.y() - coordonneesLiaison[ordreLiaison.key(v)]->y());
     }
 
     posee = true;
@@ -45,20 +45,20 @@ void Voie::calculerPosition(Voie *v)
             ordreLiaison[i]->calculerPosition(this);
         else
         {
-            if((getPosAbsLiaison(ordreLiaison[i])->x() - ordreLiaison[i]->getPosAbsLiaison(this)->x()) < -1e-10 ||
-               (getPosAbsLiaison(ordreLiaison[i])->y() - ordreLiaison[i]->getPosAbsLiaison(this)->y()) < -1e-10 ||
-               (getPosAbsLiaison(ordreLiaison[i])->x() - ordreLiaison[i]->getPosAbsLiaison(this)->x()) > 1e-10 ||
-               (getPosAbsLiaison(ordreLiaison[i])->y() - ordreLiaison[i]->getPosAbsLiaison(this)->y()) > 1e-10)
+            if((getPosAbsLiaison(ordreLiaison[i]).x() - ordreLiaison[i]->getPosAbsLiaison(this).x()) < -1e-10 ||
+               (getPosAbsLiaison(ordreLiaison[i]).y() - ordreLiaison[i]->getPosAbsLiaison(this).y()) < -1e-10 ||
+               (getPosAbsLiaison(ordreLiaison[i]).x() - ordreLiaison[i]->getPosAbsLiaison(this).x()) > 1e-10 ||
+               (getPosAbsLiaison(ordreLiaison[i]).y() - ordreLiaison[i]->getPosAbsLiaison(this).y()) > 1e-10)
             {
-                deltaX = getPosAbsLiaison(ordreLiaison[i])->x() - ordreLiaison[i]->getPosAbsLiaison(this)->x();
-                deltaY = getPosAbsLiaison(ordreLiaison[i])->y() - ordreLiaison[i]->getPosAbsLiaison(this)->y();
+                deltaX = getPosAbsLiaison(ordreLiaison[i]).x() - ordreLiaison[i]->getPosAbsLiaison(this).x();
+                deltaY = getPosAbsLiaison(ordreLiaison[i]).y() - ordreLiaison[i]->getPosAbsLiaison(this).y();
 
 
                 ordreLiaison[i]->correctionPosition(deltaX / 2.0, deltaY / 2.0, this);
                 this->correctionPosition(- deltaX / 2.0, - deltaY / 2.0, ordreLiaison[i]);
 
-                deltaX = getPosAbsLiaison(ordreLiaison[i])->x() - ordreLiaison[i]->getPosAbsLiaison(this)->x();
-                deltaY = getPosAbsLiaison(ordreLiaison[i])->y() - ordreLiaison[i]->getPosAbsLiaison(this)->y();
+                deltaX = getPosAbsLiaison(ordreLiaison[i]).x() - ordreLiaison[i]->getPosAbsLiaison(this).x();
+                deltaY = getPosAbsLiaison(ordreLiaison[i]).y() - ordreLiaison[i]->getPosAbsLiaison(this).y();
             }
         }
     }
@@ -110,12 +110,10 @@ double Voie::normaliserAngle(double angle) const
     return angle;
 }
 
-QPointF* Voie::getPosAbsLiaison(Voie *v)
+QPointF Voie::getPosAbsLiaison(Voie *v)
 {
-    //NB : l'objet appelant a la charge de detruire l'objet cree ici.
-    QPointF* temp = new QPointF(this->scenePos().x() + coordonneesLiaison[ordreLiaison.key(v)]->x(),
+    return QPointF(this->scenePos().x() + coordonneesLiaison[ordreLiaison.key(v)]->x(),
                                 this->scenePos().y() + coordonneesLiaison[ordreLiaison.key(v)]->y());
-    return temp;
 }
 
 void Voie::setContact(Contact *c)

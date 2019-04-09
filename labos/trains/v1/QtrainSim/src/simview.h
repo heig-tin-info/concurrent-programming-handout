@@ -4,11 +4,12 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QTimer>
-#include <connect.h>
-#include <voie.h>
-#include <voievariable.h>
-#include <loco.h>
-#include <segment.h>
+
+#include "connect.h"
+#include "voie.h"
+#include "voievariable.h"
+#include "loco.h"
+#include "segment.h"
 
 
 class ExplosionItem :  public QObject, public QGraphicsPixmapItem

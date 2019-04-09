@@ -60,14 +60,14 @@ void SimView::viderMaquette()
 
 void SimView::genererSegments()
 {
-    QList<QList<Voie*>*> parcours;
     for(int i = 1; i <= this->contacts.size(); i++)
     {
+        QList<QList<Voie*>*> parcours;
         parcours = this->Voies.value(contacts.value(i)->getNumVoiePorteuse())->startExplorationContactAContact();
 
         foreach(QList<Voie*>* lv, parcours)
         {
-            if(lv->last()->getContact() != NULL)
+            if(lv->last()->getContact() != nullptr)
             {
                 if(contacts.key(lv->first()->getContact()) < contacts.key(lv->last()->getContact()))
                 {
@@ -77,8 +77,15 @@ void SimView::genererSegments()
             else
             {
                 //gestion de segments entre un contact et une voie buttoir...
-                segments.append(new Segment(lv->first()->getContact(), NULL, *lv));
+                segments.append(new Segment(lv->first()->getContact(), nullptr, *lv));
             }
+        }
+
+        // On détruit les QList*
+        while (!parcours.isEmpty()) {
+            QList<Voie*> *l = parcours.at(0);
+            delete l;
+            parcours.pop_front();
         }
     }
 }
@@ -183,7 +190,7 @@ Segment* SimView::getSegmentByContacts(int contactA, int contactB)
         if(s->relie(this->contacts.value(min), this->contacts.value(max)))
             return s;
     }
-    return NULL;
+    return nullptr;
 }
 
 void SimView::animationStart()
@@ -205,14 +212,14 @@ void SimView::animationStart()
 class SoundThread : public QThread
 {
 public:
-    SoundThread(QObject *parent=0): QThread(parent){
+    SoundThread(QObject *parent=nullptr): QThread(parent){
 
     }
 
 protected:
     void run()
     {
-        QSound *sound=new QSound(QApplication::applicationDirPath()+"/../sound/explosion2.wav",0);
+        QSound *sound=new QSound(QApplication::applicationDirPath()+"/../sound/explosion2.wav", nullptr);
         sound->setParent(this);
         sound->play();
   //      QSound::play(QApplication::applicationDirPath()+"/../sound/explosion2.wav");
@@ -232,7 +239,7 @@ void SimView::animationStep()
 
     foreach(Loco* l, listeLocos)
     {
-        if(l->getActive() && l->getVoie() != NULL)
+        if(l->getActive() && l->getVoie() != nullptr)
         {
             if(l->getVitesse() != 0)
                 l->avancer((l->getVitesse() * 1000.0 / FRAME_RATE) * FACTEUR_VITESSE);
@@ -332,7 +339,7 @@ void SimView::setLoco(int contactA, int contactB, int numLoco, int vitesseLoco)
 {
     Segment* s = getSegmentByContacts(contactA, contactB);
 
-    if (s==0)
+    if (s == nullptr)
     {
         QMessageBox::warning(this,"Error",QString("Les numéros de contact (%1,%2) entre lesquels se trouve la loco ne sont pas valides. Ils doivent être directement voisins.\nL'application va se terminer.").arg(contactA).arg(contactB));
         exit(-1);
