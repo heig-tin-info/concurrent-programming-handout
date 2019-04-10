@@ -1,14 +1,15 @@
 
 #include <iostream>
 #include <QApplication>
+#include <QThread>
 
 #include "commandetrain.h"
 #include "mainwindow.h"
 
 
 
-MainWindow *mainwindow;
-SimView* simView;
+static MainWindow *mainwindow;
+static SimView* simView;
 
 
 
@@ -49,15 +50,9 @@ void CommandeTrain::init_maquette(void)
     CONNECT(this, SIGNAL(afficheMessage(QString)),mainwindow,SLOT(afficherMessage(QString)));
     CONNECT(this, SIGNAL(afficheMessageLoco(int,QString)),mainwindow,SLOT(afficherMessageLoco(int,QString)));
 
-    QTimer *timer = new QTimer(this);
-    timer->setSingleShot(true);
-    connect(timer, SIGNAL(timeout()), this, SLOT(timerTrigger()));
-    timer->start(0);
+    QTimer::singleShot(10, this, SLOT(timerTrigger()));
 }
 
-
-
-#include <QThread>
 
 #ifdef CDEVELOP
 extern "C" int cmain();
@@ -87,16 +82,26 @@ protected:
     }
 };
 
+static UserThread *userThread = nullptr;
+
+CommandeTrain::~CommandeTrain()
+{
+    if (userThread != nullptr) {
+        userThread->terminate();
+        userThread->wait();
+        delete userThread;
+    }
+}
 
 void CommandeTrain::timerTrigger()
 {
 
 
-    UserThread *user=new UserThread();
-    if (!user->initialize()) {
+    userThread=new UserThread();
+    if (!userThread->initialize()) {
         exit(0);
     }
-    user->start();
+    userThread->start();
 
 }
 
@@ -113,7 +118,6 @@ void CommandeTrain::mettre_maquette_en_service(void)
 void CommandeTrain::ajouter_loco(int no_loco)
 {
     emit addLoco(no_loco);
-//    mainwindow->addLoco(no_loco);
 }
 
 void CommandeTrain::diriger_aiguillage(int no_aiguillage, int direction, int /*temps_alim*/)

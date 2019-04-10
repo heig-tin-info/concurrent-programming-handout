@@ -21,6 +21,11 @@ protected:
     CommandeTrain();
 
     /**
+      Destructeur
+      */
+    ~CommandeTrain();
+
+    /**
       Unique instance de la commande de train.
       */
     static CommandeTrain *m_instance;
