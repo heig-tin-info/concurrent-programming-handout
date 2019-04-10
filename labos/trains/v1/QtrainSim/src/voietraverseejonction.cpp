@@ -356,11 +356,11 @@ void VoieTraverseeJonction::paint(QPainter *painter, const QStyleOptionGraphicsI
     {
         painter->setPen(p2);
         painter->drawArc(QRectF(centre12.x() - rayon12, centre12.y() - rayon12, 2.0 * rayon12, 2.0 * rayon12),
-                     (int) (getAngleDeg(1) - 270.0) *16,
-                     (int) angle *16);
+                         static_cast<int>((getAngleDeg(1) - 270.0) *16),
+                         static_cast<int>(angle *16));
         painter->drawArc(QRectF(centre03.x() - rayon03, centre03.y() - rayon03, 2.0 * rayon03, 2.0 * rayon03),
-                     (int) (getAngleDeg(3) + 270.0) *16,
-                     (int) - angle *16);
+                         static_cast<int>((getAngleDeg(3) + 270.0) *16),
+                         static_cast<int>(- angle *16));
         painter->setPen(p1);
         painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
         painter->drawLine(*coordonneesLiaison[2], *coordonneesLiaison[3]);
@@ -372,11 +372,11 @@ void VoieTraverseeJonction::paint(QPainter *painter, const QStyleOptionGraphicsI
         painter->drawLine(*coordonneesLiaison[2], *coordonneesLiaison[3]);
         painter->setPen(p1);
         painter->drawArc(QRectF(centre12.x() - rayon12, centre12.y() - rayon12, 2.0 * rayon12, 2.0 * rayon12),
-                     (int) (getAngleDeg(1) - 270.0) *16,
-                     (int) angle *16);
+                         static_cast<int>((getAngleDeg(1) - 270.0) *16),
+                         static_cast<int>(angle *16));
         painter->drawArc(QRectF(centre03.x() - rayon03, centre03.y() - rayon03, 2.0 * rayon03, 2.0 * rayon03),
-                     (int) (getAngleDeg(3) + 270.0) *16,
-                     (int) - angle *16);
+                         static_cast<int>((getAngleDeg(3) + 270.0) *16),
+                         static_cast<int>(- angle *16));
     }
 
 

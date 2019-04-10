@@ -445,11 +445,11 @@ void VoieAiguillageTriple::paint(QPainter *painter, const QStyleOptionGraphicsIt
     {
         painter->setPen(p2);
         painter->drawArc(QRectF(centreGauche.x() - rayonGauche, centreGauche.y() - rayonGauche, 2.0 * rayonGauche, 2.0 * rayonGauche),
-                     (int) (getAngleDeg(0) *16.0 - 4320.0),
-                     (int) (angle *16.0));
+                     static_cast<int>((getAngleDeg(0) *16.0 - 4320.0)),
+                     static_cast<int>(angle *16.0));
         painter->drawArc(QRectF(centreDroite.x() - rayonDroite, centreDroite.y() - rayonDroite, 2.0 * rayonDroite, 2.0 * rayonDroite),
-                     (int) -(getAngleDeg(0) *16.0 - 4320.0),
-                     (int) -(angle *16.0));
+                     static_cast<int>(-(getAngleDeg(0) *16.0 - 4320.0)),
+                     static_cast<int>(-(angle *16.0)));
         painter->setPen(p1);
         painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
     }
@@ -458,24 +458,24 @@ void VoieAiguillageTriple::paint(QPainter *painter, const QStyleOptionGraphicsIt
         painter->setPen(p2);
         painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
         painter->drawArc(QRectF(centreDroite.x() - rayonDroite, centreDroite.y() - rayonDroite, 2.0 * rayonDroite, 2.0 * rayonDroite),
-                     (int) -(getAngleDeg(0) *16.0 - 4320.0),
-                     (int) -(angle *16.0));
+                     static_cast<int>(-(getAngleDeg(0) *16.0 - 4320.0)),
+                     static_cast<int>(-(angle *16.0)));
         painter->setPen(p1);
         painter->drawArc(QRectF(centreGauche.x() - rayonGauche, centreGauche.y() - rayonGauche, 2.0 * rayonGauche, 2.0 * rayonGauche),
-                     (int) (getAngleDeg(0) *16.0 - 4320.0),
-                     (int) (angle *16.0));
+                     static_cast<int>((getAngleDeg(0) *16.0 - 4320.0)),
+                     static_cast<int>(angle *16.0));
     }
     else
     {
         painter->setPen(p2);
         painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
         painter->drawArc(QRectF(centreGauche.x() - rayonGauche, centreGauche.y() - rayonGauche, 2.0 * rayonGauche, 2.0 * rayonGauche),
-                     (int) (getAngleDeg(0) *16.0 - 4320.0),
-                     (int) (angle *16.0));
+                     static_cast<int>((getAngleDeg(0) *16.0 - 4320.0)),
+                     static_cast<int>(angle *16.0));
         painter->setPen(p1);
         painter->drawArc(QRectF(centreDroite.x() - rayonDroite, centreDroite.y() - rayonDroite, 2.0 * rayonDroite, 2.0 * rayonDroite),
-                     (int) -(getAngleDeg(0) *16.0 - 4320.0),
-                     (int) -(angle *16.0));
+                     static_cast<int>(-(getAngleDeg(0) *16.0 - 4320.0)),
+                     static_cast<int>(-(angle *16.0)));
     }
 
     drawBoundingRect(painter);

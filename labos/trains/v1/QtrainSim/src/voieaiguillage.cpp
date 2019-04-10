@@ -387,8 +387,8 @@ void VoieAiguillage::paint(QPainter *painter, const QStyleOptionGraphicsItem */*
         painter->drawLine(*coordonneesLiaison[0], *coordonneesLiaison[1]);
         painter->setPen(p1);
         painter->drawArc(QRectF(centre.x() - rayon, centre.y() - rayon, 2.0 * rayon, 2.0 * rayon),
-                     (int) ((getAngleDeg(0) - (direction * 270.0)) *16.0),
-                     (int) ((direction * angle) *16.0));
+                         static_cast<int>((getAngleDeg(0) - (direction * 270.0)) *16.0),
+                         static_cast<int>((direction * angle) *16.0));
     }
 
     drawBoundingRect(painter);

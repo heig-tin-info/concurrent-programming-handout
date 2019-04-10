@@ -486,8 +486,8 @@ void VoieAiguillageEnroule::paint(QPainter *painter, const QStyleOptionGraphicsI
                                 centreInterieur.y() - rayonInterieur,
                                 2.0 * rayonInterieur,
                                 2.0 * rayonInterieur),
-                     (int) (getAngleDeg(0) - (direction * 270.0)) *16,
-                     (int) (direction * angle) *16);
+                     static_cast<int>((getAngleDeg(0) - (direction * 270.0)) *16),
+                     static_cast<int>((direction * angle) *16));
         painter->setPen(p1);
         painter->drawLine(*coordonneesLiaison[0], QPointF(longueur * cos(getAngleRad(0) + PI),
                                                           - longueur * sin(getAngleRad(0) + PI)));
@@ -495,8 +495,8 @@ void VoieAiguillageEnroule::paint(QPainter *painter, const QStyleOptionGraphicsI
                                 centreExterieur.y() - rayonExterieur,
                                 2.0 * rayonExterieur,
                                 2.0 * rayonExterieur),
-                     (int) (getAngleDeg(0) - (direction * 270.0)) *16,
-                     (int) (direction * angle) *16);
+                     static_cast<int>((getAngleDeg(0) - (direction * 270.0)) *16),
+                     static_cast<int>((direction * angle) *16));
     }
     else
     {
@@ -507,15 +507,15 @@ void VoieAiguillageEnroule::paint(QPainter *painter, const QStyleOptionGraphicsI
                                 centreExterieur.y() - rayonExterieur,
                                 2.0 * rayonExterieur,
                                 2.0 * rayonExterieur),
-                     (int) (getAngleDeg(0) - (direction * 270.0)) *16,
-                     (int) (direction * angle) *16);
+                     static_cast<int>((getAngleDeg(0) - (direction * 270.0)) *16),
+                     static_cast<int>((direction * angle) *16));
         painter->setPen(p1);
         painter->drawArc(QRectF(centreInterieur.x() - rayonInterieur,
                                 centreInterieur.y() - rayonInterieur,
                                 2.0 * rayonInterieur,
                                 2.0 * rayonInterieur),
-                     (int) (getAngleDeg(0) - (direction * 270.0)) *16,
-                     (int) (direction * angle) *16);
+                     static_cast<int>((getAngleDeg(0) - (direction * 270.0)) *16),
+                     static_cast<int>((direction * angle) *16));
     }
 
     drawBoundingRect(painter);
