@@ -2,9 +2,10 @@
 
 TrainSimSettings::TrainSimSettings()
 {
-    viewLocoLog=false;
-    viewContactNumber=false;
-    viewAiguillageNumber=false;
+    viewLocoLog = false;
+    viewContactNumber = false;
+    viewAiguillageNumber = false;
+    inertie = true;
 }
 
 TrainSimSettings *TrainSimSettings::instance = nullptr;
@@ -12,7 +13,7 @@ TrainSimSettings *TrainSimSettings::instance = nullptr;
 TrainSimSettings* ::TrainSimSettings::getInstance()
 {
     if (instance == nullptr)
-        instance=new TrainSimSettings();
+        instance = new TrainSimSettings();
     return instance;
 }
 
@@ -23,7 +24,7 @@ bool TrainSimSettings::getViewLocoLog()
 
 void TrainSimSettings::setViewLocoLog(bool view)
 {
-    viewLocoLog=view;
+    viewLocoLog = view;
 }
 
 bool TrainSimSettings::getViewAiguillageNumber()
@@ -33,7 +34,7 @@ bool TrainSimSettings::getViewAiguillageNumber()
 
 void TrainSimSettings::setViewAiguillageNumber(bool draw)
 {
-    viewAiguillageNumber=draw;
+    viewAiguillageNumber = draw;
 }
 
 bool TrainSimSettings::getViewContactNumber()
@@ -43,7 +44,7 @@ bool TrainSimSettings::getViewContactNumber()
 
 void TrainSimSettings::setViewContactNumber(bool draw)
 {
-    viewContactNumber=draw;
+    viewContactNumber = draw;
 }
 
 bool TrainSimSettings::getInertie()
@@ -53,6 +54,6 @@ bool TrainSimSettings::getInertie()
 
 void TrainSimSettings::setInertie(bool enable)
 {
-    inertie=enable;
+    inertie = enable;
 }
 
