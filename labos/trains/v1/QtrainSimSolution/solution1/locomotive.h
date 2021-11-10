@@ -9,7 +9,7 @@ class Locomotive
 
     QMutex mutex;
 public:
-    int priority;
+    int priority{0};
 
     void emergencyStop();
     bool stopped;

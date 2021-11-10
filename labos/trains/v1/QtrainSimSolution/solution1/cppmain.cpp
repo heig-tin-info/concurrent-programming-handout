@@ -8,11 +8,19 @@
 
 #define REQUEST
 
-#define ACTION_NOOP          0
+enum class ActionType {
+    ACTION_NOOP = 0,
+    ACTION_ENTER_SECTION,
+    ACTION_LEAVE_SECTION,
+    ACTION_ASK_SECTION
+};
+
+/*
+ * #define ACTION_NOOP          0
 #define ACTION_ENTER_SECTION 1
 #define ACTION_LEAVE_SECTION 2
 #define ACTION_ASK_SECTION   3
-
+*/
 
 
 #ifdef REQUEST
@@ -124,7 +132,7 @@ typedef struct
 typedef struct
 {
     int contact;
-    int specificAction;
+    ActionType specificAction;
     std::vector<ActionAiguille_t> aiguillages;
 } ActionContact_t;
 
@@ -135,21 +143,21 @@ typedef struct
     std::vector<ActionContact_t> list;
 } Parcours_t;
 
-ActionContact_t a = {0, 1, {{0, 1}}};
+ActionContact_t a = {0, ActionType::ACTION_ENTER_SECTION, {{0, 1}}};
 Parcours_t p00 = {
     0,
     1,
     {
         ActionContact_t {
             0,
-            1,
+            ActionType::ACTION_ENTER_SECTION,
             {
                 ActionAiguille_t{0, 1}
             }
         },
         ActionContact_t {
             0,
-            1,
+            ActionType::ACTION_ENTER_SECTION,
             {
                 ActionAiguille_t{0, 1}
             }
@@ -163,14 +171,14 @@ Parcours_t p01 = {
     {
         {
             0,
-            1,
+            ActionType::ACTION_ENTER_SECTION,
             {
                 {0, 1}
             }
         },
         {
             0,
-            1,
+            ActionType::ACTION_ENTER_SECTION,
             {
                 {0, 1}
             }
@@ -189,16 +197,16 @@ public:
 class ActionContact
 {
 public:
-    int contact;
-    int specificAction;
+    int contact{0};
+    ActionType specificAction{ActionType::ACTION_NOOP};
     QList<ActionAiguille> aiguillages;
 };
 
 class Parcours
 {
 public:
-    int depart0;
-    int depart1;
+    int depart0{-1};
+    int depart1{-1};
     QList<ActionContact> list;
 };
 
@@ -223,11 +231,11 @@ public:
     void doSpecificAction(ActionContact &action)
     {
         switch (action.specificAction) {
-        case ACTION_ENTER_SECTION : sharedSection->enter(locomotive); break;
+        case ActionType::ACTION_ENTER_SECTION : sharedSection->enter(locomotive); break;
 #ifdef REQUEST
-        case ACTION_ASK_SECTION : sharedSection->request(locomotive); break;
+        case ActionType::ACTION_ASK_SECTION : sharedSection->request(locomotive); break;
 #endif // REQUEST
-        case ACTION_LEAVE_SECTION : sharedSection->leave(locomotive); break;
+        case ActionType::ACTION_LEAVE_SECTION : sharedSection->leave(locomotive); break;
         default : break;
         }
     }
@@ -315,7 +323,7 @@ int cmain()
         {
             ActionContact a;
             a.contact = 16;
-            a.specificAction = 0;
+            a.specificAction = ActionType::ACTION_NOOP;
             a.aiguillages << ActionAiguille(9, DEVIE)
                           << ActionAiguille(8, DEVIE)
                           << ActionAiguille(11, TOUT_DROIT)
@@ -328,14 +336,14 @@ int cmain()
         {
             ActionContact a;
             a.contact = 15;
-            a.specificAction = ACTION_ASK_SECTION;
+            a.specificAction = ActionType::ACTION_ASK_SECTION;
             parcoursLoco1Forward.list << a;
         }
 #endif // REQUEST
         {
             ActionContact a;
             a.contact = 7;
-            a.specificAction = ACTION_ENTER_SECTION;
+            a.specificAction = ActionType::ACTION_ENTER_SECTION;
             a.aiguillages << ActionAiguille(1, DEVIE)
                           << ActionAiguille(22, DEVIE)
                           << ActionAiguille(21, TOUT_DROIT)
@@ -349,13 +357,13 @@ int cmain()
         {
             ActionContact a;
             a.contact = 33;
-            a.specificAction = ACTION_LEAVE_SECTION;
+            a.specificAction = ActionType::ACTION_LEAVE_SECTION;
             parcoursLoco1Forward.list << a;
         }
         {
             ActionContact a;
             a.contact = 23;
-            a.specificAction = ACTION_NOOP;
+            a.specificAction = ActionType::ACTION_NOOP;
             parcoursLoco1Forward.list << a;
         }
         loco1.parcours0 = parcoursLoco1Forward;
@@ -366,7 +374,7 @@ int cmain()
         {
             ActionContact a;
             a.contact = 23;
-            a.specificAction = 0;
+            a.specificAction = ActionType::ACTION_NOOP;
             a.aiguillages << ActionAiguille(14, DEVIE)
                           << ActionAiguille(15, DEVIE)
                           << ActionAiguille(17, TOUT_DROIT)
@@ -379,14 +387,14 @@ int cmain()
         {
             ActionContact a;
             a.contact = 25;
-            a.specificAction = ACTION_ASK_SECTION;
+            a.specificAction = ActionType::ACTION_ASK_SECTION;
             parcoursLoco1Back.list << a;
         }
 #endif // REQUEST
         {
             ActionContact a;
             a.contact = 32;
-            a.specificAction = ACTION_ENTER_SECTION;
+            a.specificAction = ActionType::ACTION_ENTER_SECTION;
             a.aiguillages << ActionAiguille(22, DEVIE)
                           << ActionAiguille(1, DEVIE)
                           << ActionAiguille(2, TOUT_DROIT)
@@ -400,7 +408,7 @@ int cmain()
         {
             ActionContact a;
             a.contact = 6;
-            a.specificAction = ACTION_LEAVE_SECTION;
+            a.specificAction = ActionType::ACTION_LEAVE_SECTION;
             parcoursLoco1Back.list << a;
         }
         {
@@ -421,7 +429,7 @@ int cmain()
         {
             ActionContact a;
             a.contact = 13;
-            a.specificAction = 0;
+            a.specificAction = ActionType::ACTION_NOOP;
             a.aiguillages << ActionAiguille(10, TOUT_DROIT)
                           << ActionAiguille(7, TOUT_DROIT)
                           << ActionAiguille(4, TOUT_DROIT);
@@ -431,7 +439,7 @@ int cmain()
         {
             ActionContact a;
             a.contact = 4;
-            a.specificAction = ACTION_ASK_SECTION;
+            a.specificAction = ActionType::ACTION_ASK_SECTION;
             parcoursLoco2Forward.list << a;
         }
 #endif // REQUEST
@@ -439,7 +447,7 @@ int cmain()
         {
             ActionContact a;
             a.contact = 3;
-            a.specificAction = ACTION_ENTER_SECTION;
+            a.specificAction = ActionType::ACTION_ENTER_SECTION;
             a.aiguillages << ActionAiguille(1, TOUT_DROIT)
                           << ActionAiguille(22, TOUT_DROIT)
                           << ActionAiguille(19, TOUT_DROIT)
@@ -450,13 +458,13 @@ int cmain()
         {
             ActionContact a;
             a.contact = 30;
-            a.specificAction = ACTION_LEAVE_SECTION;
+            a.specificAction = ActionType::ACTION_LEAVE_SECTION;
             parcoursLoco2Forward.list << a;
         }
         {
             ActionContact a;
             a.contact = 19;
-            a.specificAction = ACTION_NOOP;
+            a.specificAction = ActionType::ACTION_NOOP;
             parcoursLoco2Forward.list << a;
         }
         loco2.parcours0 = parcoursLoco2Forward;
@@ -467,7 +475,7 @@ int cmain()
         {
             ActionContact a;
             a.contact = 19;
-            a.specificAction = 0;
+            a.specificAction = ActionType::ACTION_NOOP;
             a.aiguillages << ActionAiguille(13, TOUT_DROIT)
                           << ActionAiguille(16, TOUT_DROIT)
                           << ActionAiguille(19, TOUT_DROIT);
@@ -477,7 +485,7 @@ int cmain()
         {
             ActionContact a;
             a.contact = 28;
-            a.specificAction = ACTION_ASK_SECTION;
+            a.specificAction = ActionType::ACTION_ASK_SECTION;
             parcoursLoco2Back.list << a;
         }
 #endif // REQUEST
@@ -485,7 +493,7 @@ int cmain()
         {
             ActionContact a;
             a.contact = 29;
-            a.specificAction = ACTION_ENTER_SECTION;
+            a.specificAction = ActionType::ACTION_ENTER_SECTION;
             a.aiguillages << ActionAiguille(22, TOUT_DROIT)
                           << ActionAiguille(1, TOUT_DROIT)
                           << ActionAiguille(4, TOUT_DROIT)
@@ -496,7 +504,7 @@ int cmain()
         {
             ActionContact a;
             a.contact = 2;
-            a.specificAction = ACTION_LEAVE_SECTION;
+            a.specificAction = ActionType::ACTION_LEAVE_SECTION;
             parcoursLoco2Back.list << a;
         }
         {
