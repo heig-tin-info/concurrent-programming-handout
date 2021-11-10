@@ -22,7 +22,6 @@ public:
 
 protected:
     TrainSimSettings();
-    static TrainSimSettings *instance;
 
     bool viewContactNumber;
     bool viewAiguillageNumber;

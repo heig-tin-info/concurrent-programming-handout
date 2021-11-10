@@ -15,8 +15,6 @@ static SimView* simView;
 
 
 
-CommandeTrain *CommandeTrain::m_instance = nullptr;
-
 CommandeTrain::CommandeTrain()
 {
     command = "";
@@ -27,9 +25,8 @@ CommandeTrain::CommandeTrain()
 
 CommandeTrain* CommandeTrain::getInstance()
 {
-    if (m_instance == nullptr)
-        m_instance=new CommandeTrain();
-    return m_instance;
+    static CommandeTrain instance;
+    return &instance;
 }
 
 void CommandeTrain::init_maquette(void)

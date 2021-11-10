@@ -8,13 +8,11 @@ TrainSimSettings::TrainSimSettings()
     inertie = true;
 }
 
-TrainSimSettings *TrainSimSettings::instance = nullptr;
 
 TrainSimSettings* ::TrainSimSettings::getInstance()
 {
-    if (instance == nullptr)
-        instance = new TrainSimSettings();
-    return instance;
+    static TrainSimSettings instance;
+    return &instance;
 }
 
 bool TrainSimSettings::getViewLocoLog()

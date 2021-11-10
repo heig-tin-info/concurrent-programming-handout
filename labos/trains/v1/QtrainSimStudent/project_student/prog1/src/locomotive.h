@@ -1,18 +1,20 @@
+//    ___  _________    ___  ___  ___  ___  //
+//   / _ \/ ___/ __ \  |_  |/ _ \|_  |/ _ \ //
+//  / ___/ /__/ /_/ / / __// // / __// // / //
+// /_/   \___/\____/ /____/\___/____/\___/  //
+//                                          //
+// Rien à modifier ici
+
 #ifndef LOCOMOTIVE_H
 #define LOCOMOTIVE_H
 
 #include <QString>
-#include <QMutex>
 
 class Locomotive
 {
 
-    QMutex mutex;
 public:
-    int priority{0};
-
-    void emergencyStop();
-    bool stopped;
+    int priority;
 
     /** Constructeur.
      * Initialise la locomotive avec un numero invalide et une vitesse nulle.

@@ -1,3 +1,10 @@
+//    ___  _________    ___  ___  ___  ___  //
+//   / _ \/ ___/ __ \  |_  |/ _ \|_  |/ _ \ //
+//  / ___/ /__/ /_/ / / __// // / __// // / //
+// /_/   \___/\____/ /____/\___/____/\___/  //
+//                                          //
+// Rien à modifier ici
+
 #ifndef LOCOMOTIVE_H
 #define LOCOMOTIVE_H
 
@@ -7,6 +14,7 @@ class Locomotive
 {
 
 public:
+    int priority;
 
     /** Constructeur.
      * Initialise la locomotive avec un numero invalide et une vitesse nulle.
