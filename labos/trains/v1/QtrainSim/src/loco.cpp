@@ -194,13 +194,27 @@ bool Loco::getActive()
 #include <iostream>
 #include "mainwindow.h"
 
+#ifdef FULLCHECK
+void CHECK(bool condition)
+{
+    if (!condition) {
+        std::cout << "Aie, that's bad" << std::endl;
+    }
+}
+#else // FULLCHECK
+void CHECK(bool /*condition*/) {}
+#endif // FULLCHECK
+
 void Loco::avanceDUneVoie()
 {
+    CHECK(voieActuelle != nullptr);
     Voie* viensDe = voieActuelle;
 
+    CHECK(voieSuivante != nullptr);
     voieActuelle = voieSuivante;
 
     voieSuivante = voieActuelle->getVoieSuivante(viensDe);
+    CHECK(voieSuivante != nullptr);
 
     setPos(voieActuelle->getPosAbsLiaison(viensDe));
 
@@ -214,12 +228,15 @@ void Loco::avanceDUneVoie()
         Voie* v1 = voieSuivante;
         Voie* v2 = v1->getVoieSuivante(viensDe);
 
+        CHECK(v2 != nullptr);
+
         while (ctc2 == nullptr)
         {
             ctc2 = v1->getContact();
             viensDe = v1;
             v1 = v2;
             v2 = v1->getVoieSuivante(viensDe);
+            CHECK(v2 != nullptr);
         }
 
         nouveauSegment(ctc1, ctc2, this);
@@ -269,7 +286,11 @@ void Loco::avancerDroit(qreal distance)
 {
     qreal x =  distance * cos(angleCumule * (PI / 180.0));
     qreal y = -distance * sin(angleCumule * (PI / 180.0));
+    CHECK(!isnan(x));
+    CHECK(!isnan(y));
     voieActuelle->correctionPositionLoco(x, y);
+    CHECK(!isnan(x));
+    CHECK(!isnan(y));
     moveBy(x,y);
 
 }
@@ -325,6 +346,7 @@ void Loco::inverserSens()
         this->setRotation(this->rotation() + 180.0);
         Voie* viensDe = voieSuivante;
         voieSuivante = voieActuelle->getVoieSuivante(viensDe);
+        CHECK(voieSuivante != nullptr);
         this->angleCumule -= 180.0;
     }
 }
@@ -370,7 +392,9 @@ void Loco::adapterVitesse()
         {
             this->setRotation(rotation()+180.0);
             Voie* viensDe = voieSuivante;
+            CHECK(viensDe != nullptr);
             voieSuivante = voieActuelle->getVoieSuivante(viensDe);
+            CHECK(voieSuivante != nullptr);
             this->angleCumule -= 180.0;
             inverser = false;
         }

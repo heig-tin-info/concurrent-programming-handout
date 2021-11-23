@@ -220,23 +220,23 @@ public slots:
       */
     void adapterVitesse();
 private:
-    panneauNumLoco* numLoco1;
-    panneauNumLoco* numLoco2;
+    panneauNumLoco* numLoco1{nullptr};
+    panneauNumLoco* numLoco2{nullptr};
     qreal angleCumule;
     bool active;
     int vitesse;
     int vitesseFuture;
     int direction;
     QColor couleur;
-    Voie* voieActuelle;
-    Voie* voieSuivante;
-    Segment* segmentActuel;
+    Voie* voieActuelle{nullptr};
+    Voie* voieSuivante{nullptr};
+    Segment* segmentActuel{nullptr};
     bool alerteProximite;
     bool inverser;
     bool deraille;
-    QTimer* timer;
-    QWaitCondition* VarCond;
-    QMutex* mutex;
+    QTimer* timer{nullptr};
+    QWaitCondition* VarCond{nullptr};
+    QMutex* mutex{nullptr};
 };
 
 #endif // LOCO_H

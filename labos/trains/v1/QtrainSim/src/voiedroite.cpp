@@ -158,6 +158,13 @@ void VoieDroite::correctionPositionLoco(qreal &x, qreal &y)
     qreal sqrt2 = sqrt((p2.x()-p1.x())*(p2.x()-p1.x())+(p2.y()-p1.y())*(p2.y()-p1.y()));
     qreal angleP2P1P0 = add/(sqrt1*sqrt2);
 
+    // This situation can happen if two points are equal, for instance if
+    // (x,y) are just exactly on a coordonneesLiaison. In that case, no
+    // need to adjust, so that's all right
+    if (isnan(angleP2P1P0)) {
+        return;
+    }
+
     qreal distP1P3 = distP1P0*angleP2P1P0;
     qreal rapport = distP1P3/distP1P2;
 
