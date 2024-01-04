@@ -7,7 +7,7 @@
 \usepackage{fontspec}
 \usepackage{amsfonts}
 \usepackage{lettrine}
-\usepackage[Lenny]{fncychap}
+%\usepackage[Lenny]{fncychap}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{cleveref}
@@ -20,6 +20,9 @@
 \usepackage{tabularx}
 \usepackage{fancyhdr}
 \usepackage{ulem}
+\usepackage{xpatch}
+\usepackage{xcolor}
+\usepackage{realboxes}
 \usepackage[framemethod=tikz]{mdframed}
 \usepackage[labelfont=bf]{caption}
 
@@ -67,6 +70,10 @@
 
 \newcommand{\ccode}[1]{{\lstset{basicstyle=\normalsize\ttfamily,stringstyle=\ttfamily}\lstinline$#1$}}
 
+\makeatletter
+\xpretocmd\lstinline{\Colorbox{GitHubGray}\bgroup\appto\lst@DeInit{\egroup}}{}{}
+\makeatother
+
 
 \floatname{algorithm}{Algorithme}
 
@@ -82,16 +89,12 @@
 %\renewcommand{\includegraphics}[2]{}
 
 
-\setlength{\headheight}{1.2cm}
-
-\setlength{\voffset}{-1.2cm}
-
-\setlength{\textheight}{655pt}
-
-
-\addtolength{\oddsidemargin}{-1cm}
-\addtolength{\evensidemargin}{-1cm}
-\addtolength{\textwidth}{2cm}
+% \setlength{\headheight}{1.2cm}
+% \setlength{\voffset}{-1.2cm}
+% \setlength{\textheight}{655pt}
+% \addtolength{\oddsidemargin}{-1cm}
+% \addtolength{\evensidemargin}{-1cm}
+% \addtolength{\textwidth}{2cm}
 
 \newcounter{exercicecounter}
 \setcounter{exercicecounter}{1}
@@ -141,9 +144,9 @@
 %\fancyfoot[C]{Programmation Concurrente 1 \copyright HEIG-VD}
 }
 
-\renewcommand{\figurename}{Figure}
-\def\listfigurename{Liste des figures}
-\renewcommand{\tablename}{Tableau}
+%\renewcommand{\figurename}{Figure}
+%\def\listfigurename{Liste des figures}
+%\renewcommand{\tablename}{Tableau}
 
 
 \emergencystretch=50pt

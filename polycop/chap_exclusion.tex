@@ -136,7 +136,7 @@ void *T1(void *arg)
 \end{algorithm}
 
 Malheureusement notre solution est incorrecte car on peut imaginer le scénario suivant.
-\centering
+\begin{center}
 \begin{tabular}{cl}
 $T_0$& lit $occupe$ à faux \\
 $T_1$& lit aussi $occupe$ à faux \\
@@ -145,6 +145,7 @@ $T_1$& entre en section critique \\
 $T_0$& met aussi $occupe$ à vrai \\
 $T_0$& entre aussi en section critique. \\
 \end{tabular}
+\end{center}
 
 Les deux tâches peuvent se retrouver simultanément en section critique.  Il n'y a donc pas d'exclusion mutuelle.
 
