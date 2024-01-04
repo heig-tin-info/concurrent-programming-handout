@@ -23,12 +23,10 @@ Avant d'apporter une solution au problème de l'exclusion mutuelle, regardons qu
 \end{enumerate}
 
 \begin{figure}[tb]
-\figcaption{figex:famine}{Situation de famine}
-\begin{center}
-\includegraphics[width=.9\textwidth]{FigFamine}
-\end{center}
-\vspace{-.2cm}
-\rule{\textwidth}{0.01in}
+	\begin{center}
+		\includegraphics[width=.9\textwidth]{FigFamine}
+		\caption{\label{figex:famine}Situation de famine}
+	\end{center}
 \end{figure}
 
 \section{Classification des solutions}
@@ -66,7 +64,7 @@ Dans le cadre de ce cours, nous nous limitons aux algorithmes qui synchronisent 
 Les parties {\em prélude} et {\em postlude} constituent le protocole que doivent suivre les deux tâches \ccode{T0} et \ccode{T1} pour respectivement pénétrer et sortir de leur section critique.  Les parties des tâches non comprises entre les parties prélude et postlude constituent la partie non-critique.
 
 \begin{figure}[!ht]
-\figcaption{algex:générale}{Schéma général des algorithmes d'exclusion mutuelle}
+
 \begin{center}
 \begin{tabular}{l}
 \lstset{language=C++}
@@ -93,9 +91,8 @@ void *T1(void *arg)
 }
 \end{lstlisting}
 \end{tabular}
+\caption{\label{algex:générale}Schéma général des algorithmes d'exclusion mutuelle}
 \end{center}
-\vspace{-.2cm}
-\rule{\textwidth}{0.01in}
 \end{figure}
 
 \subsection*{Première tentative}
@@ -497,7 +494,7 @@ Les deux algorithmes, Dekker et Peterson, se généralisent à $n$ tâches. Tout
 
 Soit les deux tâches $T_0$ et $T_1$ données sur la figure~\ref{algex:Exercice1} et devant réaliser l'exclusion mutuelle dans leur section critique.
 \begin{figure}[!ht]
-\figcaption{algex:Exercice1}{Exercice 1}
+
 \begin{center}
 \begin{tabular}{l}
 \lstset{language=C++}
@@ -536,8 +533,7 @@ void *T1(void *arg)
 }
 \end{lstlisting}
 \end{tabular}
+\caption{\label{algex:Exercice1}Exercice 1}
 \end{center}
-\vspace{-.2cm}
-\rule{\textwidth}{0.01in}
 \end{figure}
 L'exclusion mutuelle est-elle garantie par les parties prélude et postlude des tâches? Justifiez votre réponse.

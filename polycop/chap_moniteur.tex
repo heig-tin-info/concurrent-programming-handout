@@ -4,7 +4,7 @@
 \section{Définition}
 Un {\em moniteur} comprend un ensemble de variables et un ensemble de procédures qui manipulent ces variables. Certaines procédures sont accessibles depuis l'extérieur et sont les {\em points d'entrée} du moniteur. Les tâches qui font appel à un moniteur pour se synchroniser n'ont pas un accès direct aux variables contenues dans le moniteur. Elles ne peuvent les atteindre que par les points d'entrée fournis par le moniteur. Les procédures contiennent des opérations qui permettent de bloquer et de réveiller les tâches conformément aux spécifications du problème. Les conditions de blocage et de réveil sont exprimées en fonction des variables du moniteur. Le mécanisme d'exécution du moniteur garantit qu'une seule tâche est active dans le moniteur, en train d'exécuter une de ses procédures. Un moniteur contient aussi une partie d'initialisation qui n'est exécutée qu'une fois lors de la création du moniteur (voir figure~\ref{moniteur:struct}). Un moniteur est donc tout simplement un type de donnée abstrait qui possède des mécanismes de synchronisation et dont l'accès se réalise en exclusion mutuelle.
 \begin{figure}[!ht]
-\figcaption{moniteur:struct}{Structure d'un moniteur}
+
 \begin{center}
 \begin{tabular}{l}
 {\bf monitor} <{\em nom}> \\
@@ -21,9 +21,8 @@ Un {\em moniteur} comprend un ensemble de variables et un ensemble de procédure
 \hspace{0.3cm}{\bf begin} <{\em code pour initialiser les variables rémanentes}>; \\
 \hspace{0.3cm}{\bf end};
 \end{tabular}
+\caption{\label{moniteur:struct}Structure d'un moniteur}
 \end{center}
-\vspace{-.2cm}
-\rule{\textwidth}{0.01in}
 \end{figure}
 
 La synchronisation des tâches s'exprime au moyen de {\em variables conditions} (VC). Une VC est déclarée comme une variable ordinaire mais elle ne peut être utilisée que par 2 primitives: les primitives {\em attente} et {\em signale}. Soit la VC $cond$ déclarée par

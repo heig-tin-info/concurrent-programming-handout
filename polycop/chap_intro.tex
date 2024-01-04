@@ -28,12 +28,10 @@ Le système d'exploitation peut ensuite le faire passer dans l'état \emph{élu}
 Ce passage n'est pas du ressort du processus, mais bien de l'ordonnanceur, qui s'occupe d'allouer le processeur aux différents processus concurrents. A tout instant l'ordonnanceur peut replacer le processus dans l'état \emph{prêt}, pour laisser un autre processus s'exécuter. Il s'agit de la \emph{préemption} d'un processus, qui se fait sans que le processus préempté n'en soit conscient. Depuis l'état \emph{élu}, le processus peut aussi se retrouver dans l'état \emph{bloqué} (\emph{blocked} en anglais), lors de l'attente d'un événement ou du relâchement d'un mutex, par exemple. Il n'y a ensuite qu'une possibilité pour sortir de l'état \emph{bloqué}. Il s'agit de réveiller le processus suite au relâchement d'un mutex ou au fait qu'un événement sur lequel le processus attend a été déclenché. Dans ce cas, le processus passe à l'état \emph{prêt}, prêt à continuer son exécution. Lorsque le processus s'exécute, il peut se terminer. Les deux autres flèches sortantes de l'état \emph{élu} représentent deux scénarios. Premièrement, si le processus a été détaché, c'est-à-dire qu'il est sans lien parental, lors de sa terminaison, le processus passe directement dans l'état \emph{terminé}. Deuxièmement, si la terminaison du processus est importante pour le reste de l'application, alors il passe dans l'état \emph{zombie} (\emph{zombied} en anglais). Il y reste jusqu'à ce que le processus parent effectue une \emph{jointure}, c'est-à-dire qu'il récupère les informations retournées par le processus en cours de terminaison.
 
 \begin{figure}[ht]
-\figcaption{fig:process-state-unix}{Etats et transitions d'un processus Unix}
-\begin{center}
-\includegraphics{images/process-state-unix}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics{images/process-state-unix}
+    \caption{\label{fig:process-state-unix}Etats et transitions d'un processus Unix}
+  \end{center}
 \end{figure}
 
 La figure \ref{fig:process-space} illustre la décomposition de l'espace d'adressage d'un processus en trois parties principales~:
@@ -44,12 +42,10 @@ La figure \ref{fig:process-space} illustre la décomposition de l'espace d'adres
 \end{itemize}
 
 \begin{figure}[ht]
-\figcaption{fig:process-space}{Espace d'adressage d'un processus}
-\begin{center}
-\includegraphics{process-space}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics{process-space}
+    \caption{\label{fig:process-space}Espace d'adressage d'un processus}
+  \end{center}
 \end{figure}
 
 
@@ -66,34 +62,28 @@ Un thread est un fil d'exécution de code, à l'intérieur d'un processus, et qu
 Les threads d'un même processus partagent le même espace d'adressage, comme illustré à la figure \ref{fig:process-space-multi}. Toutes les ressources du processus peuvent être accédées par tous les threads, ce qui n'est pas le cas entre deux processus distincts. Toutefois, chaque thread possède son propre compteur de programme (PC), un ensemble de registres, un état, et une pile. Les piles sont placées dans l'espace mémoire dédié aux piles, mais chaque thread possède sa propre pile. Les variables globales sont par contre partagées entre les threads.
 
 \begin{figure}[!ht]
-\figcaption{fig:process-space-multi}{Espace d'adressage d'un processus multi-thread}
-\begin{center}
-\includegraphics[width=\textwidth]{process-space-multi}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics[width=\textwidth]{process-space-multi}
+    \caption{\label{fig:process-space-multi}Espace d'adressage d'un processus multi-thread}
+  \end{center}
 \end{figure}
 
 Du point de vue du programmeur, le programme de la figure \ref{fig:process-space-multi} s'exécute à la manière présentée sur la figure \ref{fig:thread-execution}.
 
 \begin{figure}[ht]
-\figcaption{fig:thread-execution}{Flot d'exécution d'un processus multi-thread}
-\begin{center}
-\includegraphics{thread-execution}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics{thread-execution}
+    \caption{\label{fig:thread-execution}Flot d'exécution d'un processus multi-thread}
+  \end{center}
 \end{figure}
 
 Toutefois, sur un processeur simple coeur, les threads doivent se partager le processeur. De ce fait, le flot d'exécution ressemble plutôt à celui présenté sur la figure \ref{fig:thread-execution-single}. Nous pouvons observer qu'un seul thread est en exécution à un instant donné, et que le passage d'un thread à un autre peut être influencé par une communication inter-thread (deux derniers cas), ou simplement dicté par l'ordonnanceur.
 
 \begin{figure}[ht]
-\figcaption{fig:thread-execution-single}{Flot d'exécution d'un processus multi-thread sur un processeur simple coeur}
-\begin{center}
-\includegraphics{thread-execution-single}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics{thread-execution-single}
+    \caption{\label{fig:thread-execution-single}Flot d'exécution d'un processus multi-thread sur un processeur simple coeur}
+  \end{center}
 \end{figure}
 
 Le cycle de vie d'un thread est semblable à celui d'un processus (figure \ref{fig:process-state-unix}).
@@ -135,12 +125,10 @@ Pas en commun~:
 En comparaison d'un programme ne contenant qu'un seul thread, un programme décomposé en threads permet de mieux gérer les entrées/sorties et le calcul. Un thread peut s'occuper du calcul, tandis que d'autres gèrent les entrées/sorties. De ce fait, l'usage d'un GUI (Graphical User Interface) est plus ergonomique et convivial. Prenons l'exemple d'une application visant à afficher la courbe de Mandelbrot (Figure \ref{fig:mandelbrot}). Pour chaque point de l'image, une grande quantité de calcul doit être effectuée. Supposons que l'utilisateur peut cliquer sur des boutons pour zoomer. Si nous ne disposons pas de multi-threading, un clic sur le bouton va ensuite voir l'application se bloquer pendant que la nouvelle image est calculée. Si par contre nous disposons de plusieurs threads, un thread peut s'occuper du calcul pendant que l'autre gère l'interface graphique. Dès lors l'utilisateur a encore la possibilité d'interagir avec l'application sans devoir souffrir de l'accaparement du processeur pour le calcul.
 
 \begin{figure}[ht]
-\figcaption{fig:mandelbrot}{Courbe de Mandelbrot}
-\begin{center}
-\includegraphics[width=.7\textwidth]{mandelbrot_image}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics[width=.7\textwidth]{mandelbrot_image}
+    \caption{\label{fig:mandelbrot}Courbe de Mandelbrot}
+  \end{center}
 \end{figure}
 
 Dans le cas d'un processeur multi-coeur, un autre avantage du multi-threading peut s'exploiter. En effet, chaque coeur peut prendre en charge un ou plusieurs threads. En reprenant l'exemple de Mandelbrot, si nous supposons que nous sommes en présence d'un dual-core, alors nous pouvons décomposer notre calcul en deux threads, chacun étant responsable de la génération de la moitié de l'image. Lorsque l'utilisateur clique sur le bouton, la nouvelle image pourra donc s'afficher en un temps réduit de moitié. Il s'agit là d'un parallélisme réel, rendu possible par l'amélioration des plateformes matérielles proposées sur le marché. Nous pouvons toutefois noter que l'accélération d'un facteur $n$ pour un $n$-core reste théorique, la probable communication inter-thread imposant une perte en performance.
@@ -178,12 +166,10 @@ Dans le modèle \emph{délégation} (Figure \ref{fig:model-boss-worker}), un thr
 
 
 \begin{figure}[ht]
-\figcaption{fig:model-boss-worker}{Modèle délégation}
-\begin{center}
-\includegraphics[scale=0.7]{model-boss-worker}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics[scale=0.7]{model-boss-worker}
+    \caption{\label{fig:model-boss-worker}Modèle délégation}
+  \end{center}
 \end{figure}
 
 Premièrement, le thread principal peut créer un thread pour chaque nouvelle tâche à exécuter. Dans ce cas, il est composé d'une boucle dans laquelle il attend des requêtes et où il crée ensuite un thread capable de répondre à cette requête.
@@ -255,12 +241,10 @@ Dans le modèle \emph{pair} (Figure \ref{fig:model-peer}), aucun thread n'est pr
 
 
 \begin{figure}[ht]
-\figcaption{fig:model-peer}{Modèle pair}
-\begin{center}
-\includegraphics[scale=0.7]{model-peer}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics[scale=0.7]{model-peer}
+    \caption{\label{fig:model-peer}Modèle pair}
+  \end{center}
 \end{figure}
 
 
@@ -297,12 +281,10 @@ Le modèle \emph{pipeline} (Figure \ref{fig:model-pipeline}) est exploitable lor
 
 
 \begin{figure}[ht]
-\figcaption{fig:model-pipeline}{Modèle pipeline}
-\begin{center}
-\includegraphics[scale=0.7]{model-pipeline}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics[scale=0.7]{model-pipeline}
+    \caption{\label{fig:model-pipeline}Modèle pipeline}
+  \end{center}
 \end{figure}
 
 

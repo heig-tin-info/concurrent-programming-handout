@@ -32,7 +32,7 @@ Les actions des tâches deviennent alors
 \hspace{0.6cm}Consommatrice : attendre que $Produit(t) - Consomm\acute{e}(t) > 0$, puis prélever l'item produit.
 
 \begin{figure}[t]
-\figcaption{prodcons:base}{Schéma des tâches productrices et consommatrices}
+
 \begin{center}
 \begin{tabular}{l}
 \lstset{language=C++}
@@ -79,9 +79,8 @@ int main(void)
 } /* fin de main */
 \end{lstlisting}
 \end{tabular}
+\caption{\label{prodcons:base}Schéma des tâches productrices et consommatrices}
 \end{center}
-\vspace{-.2cm}
-\rule{\textwidth}{0.01in}
 \end{figure}
 
 Dans ce qui suit, nous formulons des algorithmes permettant la synchronisation entre productrice et consommatrice. Nous commençons par le cas particulier où le tampon ne peut contenir qu'un seul élément avant de généraliser nos solutions à une capacité quelconque.

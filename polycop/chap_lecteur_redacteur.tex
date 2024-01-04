@@ -129,12 +129,10 @@ Les figures de \ref{fig:lectred1} à \ref{fig:lectred4} montrent l'évolution de
 A la figure \ref{fig:lectred1}, un rédacteur a l'accès à la ressource critique. Il est donc seul à être dans ce cas. Le sémaphore \ccode{redacteur} bloque un seul lecteur. En effet, les rédacteurs successifs sont bloqués par \ccode{mutexRedacteurs}, celui-ci étant réquisitionné par le rédacteur $R1$. Du côté des lecteurs, seul le premier arrivé est bloqué sur le sémaphore \ccode{redacteur}, les autres étant bloqué sur le sémaphore \ccode{mutexLecteurs}, réquisitionné par le premier lecteur.
 
 \begin{figure}[!ht]
-\figcaption{fig:lectred1}{Exemple d'exécution avec priorité aux lecteurs (1)}
-\begin{center}
-\includegraphics[scale=.7]{lectred1}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics[scale=.7]{lectred1}
+    \caption{\label{fig:lectred1}Exemple d'exécution avec priorité aux lecteurs (1)}
+  \end{center}
 \end{figure}
 
 Lorsque le rédacteur $R1$ libère la ressource, il libère le sémaphore \ccode{redacteur} ce qui permet au premier lecteur d'accéder à la ressource.
@@ -142,23 +140,19 @@ Il libère ensuite le sémaphore \ccode{mutexRedacteurs}. Le rédacteur $R3$ se 
 Le lecteur $L2$ relâche donc le sémaphore \ccode{mutexLecteurs}, ce qui permet à tous les lecteurs en attente d'accéder à la ressource, et le système se retrouve dans l'état illustré par la figure \ref{fig:lectred2}.
 
 \begin{figure}[!ht]
-\figcaption{fig:lectred2}{Exemple d'exécution avec priorité aux lecteurs (2)}
-\begin{center}
-\includegraphics[scale=.7]{lectred2}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics[scale=.7]{lectred2}
+    \caption{\label{fig:lectred2}Exemple d'exécution avec priorité aux lecteurs (2)}
+  \end{center}
 \end{figure}
 
 Lorsque de nouveaux rédacteurs désirent accéder à la ressource, ils sont bloqués par le sémaphore \ccode{mutexRedacteurs}. Les lecteurs désirant effectuer la même action sont par contre autorisés à accéder à la ressource. La figure \ref{fig:lectred3} montre l'état du système après l'arrivée de deux rédacteurs et d'un lecteur. $L9$ se retrouve en accès de ressource, alors que $R8$ et $R10$ sont bloqués.
 
 \begin{figure}[!ht]
-\figcaption{fig:lectred3}{Exemple d'exécution avec priorité aux lecteurs (3)}
-\begin{center}
-\includegraphics[scale=.7]{lectred3}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics[scale=.7]{lectred3}
+    \caption{\label{fig:lectred3}Exemple d'exécution avec priorité aux lecteurs (3)}
+  \end{center}
 \end{figure}
 
 Lorsque tous les lecteurs ont relâché la ressource, le rédacteur $R3$, qui était bloqué par le sémaphore \ccode{redacteur} peut enfin y avoir accès.
@@ -166,12 +160,10 @@ La figure \ref{fig:lectred4} illustre cette situation.
 Remarquez que la file d'attente associée à \ccode{redacteur} reste vide car $R3$ bloque toujours les rédacteurs par son sémaphore \ccode{mutexRedacteurs}. Un nouvel lecteur qui se présenterait pourra alors se placer à la tête de cette file et ainsi dépasser tous les rédacteurs présents pour prendre la ressource aussitôt que $R3$ libère \ccode{redacteur}.
 
 \begin{figure}[!ht]
-\figcaption{fig:lectred4}{Exemple d'exécution avec priorité aux lecteurs (4)}
-\begin{center}
-\includegraphics[scale=.7]{lectred4}
-\end{center}
-\vspace{-.3cm}
-\rule{\textwidth}{0.01in}
+  \begin{center}
+    \includegraphics[scale=.7]{lectred4}
+    \caption{\label{fig:lectred4}Exemple d'exécution avec priorité aux lecteurs (4)}
+  \end{center}
 \end{figure}
 
 Nous pouvons noter que cet algorithme permet aux lecteurs de se coaliser pour empêcher l'accès aux rédacteurs. En effet, si un nouveau lecteur accède à la ressource avant que tous les lecteurs ne l'aient relâchée, alors les rédacteurs n'auront jamais accès à la ressource.
