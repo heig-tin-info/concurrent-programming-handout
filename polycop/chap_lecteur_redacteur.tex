@@ -1,5 +1,5 @@
 %version du vendredi 20 mars 2009 13h21
-\chapter{Lecteurs-rédacteurs}
+\chapter{Lecteurs-rÃ©dacteurs}
 
 \startchapter
 
@@ -9,71 +9,71 @@
 
 
 
-\lettrine[lines=4]{L}{es} situations de type lecteurs-rédacteurs correspondent à l'accès concurrent à une ressource qui est accédée en lecture par certaines tâches, et en écriture par d'autres. Un exemple typique est l'accès à un fichier, qui peut être ouvert simultanément en lecture par plusieurs tâches, mais en écriture par une seule.
+\lettrine[lines=4]{L}{es} situations de type lecteurs-rÃ©dacteurs correspondent Ã  l'accÃ¨s concurrent Ã  une ressource qui est accÃ©dÃ©e en lecture par certaines tÃ¢ches, et en Ã©criture par d'autres. Un exemple typique est l'accÃ¨s Ã  un fichier, qui peut Ãªtre ouvert simultanÃ©ment en lecture par plusieurs tÃ¢ches, mais en Ã©criture par une seule.
 
-\section{Enoncé du problème}
-Un ensemble de threads se partagent des données. Les threads de type \emph{lecteur} ne font que consulter les données, tandis que les threads de type \emph{rédacteur} peuvent également les modifier. Les lecteurs effectuent donc des opérations de lecture, et les rédacteurs des opérations d'écriture.
+\section{EnoncÃ© du problÃ¨me}
+Un ensemble de threads se partagent des donnÃ©es. Les threads de type \emph{lecteur} ne font que consulter les donnÃ©es, tandis que les threads de type \emph{rÃ©dacteur} peuvent Ã©galement les modifier. Les lecteurs effectuent donc des opÃ©rations de lecture, et les rÃ©dacteurs des opÃ©rations d'Ã©criture.
 
-Les opérations de lecture peuvent être concurrentes. En effet, à titre d'exemple, plusieurs thread peuvent accéder à un même fichier en lecture sans risque de trouver le fichier dans un état incohérent. Les écritures sont, par contre, critiques. Si deux threads modifient l'état d'un fichier au même instant, les données contenues dans le fichier risquent fort d'être corrompues. Et de même, si un thread modifie un fichier alors qu'un autre l'accède en lecture, ce dernier a de bonnes chances de se retrouver avec des données incohérentes. Les accès en écriture doivent donc être effectués en exclusion mutuelle: une écriture ne peut être réalisée si une autre écriture est en cours, une lecture ne peut être faite tant qu'une écriture est en cours, et une écriture ne peut débuter que si aucune lecture n'est en cours.
+Les opÃ©rations de lecture peuvent Ãªtre concurrentes. En effet, Ã  titre d'exemple, plusieurs thread peuvent accÃ©der Ã  un mÃªme fichier en lecture sans risque de trouver le fichier dans un Ã©tat incohÃ©rent. Les Ã©critures sont, par contre, critiques. Si deux threads modifient l'Ã©tat d'un fichier au mÃªme instant, les donnÃ©es contenues dans le fichier risquent fort d'Ãªtre corrompues. Et de mÃªme, si un thread modifie un fichier alors qu'un autre l'accÃ¨de en lecture, ce dernier a de bonnes chances de se retrouver avec des donnÃ©es incohÃ©rentes. Les accÃ¨s en Ã©criture doivent donc Ãªtre effectuÃ©s en exclusion mutuelle: une Ã©criture ne peut Ãªtre rÃ©alisÃ©e si une autre Ã©criture est en cours, une lecture ne peut Ãªtre faite tant qu'une Ã©criture est en cours, et une Ã©criture ne peut dÃ©buter que si aucune lecture n'est en cours.
 
-Pour résumer, les tâches se répartissent en 2 sous-ensembles:
+Pour rÃ©sumer, les tÃ¢ches se rÃ©partissent en 2 sous-ensembles:
 
 \begin{itemize}
-\item les lecteurs qui ne peuvent que lire les données, et
-\item les rédacteurs qui peuvent modifier les données.
+\item les lecteurs qui ne peuvent que lire les donnÃ©es, et
+\item les rÃ©dacteurs qui peuvent modifier les donnÃ©es.
 \end{itemize}
 
-Les contraintes du problème sont les suivantes:
+Les contraintes du problÃ¨me sont les suivantes:
 
 \begin{enumerate}
-\item plusieurs lecteurs peuvent lire simultanément les données;
-\item les rédacteurs s'excluent mutuellement;
-\item les lecteurs et les rédacteurs s'excluent mutuellement.
+\item plusieurs lecteurs peuvent lire simultanÃ©ment les donnÃ©es;
+\item les rÃ©dacteurs s'excluent mutuellement;
+\item les lecteurs et les rÃ©dacteurs s'excluent mutuellement.
 \end{enumerate}
 
-Ce problème des lecteurs-rédacteurs est plus général qu'un simple problème d'exclusion mutuelle, de par ces contraintes. 
-Il pourrait être résolu grâce au concept de section critique protégeant tous les accès à la ressource lue et écrite. Toutefois, une telle solution empêcherait les lectures concurrentes, ce qui serait dommageable pour les performances du système.
+Ce problÃ¨me des lecteurs-rÃ©dacteurs est plus gÃ©nÃ©ral qu'un simple problÃ¨me d'exclusion mutuelle, de par ces contraintes.
+Il pourrait Ãªtre rÃ©solu grÃ¢ce au concept de section critique protÃ©geant tous les accÃ¨s Ã  la ressource lue et Ã©crite. Toutefois, une telle solution empÃªcherait les lectures concurrentes, ce qui serait dommageable pour les performances du systÃ¨me.
 
-La solution au problème des lecteurs-rédacteurs n'est pas unique. Plusieurs solutions peuvent en effet être proposées, en fonction des priorités choisies: 
+La solution au problÃ¨me des lecteurs-rÃ©dacteurs n'est pas unique. Plusieurs solutions peuvent en effet Ãªtre proposÃ©es, en fonction des prioritÃ©s choisies:
 
 \begin{enumerate}
-\item Priorité aux lecteurs (famine possible des rédacteurs)
-\item Priorité aux lecteurs si un lecteur a déjà accès à la ressource (famine possible des lecteurs)
-\item  Priorité aux rédacteurs (famine possible des lecteurs)
-\item Accès aux données selon les ordres des arrivées. Toutes les demandes des lecteurs qui se suivent sont satisfaites en même temps.
+\item PrioritÃ© aux lecteurs (famine possible des rÃ©dacteurs)
+\item PrioritÃ© aux lecteurs si un lecteur a dÃ©jÃ  accÃ¨s Ã  la ressource (famine possible des lecteurs)
+\item  PrioritÃ© aux rÃ©dacteurs (famine possible des lecteurs)
+\item AccÃ¨s aux donnÃ©es selon les ordres des arrivÃ©es. Toutes les demandes des lecteurs qui se suivent sont satisfaites en mÃªme temps.
 \end{enumerate}
 
-Les sections suivantes présentes quelques solutions, basées sur les sémaphores.
+Les sections suivantes prÃ©sentes quelques solutions, basÃ©es sur les sÃ©maphores.
 
-\section{Priorité aux lecteurs}
+\section{PrioritÃ© aux lecteurs}
 
-Un algorithme basé sur la priorité aux lecteurs doit résoudre l'accès à la ressource, en respectant les règles suivantes:
+Un algorithme basÃ© sur la prioritÃ© aux lecteurs doit rÃ©soudre l'accÃ¨s Ã  la ressource, en respectant les rÃ¨gles suivantes:
 \begin{itemize}
-\item Un lecteur peut accéder à la ressource si:
+\item Un lecteur peut accÃ©der Ã  la ressource si:
 \begin{itemize}
-\item le nombre de rédacteurs en cours d'écriture vaut 0
+\item le nombre de rÃ©dacteurs en cours d'Ã©criture vaut 0
 \end{itemize}
-\item Un rédacteur peut accéder à la ressource si:
+\item Un rÃ©dacteur peut accÃ©der Ã  la ressource si:
 \begin{itemize}
-\item le nombre de rédacteurs en cours d'écriture vaut 0
+\item le nombre de rÃ©dacteurs en cours d'Ã©criture vaut 0
 \item ET le nombre de lecteurs en cours de lecture vaut 0
 \item ET le nombre de lecteurs en attente de la ressource vaut 0
 \end{itemize}
 \end{itemize}
 
-Pour ce faire, nous aurons besoin d'une variable comptant le nombre de lectures en cours: \ccode{nbLecteurs}. Pour garantir l'accès concurrent correct, nous devons également exploiter trois sémaphores. Notons que les algorithmes proposés dans ce chapitre font l'hypothèse que la liste d'attente des sémaphores est gérée selon un ordre \textit{FIFO}. Les sémaphores nécessaires sont donc les suivant:
+Pour ce faire, nous aurons besoin d'une variable comptant le nombre de lectures en cours: \ccode{nbLecteurs}. Pour garantir l'accÃ¨s concurrent correct, nous devons Ã©galement exploiter trois sÃ©maphores. Notons que les algorithmes proposÃ©s dans ce chapitre font l'hypothÃ¨se que la liste d'attente des sÃ©maphores est gÃ©rÃ©e selon un ordre \textit{FIFO}. Les sÃ©maphores nÃ©cessaires sont donc les suivant:
 
 \begin{itemize}
-\item \ccode{mutexLecteurs}, qui est en charge de protéger l'accès à la variable \ccode{nbLecteurs}.
-\item \ccode{redacteur}, qui permet au premier lecteur qui accède la ressource de bloquer les futurs rédacteurs. Il permet également au rédacteur accédant la ressource de bloquer les lecteurs pendant l'écriture.
-\item \ccode{mutexRedacteurs}, qui permet au rédacteur accédant la ressource de bloquer les autres rédacteurs. De ce fait, un seul rédacteur ne peut être en attente du sémaphore \ccode{redacteur}, empêchant ainsi un rédacteur de brûler la priorité à un lecteur.
+\item \ccode{mutexLecteurs}, qui est en charge de protÃ©ger l'accÃ¨s Ã  la variable \ccode{nbLecteurs}.
+\item \ccode{redacteur}, qui permet au premier lecteur qui accÃ¨de la ressource de bloquer les futurs rÃ©dacteurs. Il permet Ã©galement au rÃ©dacteur accÃ©dant la ressource de bloquer les lecteurs pendant l'Ã©criture.
+\item \ccode{mutexRedacteurs}, qui permet au rÃ©dacteur accÃ©dant la ressource de bloquer les autres rÃ©dacteurs. De ce fait, un seul rÃ©dacteur ne peut Ãªtre en attente du sÃ©maphore \ccode{redacteur}, empÃªchant ainsi un rÃ©dacteur de brÃ»ler la prioritÃ© Ã  un lecteur.
 \end{itemize}
 
-L'algorithme \ref{lectred:prioritelecteur} présente une solution basée sur ces sémaphores, avec priorité aux lecteurs.
+L'algorithme \ref{lectred:prioritelecteur} prÃ©sente une solution basÃ©e sur ces sÃ©maphores, avec prioritÃ© aux lecteurs.
 
 
 \begin{algorithm}[h!tp]
-\caption{Lecteurs-rédacteurs: priorité aux lecteurs}\label{lectred:prioritelecteur}
+\caption{Lecteurs-rÃ©dacteurs: prioritÃ© aux lecteurs}\label{lectred:prioritelecteur}
 \begin{center}
 \begin{tabular}{l}
 \lstset{language=C++}
@@ -122,14 +122,14 @@ void finEcriture(RessourceLectRed *res) {
 \end{center}
 \end{algorithm}
 
-Les fonctions \ccode{debutLecture()} et \ccode{finLecture()} sont appelées par les lecteurs, alors que \ccode{debutEcriture()} et \ccode{finEcriture()} sont appelées par les rédacteurs. Nous utilisons une structure, \ccode{RessourceLectRed}, pour stocker l'ensemble des informations nécessaires à l'accès d'une ressource. De ce fait, les mêmes fonctions peuvent être utilisées pour l'accès à différentes ressources.
+Les fonctions \ccode{debutLecture()} et \ccode{finLecture()} sont appelÃ©es par les lecteurs, alors que \ccode{debutEcriture()} et \ccode{finEcriture()} sont appelÃ©es par les rÃ©dacteurs. Nous utilisons une structure, \ccode{RessourceLectRed}, pour stocker l'ensemble des informations nÃ©cessaires Ã  l'accÃ¨s d'une ressource. De ce fait, les mÃªmes fonctions peuvent Ãªtre utilisÃ©es pour l'accÃ¨s Ã  diffÃ©rentes ressources.
 
-Les figures de \ref{fig:lectred1} à \ref{fig:lectred4} montrent l'évolution de l'état des sémaphores au cours du temps. Les trois sémaphores y sont représentés, avec leur liste de threads en attente. Le nuage gauche représente l'ensemble des threads accédant la ressource en un instant précis. Les lecteurs sont représentés par un \emph{L}, les rédacteur l'étant par un \emph{R}. Le numéro suivant la lettre correspond au temps logique auquel le thread a demandé l'accès à la ressource. Les threads sont ainsi numérotés en fonction de l'ordre de leur arrivée, c'est-à-dire, l'ordre dans lequel ils ont appelé \ccode{debutLecture()} ou \ccode{debutEcriture()}.
+Les figures de \ref{fig:lectred1} Ã  \ref{fig:lectred4} montrent l'Ã©volution de l'Ã©tat des sÃ©maphores au cours du temps. Les trois sÃ©maphores y sont reprÃ©sentÃ©s, avec leur liste de threads en attente. Le nuage gauche reprÃ©sente l'ensemble des threads accÃ©dant la ressource en un instant prÃ©cis. Les lecteurs sont reprÃ©sentÃ©s par un \emph{L}, les rÃ©dacteur l'Ã©tant par un \emph{R}. Le numÃ©ro suivant la lettre correspond au temps logique auquel le thread a demandÃ© l'accÃ¨s Ã  la ressource. Les threads sont ainsi numÃ©rotÃ©s en fonction de l'ordre de leur arrivÃ©e, c'est-Ã -dire, l'ordre dans lequel ils ont appelÃ© \ccode{debutLecture()} ou \ccode{debutEcriture()}.
 
-A la figure \ref{fig:lectred1}, un rédacteur a l'accès à la ressource critique. Il est donc seul à être dans ce cas. Le sémaphore \ccode{redacteur} bloque un seul lecteur. En effet, les rédacteurs successifs sont bloqués par \ccode{mutexRedacteurs}, celui-ci étant réquisitionné par le rédacteur $R1$. Du côté des lecteurs, seul le premier arrivé est bloqué sur le sémaphore \ccode{redacteur}, les autres étant bloqué sur le sémaphore \ccode{mutexLecteurs}, réquisitionné par le premier lecteur.
+A la figure \ref{fig:lectred1}, un rÃ©dacteur a l'accÃ¨s Ã  la ressource critique. Il est donc seul Ã  Ãªtre dans ce cas. Le sÃ©maphore \ccode{redacteur} bloque un seul lecteur. En effet, les rÃ©dacteurs successifs sont bloquÃ©s par \ccode{mutexRedacteurs}, celui-ci Ã©tant rÃ©quisitionnÃ© par le rÃ©dacteur $R1$. Du cÃ´tÃ© des lecteurs, seul le premier arrivÃ© est bloquÃ© sur le sÃ©maphore \ccode{redacteur}, les autres Ã©tant bloquÃ© sur le sÃ©maphore \ccode{mutexLecteurs}, rÃ©quisitionnÃ© par le premier lecteur.
 
 \begin{figure}[!ht]
-\figcaption{fig:lectred1}{Exemple d'exécution avec priorité aux lecteurs (1)}
+\figcaption{fig:lectred1}{Exemple d'exÃ©cution avec prioritÃ© aux lecteurs (1)}
 \begin{center}
 \includegraphics[scale=.7]{lectred1}
 \end{center}
@@ -137,10 +137,12 @@ A la figure \ref{fig:lectred1}, un rédacteur a l'accès à la ressource critique. 
 \rule{\textwidth}{0.01in}
 \end{figure}
 
-Lorsque le rédacteur $R1$ libère la ressource, il libère le sémaphore \ccode{redacteur} ce qui permet au premier lecteur d'accéder à la ressource.Il libère ensuite le sémaphore \ccode{mutexRedacteurs}. Le rédacteur $R3$ se place donc en attente sur le sémaphore \ccode{redacteur}, après le lecteur $L2$.Le lecteur $L2$ relâche donc le sémaphore \ccode{mutexLecteurs}, ce qui permet à tous les lecteurs en attente d'accéder à la ressource, et le système se retrouve dans l'état illustré par la figure \ref{fig:lectred2}.
+Lorsque le rÃ©dacteur $R1$ libÃ¨re la ressource, il libÃ¨re le sÃ©maphore \ccode{redacteur} ce qui permet au premier lecteur d'accÃ©der Ã  la ressource.
+Il libÃ¨re ensuite le sÃ©maphore \ccode{mutexRedacteurs}. Le rÃ©dacteur $R3$ se place donc en attente sur le sÃ©maphore \ccode{redacteur}, aprÃ¨s le lecteur $L2$.
+Le lecteur $L2$ relÃ¢che donc le sÃ©maphore \ccode{mutexLecteurs}, ce qui permet Ã  tous les lecteurs en attente d'accÃ©der Ã  la ressource, et le systÃ¨me se retrouve dans l'Ã©tat illustrÃ© par la figure \ref{fig:lectred2}.
 
 \begin{figure}[!ht]
-\figcaption{fig:lectred2}{Exemple d'exécution avec priorité aux lecteurs (2)}
+\figcaption{fig:lectred2}{Exemple d'exÃ©cution avec prioritÃ© aux lecteurs (2)}
 \begin{center}
 \includegraphics[scale=.7]{lectred2}
 \end{center}
@@ -148,10 +150,10 @@ Lorsque le rédacteur $R1$ libère la ressource, il libère le sémaphore \ccode{red
 \rule{\textwidth}{0.01in}
 \end{figure}
 
-Lorsque de nouveaux rédacteurs désirent accéder à la ressource, ils sont bloqués par le sémaphore \ccode{mutexRedacteurs}. Les lecteurs désirant effectuer la même action sont par contre autorisés à accéder à la ressource. La figure \ref{fig:lectred3} montre l'état du système après l'arrivée de deux rédacteurs et d'un lecteur. $L9$ se retrouve en accès de ressource, alors que $R8$ et $R10$ sont bloqués.
+Lorsque de nouveaux rÃ©dacteurs dÃ©sirent accÃ©der Ã  la ressource, ils sont bloquÃ©s par le sÃ©maphore \ccode{mutexRedacteurs}. Les lecteurs dÃ©sirant effectuer la mÃªme action sont par contre autorisÃ©s Ã  accÃ©der Ã  la ressource. La figure \ref{fig:lectred3} montre l'Ã©tat du systÃ¨me aprÃ¨s l'arrivÃ©e de deux rÃ©dacteurs et d'un lecteur. $L9$ se retrouve en accÃ¨s de ressource, alors que $R8$ et $R10$ sont bloquÃ©s.
 
 \begin{figure}[!ht]
-\figcaption{fig:lectred3}{Exemple d'exécution avec priorité aux lecteurs (3)}
+\figcaption{fig:lectred3}{Exemple d'exÃ©cution avec prioritÃ© aux lecteurs (3)}
 \begin{center}
 \includegraphics[scale=.7]{lectred3}
 \end{center}
@@ -159,10 +161,12 @@ Lorsque de nouveaux rédacteurs désirent accéder à la ressource, ils sont bloqués
 \rule{\textwidth}{0.01in}
 \end{figure}
 
-Lorsque tous les lecteurs ont relâché la ressource, le rédacteur $R3$, qui était bloqué par le sémaphore \ccode{redacteur} peut enfin y avoir accès.La figure \ref{fig:lectred4} illustre cette situation.Remarquez que la file d'attente associée à \ccode{redacteur} reste vide car $R3$ bloque toujours les rédacteurs par son sémaphore \ccode{mutexRedacteurs}. Un nouvel lecteur qui se présenterait pourra alors se placer à la tête de cette file et ainsi dépasser tous les rédacteurs présents pour prendre la ressource aussitôt que $R3$ libère \ccode{redacteur}.
+Lorsque tous les lecteurs ont relÃ¢chÃ© la ressource, le rÃ©dacteur $R3$, qui Ã©tait bloquÃ© par le sÃ©maphore \ccode{redacteur} peut enfin y avoir accÃ¨s.
+La figure \ref{fig:lectred4} illustre cette situation.
+Remarquez que la file d'attente associÃ©e Ã  \ccode{redacteur} reste vide car $R3$ bloque toujours les rÃ©dacteurs par son sÃ©maphore \ccode{mutexRedacteurs}. Un nouvel lecteur qui se prÃ©senterait pourra alors se placer Ã  la tÃªte de cette file et ainsi dÃ©passer tous les rÃ©dacteurs prÃ©sents pour prendre la ressource aussitÃ´t que $R3$ libÃ¨re \ccode{redacteur}.
 
 \begin{figure}[!ht]
-\figcaption{fig:lectred4}{Exemple d'exécution avec priorité aux lecteurs (4)}
+\figcaption{fig:lectred4}{Exemple d'exÃ©cution avec prioritÃ© aux lecteurs (4)}
 \begin{center}
 \includegraphics[scale=.7]{lectred4}
 \end{center}
@@ -170,12 +174,12 @@ Lorsque tous les lecteurs ont relâché la ressource, le rédacteur $R3$, qui était
 \rule{\textwidth}{0.01in}
 \end{figure}
 
-Nous pouvons noter que cet algorithme permet aux lecteurs de se coaliser pour empêcher l'accès aux rédacteurs. En effet, si un nouveau lecteur accède à la ressource avant que tous les lecteurs ne l'aient relâchée, alors les rédacteurs n'auront jamais accès à la ressource.
+Nous pouvons noter que cet algorithme permet aux lecteurs de se coaliser pour empÃªcher l'accÃ¨s aux rÃ©dacteurs. En effet, si un nouveau lecteur accÃ¨de Ã  la ressource avant que tous les lecteurs ne l'aient relÃ¢chÃ©e, alors les rÃ©dacteurs n'auront jamais accÃ¨s Ã  la ressource.
 
-Le programme \ref{lectredtest} permet de lancer concurremment des lectures et écritures, et peut être exploité pour l'ensemble des exemples de ce chapitre. Il crée des threads rédacteurs et lecteurs et les laisse tenter d'accéder à une ressource hypothétique. Il est à noter que ce programme ne vérifie pas que l'algorithme est correct. Un exercice en fin de chapitre propose d'y ajouter la vérification.
+Le programme \ref{lectredtest} permet de lancer concurremment des lectures et Ã©critures, et peut Ãªtre exploitÃ© pour l'ensemble des exemples de ce chapitre. Il crÃ©e des threads rÃ©dacteurs et lecteurs et les laisse tenter d'accÃ©der Ã  une ressource hypothÃ©tique. Il est Ã  noter que ce programme ne vÃ©rifie pas que l'algorithme est correct. Un exercice en fin de chapitre propose d'y ajouter la vÃ©rification.
 
 \begin{algorithm}[h!tp]
-\caption{Lecteurs-rédacteurs: Programme de test}\label{lectredtest}
+\caption{Lecteurs-rÃ©dacteurs: Programme de test}\label{lectredtest}
 \begin{center}
 \begin{tabular}{l}
 \lstset{language=C++}
@@ -189,7 +193,7 @@ void *tacheRedacteur(void *arg) {
   int tid = (int)arg;
   while (true) {
     debutEcriture(&ressource);
-    printf("Tache %d: écriture\n",tid);
+    printf("Tache %d: Ã©criture\n",tid);
     finEcriture(&ressource);
   }
   pthread_exit(NULL);
@@ -211,12 +215,12 @@ int main(int argc, char *argv[]) {
   int t;
   initialiseRessource(&ressource);
   for (t = 0; t < NUM_THREADS_LECTEUR; t++) {
-    printf("Création du lecteur %d\n",t);
+    printf("CrÃ©ation du lecteur %d\n",t);
     if (pthread_create(&threadsLec[t], NULL, tacheLecteur, (void *)t) == 0)
       exit(-1);
   }
   for (t = 0; t < NUM_THREADS_REDACTEUR; t++) {
-    printf("Création du rédacteur %d\n",t);
+    printf("CrÃ©ation du rÃ©dacteur %d\n",t);
     if (pthread_create(&threadsRed[t], NULL, tacheRedacteur, (void *)t) == 0)
       exit(-1);
   }
@@ -231,13 +235,13 @@ int main(int argc, char *argv[]) {
 \end{center}
 \end{algorithm}
 
-Nous pouvons également noter que ce programme de test, ainsi la manière dont sont réalisés les différents protocoles présentés dans ce chapitre, peuvent être considérés comme légèrement risqués. En effet, la variable de type \ccode{RessourceLectRed} est déclarée dans le programme principal. En théorie, seules les fonctions de début et de fin de lecture et d'écriture y font référence. Pour que le fonctionnement soit correct, il faudrait garantir que le programme principal n'agisse pas directement sur cette structure, sans quoi le système risquerait de se retrouver dans un état incohérent. Ceci pourrait aisément être réalisé grâce à une meilleure encapsulation, mais la compréhension du chapitre ne nécessitant pas de telles contraintes, l'exercice est laissé au bon vouloir du lecteur.
+Nous pouvons Ã©galement noter que ce programme de test, ainsi la maniÃ¨re dont sont rÃ©alisÃ©s les diffÃ©rents protocoles prÃ©sentÃ©s dans ce chapitre, peuvent Ãªtre considÃ©rÃ©s comme lÃ©gÃ¨rement risquÃ©s. En effet, la variable de type \ccode{RessourceLectRed} est dÃ©clarÃ©e dans le programme principal. En thÃ©orie, seules les fonctions de dÃ©but et de fin de lecture et d'Ã©criture y font rÃ©fÃ©rence. Pour que le fonctionnement soit correct, il faudrait garantir que le programme principal n'agisse pas directement sur cette structure, sans quoi le systÃ¨me risquerait de se retrouver dans un Ã©tat incohÃ©rent. Ceci pourrait aisÃ©ment Ãªtre rÃ©alisÃ© grÃ¢ce Ã  une meilleure encapsulation, mais la comprÃ©hension du chapitre ne nÃ©cessitant pas de telles contraintes, l'exercice est laissÃ© au bon vouloir du lecteur.
 
-L'algorithme \ref{lectred:prioritelecteur} peut être légèrement modifié pour donner priorité aux lecteurs uniquement si une lecture est en cours.
-Ce nouvel algorithme \ref{lectred:prioritelecteurcourant} permet toujours aux lecteurs de se coaliser, comme précédemment. Si plusieurs rédacteurs veulent accéder à la ressource pendant qu'elle est occupée par des lecteurs, le premier rédacteur accèdera dès que les lecteurs seront tous sortis, mais les rédacteurs en attente auront accès avant les lecteurs futurs. En effet, le prochain lecteur qui se présentera se placera derrière ces rédacteurs et tous ceux qui ont fait une demande avant le lecteur.
+L'algorithme \ref{lectred:prioritelecteur} peut Ãªtre lÃ©gÃ¨rement modifiÃ© pour donner prioritÃ© aux lecteurs uniquement si une lecture est en cours.
+Ce nouvel algorithme \ref{lectred:prioritelecteurcourant} permet toujours aux lecteurs de se coaliser, comme prÃ©cÃ©demment. Si plusieurs rÃ©dacteurs veulent accÃ©der Ã  la ressource pendant qu'elle est occupÃ©e par des lecteurs, le premier rÃ©dacteur accÃ¨dera dÃ¨s que les lecteurs seront tous sortis, mais les rÃ©dacteurs en attente auront accÃ¨s avant les lecteurs futurs. En effet, le prochain lecteur qui se prÃ©sentera se placera derriÃ¨re ces rÃ©dacteurs et tous ceux qui ont fait une demande avant le lecteur.
 
 \begin{algorithm}[h!tp]
-\caption{Lecteurs-rédacteurs: priorité aux lecteurs uniquement si une lecture est en cours}\label{lectred:prioritelecteurcourant}
+\caption{Lecteurs-rÃ©dacteurs: prioritÃ© aux lecteurs uniquement si une lecture est en cours}\label{lectred:prioritelecteurcourant}
 \begin{center}
 \begin{tabular}{l}
 \lstset{language=C++}
@@ -282,7 +286,7 @@ void finEcriture(RessourceLectRed *res) {
 \end{center}
 \end{algorithm}
 
-Il également possible d'implémenter l'algorithme \ref{lectred:prioritelecteur} d'une autre manière. Il s'agit d'un modèle permettant de dériver plusieurs solutions, en fonction des priorités à accorder. Ce modèle de solution se prête également à la résolution de problèmes s'apparentant aux lecteurs-rédacteurs, tels que le passage d'un pont, les giratoires, ou les ressources multiples. Pour ce modèle, nous utilisons les informations contenues dans la structure suivante:
+Il Ã©galement possible d'implÃ©menter l'algorithme \ref{lectred:prioritelecteur} d'une autre maniÃ¨re. Il s'agit d'un modÃ¨le permettant de dÃ©river plusieurs solutions, en fonction des prioritÃ©s Ã  accorder. Ce modÃ¨le de solution se prÃªte Ã©galement Ã  la rÃ©solution de problÃ¨mes s'apparentant aux lecteurs-rÃ©dacteurs, tels que le passage d'un pont, les giratoires, ou les ressources multiples. Pour ce modÃ¨le, nous utilisons les informations contenues dans la structure suivante:
 
 \begin{lstlisting}
 typedef struct {
@@ -297,19 +301,19 @@ typedef struct {
 \end{lstlisting}
 
 \begin{itemize}
-\item \ccode{mutex} protège l'accès aux variables partagées, tous les threads risquant d'en effectuer des accès concurrents;
-\item \ccode{lecteurs} est un sémaphore permettant de bloquer les lecteurs;
-\item \ccode{redacteurs} est un sémaphore permettant de bloquer les rédacteurs;
-\item \ccode{nbLecteurs} sert à compter le nombre de lecteurs en phase de lecture;
-\item \ccode{lectEnAttente} sert à compter le nombre de lecteurs en attente de la ressource;
-\item \ccode{redEnAttente} sert à compter le nombre de rédacteurs en attente de la ressource;
-\item \ccode{unRedacteur} indique si un rédacteur est en phase d'écriture. Il s'agit d'un booléen, étant donné qu'un seul rédacteur ne peut être en écriture à un instant donné. Cette variable pourrait être un entier dans le cas d'un problème différent de celui du simple lecteurs-rédacteurs.
+\item \ccode{mutex} protÃ¨ge l'accÃ¨s aux variables partagÃ©es, tous les threads risquant d'en effectuer des accÃ¨s concurrents;
+\item \ccode{lecteurs} est un sÃ©maphore permettant de bloquer les lecteurs;
+\item \ccode{redacteurs} est un sÃ©maphore permettant de bloquer les rÃ©dacteurs;
+\item \ccode{nbLecteurs} sert Ã  compter le nombre de lecteurs en phase de lecture;
+\item \ccode{lectEnAttente} sert Ã  compter le nombre de lecteurs en attente de la ressource;
+\item \ccode{redEnAttente} sert Ã  compter le nombre de rÃ©dacteurs en attente de la ressource;
+\item \ccode{unRedacteur} indique si un rÃ©dacteur est en phase d'Ã©criture. Il s'agit d'un boolÃ©en, Ã©tant donnÃ© qu'un seul rÃ©dacteur ne peut Ãªtre en Ã©criture Ã  un instant donnÃ©. Cette variable pourrait Ãªtre un entier dans le cas d'un problÃ¨me diffÃ©rent de celui du simple lecteurs-rÃ©dacteurs.
 \end{itemize}
 
-L'algorithme \ref{lectred:prioritelecteurgenerale} présente la solution basée sur ce modèle.
+L'algorithme \ref{lectred:prioritelecteurgenerale} prÃ©sente la solution basÃ©e sur ce modÃ¨le.
 
 \begin{algorithm}[h!tp]
-\caption{Lecteurs-rédacteurs: priorité aux lecteurs, solution générale}\label{lectred:prioritelecteurgenerale}
+\caption{Lecteurs-rÃ©dacteurs: prioritÃ© aux lecteurs, solution gÃ©nÃ©rale}\label{lectred:prioritelecteurgenerale}
 \begin{center}
 \begin{tabular}{l}
 \lstset{language=C++}
@@ -384,30 +388,30 @@ void finEcriture(RessourceLectRed *res) {
 \end{algorithm}
 
 
-\section{Priorité égale}
-Un algorithme basé sur une priorité égale doit résoudre l'accès à la ressource, en respectant les règles suivantes:
+\section{PrioritÃ© Ã©gale}
+Un algorithme basÃ© sur une prioritÃ© Ã©gale doit rÃ©soudre l'accÃ¨s Ã  la ressource, en respectant les rÃ¨gles suivantes:
 \begin{itemize}
-\item Un lecteur peut accéder à la ressource uniquement si le nombre de rédacteurs en cours d'écriture vaut 0
-\item Un rédacteur peut accéder à la ressource si:
+\item Un lecteur peut accÃ©der Ã  la ressource uniquement si le nombre de rÃ©dacteurs en cours d'Ã©criture vaut 0
+\item Un rÃ©dacteur peut accÃ©der Ã  la ressource si:
 \begin{itemize}
-\item le nombre de rédacteurs en cours d'écriture vaut 0
-\item ET le nombre de lecteurs en cours de lecture est également 0
+\item le nombre de rÃ©dacteurs en cours d'Ã©criture vaut 0
+\item ET le nombre de lecteurs en cours de lecture est Ã©galement 0
 \end{itemize}
 \end{itemize}
 
-Pour ce faire, nous aurons besoin d'une variable comptant le nombre de lectures en cours: \ccode{nbLecteurs}. Pour garantir l'accès concurrent correct, nous devons également exploiter trois sémaphores.
+Pour ce faire, nous aurons besoin d'une variable comptant le nombre de lectures en cours: \ccode{nbLecteurs}. Pour garantir l'accÃ¨s concurrent correct, nous devons Ã©galement exploiter trois sÃ©maphores.
 
-Les sémaphores nécessaires sont les suivants:
+Les sÃ©maphores nÃ©cessaires sont les suivants:
 \begin{itemize}
-\item \ccode{mutex}, qui est en charge de protéger l'accès à la variable \ccode{nbLecteurs}.
-\item \ccode{redacteur}, qui permet au premier lecteur qui accède la ressource de bloquer les futurs rédacteurs. Il permet également au rédacteur accédant la ressource de bloquer les lecteurs pendant l'écriture.
-\item \ccode{fifo}, une file d'attente dans laquelle passent tous les lecteurs et rédacteurs.
+\item \ccode{mutex}, qui est en charge de protÃ©ger l'accÃ¨s Ã  la variable \ccode{nbLecteurs}.
+\item \ccode{redacteur}, qui permet au premier lecteur qui accÃ¨de la ressource de bloquer les futurs rÃ©dacteurs. Il permet Ã©galement au rÃ©dacteur accÃ©dant la ressource de bloquer les lecteurs pendant l'Ã©criture.
+\item \ccode{fifo}, une file d'attente dans laquelle passent tous les lecteurs et rÃ©dacteurs.
 \end{itemize}
 
-L'algorithme \ref{lectred:prioriteegale} présente une solution avec priorité égale, basée sur ces trois sémaphores.
+L'algorithme \ref{lectred:prioriteegale} prÃ©sente une solution avec prioritÃ© Ã©gale, basÃ©e sur ces trois sÃ©maphores.
 
 \begin{algorithm}[h!tp]
-\caption{Lecteurs-rédacteurs: priorité égale}\label{lectred:prioriteegale}
+\caption{Lecteurs-rÃ©dacteurs: prioritÃ© Ã©gale}\label{lectred:prioriteegale}
 \begin{center}
 \begin{tabular}{l}
 \lstset{language=C++}
@@ -458,37 +462,45 @@ void finEcriture(RessourceLectRed *res) {
 \end{center}
 \end{algorithm}
 
-Le sémaphore \ccode{fifo} est le point central de l'algorithme. Il sert à préserver l'ordre des demandes et il est initialisé à 1, permettant au premier thread arrivé de passer directement. Un seul thread peut donc posséder ce sémaphore à un instant donné, ce qui correspond à un simple verrou. Un seul thread étant en possession du verrou, nous pouvons observer que les rédacteurs acquièrent le verrou dans \ccode{debutEcriture()}, et le relâchent dans \ccode{finEcriture()}. De ce fait, un seul rédacteur ne peut être actif à un instant donné. Du côté des lecteurs, ce même verrou n'est réquisitionné que dans \ccode{debutLecture()}, afin d'autoriser le premier lecteur disponible à accéder la ressource. Le premier à passer va alors bloquer les rédacteurs, grâce au verrou \ccode{redacteur}.
+Le sÃ©maphore \ccode{fifo} est le point central de l'algorithme. Il sert Ã  prÃ©server l'ordre des demandes et il est initialisÃ© Ã  1, permettant au premier thread arrivÃ© de passer directement. Un seul thread peut donc possÃ©der ce sÃ©maphore Ã  un instant donnÃ©, ce qui correspond Ã  un simple verrou. Un seul thread Ã©tant en possession du verrou, nous pouvons observer que les rÃ©dacteurs acquiÃ¨rent le verrou dans \ccode{debutEcriture()}, et le relÃ¢chent dans \ccode{finEcriture()}. De ce fait, un seul rÃ©dacteur ne peut Ãªtre actif Ã  un instant donnÃ©. Du cÃ´tÃ© des lecteurs, ce mÃªme verrou n'est rÃ©quisitionnÃ© que dans \ccode{debutLecture()}, afin d'autoriser le premier lecteur disponible Ã  accÃ©der la ressource. Le premier Ã  passer va alors bloquer les rÃ©dacteurs, grÃ¢ce au verrou \ccode{redacteur}.
 
-Il est intéressant de noter que les interblocage sont évités grâce à l'ordre des appels des sémaphores \ccode{fifo} et \ccode{redacteur} qui est effectué pour les lecteurs et les rédacteurs.Si tel n'avait pas été le cas, le système aurait risqué un interblocage.
+Il est intÃ©ressant de noter que les interblocage sont Ã©vitÃ©s grÃ¢ce
+Ã  l'ordre des appels des sÃ©maphores \ccode{fifo} et \ccode{redacteur} qui est effectuÃ© pour les lecteurs et les rÃ©dacteurs.
+Si tel n'avait pas Ã©tÃ© le cas, le systÃ¨me aurait risquÃ© un interblocage.
 
-\section{Priorité aux rédacteurs}
-Un algorithme basé sur une priorité aux rédacteurs doit résoudre l'accès à la ressource, en respectant les règles suivantes:
+\section{PrioritÃ© aux rÃ©dacteurs}
+Un algorithme basÃ© sur une prioritÃ© aux rÃ©dacteurs doit rÃ©soudre l'accÃ¨s Ã  la ressource, en respectant les rÃ¨gles suivantes:
 \begin{itemize}
-\item Un lecteur peut accéder à la ressource si:
+\item Un lecteur peut accÃ©der Ã  la ressource si:
 \begin{itemize}
-\item le nombre de rédacteurs en cours d'écriture vaut 0
-\item ET le nombre de rédacteurs en attente d'écriture vaut également 0
+\item le nombre de rÃ©dacteurs en cours d'Ã©criture vaut 0
+\item ET le nombre de rÃ©dacteurs en attente d'Ã©criture vaut Ã©galement 0
 \end{itemize}
-\item Un rédacteur peut accéder à la ressource si:
+\item Un rÃ©dacteur peut accÃ©der Ã  la ressource si:
 \begin{itemize}
-\item le nombre de rédacteurs en cours d'écriture vaut 0
-\item ET le nombre de lecteurs en cours de lecture vaut également 0
+\item le nombre de rÃ©dacteurs en cours d'Ã©criture vaut 0
+\item ET le nombre de lecteurs en cours de lecture vaut Ã©galement 0
 \end{itemize}
 \end{itemize}
 
-Dans ce cas, à l'instar des lecteurs dans le cas d'une priorité les avantageant, les rédacteurs pourront se coaliser pour empêcher les lecteurs d'accéder à la ressource.
+Dans ce cas, Ã  l'instar des lecteurs dans le cas d'une prioritÃ© les avantageant, les rÃ©dacteurs pourront se coaliser pour empÃªcher les lecteurs d'accÃ©der Ã  la ressource.
 
-Pour cet algorithme, nous aurons besoin d'une variable comptant le nombre de lectures en cours, \ccode{nbLecteurs}, ainsi qu'une comptant le nombre de rédacteurs en attente d'écriture ou en cours d'écriture. Pour garantir l'accès concurrent correct, nous devons également exploiter cinq sémaphores.
+Pour cet algorithme, nous aurons besoin d'une variable comptant le nombre de lectures en cours, \ccode{nbLecteurs}, ainsi qu'une comptant le nombre de rÃ©dacteurs en attente d'Ã©criture ou en cours d'Ã©criture. Pour garantir l'accÃ¨s concurrent correct, nous devons Ã©galement exploiter cinq sÃ©maphores.
 
-Les sémaphores nécessaires sont donc les suivants:
-\begin{itemize}\item \ccode{mutexLecteurs}, qui permet de bloquer les lecteurs pendant que des écritures sont en cours.\item \ccode{mutexRedacteurs}, qui permet de bloquer les rédacteurs pendant que des écritures ou des lectures sont en cours.\item \ccode{redacteur}, qui permet au premier lecteur qui accède la ressource de bloquer les potentiels rédacteurs.\item \ccode{lecteur}, qui permet au premier rédacteur arrivé de bloquer les potentiels futurs lecteurs.\item \ccode{mutex}, qui est en charge de protéger l'accès à la variable \ccode{nbLecteurs}.\end{itemize}
+Les sÃ©maphores nÃ©cessaires sont donc les suivants:
+\begin{itemize}
+\item \ccode{mutexLecteurs}, qui permet de bloquer les lecteurs pendant que des Ã©critures sont en cours.
+\item \ccode{mutexRedacteurs}, qui permet de bloquer les rÃ©dacteurs pendant que des Ã©critures ou des lectures sont en cours.
+\item \ccode{redacteur}, qui permet au premier lecteur qui accÃ¨de la ressource de bloquer les potentiels rÃ©dacteurs.
+\item \ccode{lecteur}, qui permet au premier rÃ©dacteur arrivÃ© de bloquer les potentiels futurs lecteurs.
+\item \ccode{mutex}, qui est en charge de protÃ©ger l'accÃ¨s Ã  la variable \ccode{nbLecteurs}.
+\end{itemize}
 
-L'algorithme \ref{lectred:prioriteredacteurs} présente une solution avec priorité aux rédacteurs, basée sur ces cinq sémaphores.
+L'algorithme \ref{lectred:prioriteredacteurs} prÃ©sente une solution avec prioritÃ© aux rÃ©dacteurs, basÃ©e sur ces cinq sÃ©maphores.
 
 
 \begin{algorithm}[h!tp]
-\caption{Lecteurs-rédacteurs: priorité aux rédacteurs}\label{lectred:prioriteredacteurs}
+\caption{Lecteurs-rÃ©dacteurs: prioritÃ© aux rÃ©dacteurs}\label{lectred:prioriteredacteurs}
 \begin{center}
 \begin{tabular}{l}
 \lstset{language=C++}
@@ -555,42 +567,43 @@ void finEcriture(RessourceLectRed *res) {
 \end{center}
 \end{algorithm}
 
-Nous pouvons noter une certaine symétrie entre les lecteurs et les rédacteurs, chacuns étant capables de bloquer les autres. Le premier lecteur à accéder à la ressource bloque les rédacteurs, grâce au sémaphore \ccode{redacteur}. En fin de lecture, le dernier lecteur à relâcher la ressource va alors débloquer les rédacteurs. De manière symétrique, le premier rédacteur à accéder à la ressource va bloquer l'ensemble des lecteurs grâce au sémaphore \ccode{lecteur}, et le dernier rédacteur à relâcher la ressource va débloquer les lecteurs.
+Nous pouvons noter une certaine symÃ©trie entre les lecteurs et les rÃ©dacteurs, chacuns Ã©tant capables de bloquer les autres. Le premier lecteur Ã  accÃ©der Ã  la ressource bloque les rÃ©dacteurs, grÃ¢ce au sÃ©maphore \ccode{redacteur}. En fin de lecture, le dernier lecteur Ã  relÃ¢cher la ressource va alors dÃ©bloquer les rÃ©dacteurs. De maniÃ¨re symÃ©trique, le premier rÃ©dacteur Ã  accÃ©der Ã  la ressource va bloquer l'ensemble des lecteurs grÃ¢ce au sÃ©maphore \ccode{lecteur}, et le dernier rÃ©dacteur Ã  relÃ¢cher la ressource va dÃ©bloquer les lecteurs.
 
 \section{Conclusion}
 
-Le problème des lecteurs-rédacteurs peut être résolu de différentes manières, tel que démontré par les deux algorithmes pour la priorité aux lecteurs. Ce paradigme peut également servir à modéliser différents types de systèmes tels que l'accès à un pont à voie unique par des voitures venant des deux sens, par exemple. De tels problèmes seront abordés en exercices.
+Le problÃ¨me des lecteurs-rÃ©dacteurs peut Ãªtre rÃ©solu de diffÃ©rentes maniÃ¨res, tel que dÃ©montrÃ© par les deux algorithmes pour la prioritÃ© aux lecteurs. Ce paradigme peut Ã©galement servir Ã  modÃ©liser diffÃ©rents types de systÃ¨mes tels que l'accÃ¨s Ã  un pont Ã  voie unique par des voitures venant des deux sens, par exemple. De tels problÃ¨mes seront abordÃ©s en exercices.
 
 
 \section{Exercices}
 
 \startexercice
 
-Dans l'algorithme \ref{lectred:prioritelecteur}, pourrions-nous remplacer les sémaphores par des verrous? Montrer comment.
+Dans l'algorithme \ref{lectred:prioritelecteur}, pourrions-nous remplacer les sÃ©maphores par des verrous? Montrer comment.
 
 \startexercice
 
-Reprendre l'algorithme général avec priorité aux lecteurs (algorithme \ref{lectred:prioritelecteurgenerale}), et l'adapter pour proposer une nouvelle solution qui donne priorité aux rédacteurs.
-\startexercice
-
-Mettre au point un programme capable de tester un des algorithmes présentés dans ce chapitre.
+Reprendre l'algorithme gÃ©nÃ©ral avec prioritÃ© aux lecteurs (algorithme \ref{lectred:prioritelecteurgenerale}), et l'adapter pour proposer une nouvelle solution qui donne prioritÃ© aux rÃ©dacteurs.
 
 \startexercice
 
-Une application est composée de threads de deux classes, A et B. Une ressource est partagée entre tous les threads, selon les contraintes suivantes:
+Mettre au point un programme capable de tester un des algorithmes prÃ©sentÃ©s dans ce chapitre.
+
+\startexercice
+
+Une application est composÃ©e de threads de deux classes, A et B. Une ressource est partagÃ©e entre tous les threads, selon les contraintes suivantes:
 \begin{enumerate}
-\item Les threads de classe A peuvent accéder concurremment  à la ressource.
-\item Les threads de classe B peuvent accéder concurremment à la ressource.
-\item Les threads de différente classe ne peuvent accéder à la ressource au même instant. Autrement dit, les threads de différente classe s'excluent mutuellement.
+\item Les threads de classe A peuvent accÃ©der concurremment  Ã  la ressource.
+\item Les threads de classe B peuvent accÃ©der concurremment Ã  la ressource.
+\item Les threads de diffÃ©rente classe ne peuvent accÃ©der Ã  la ressource au mÃªme instant. Autrement dit, les threads de diffÃ©rente classe s'excluent mutuellement.
 \end{enumerate}
 
-Proposer un algorithme permettant de gérer l'accès à la ressource, en s'inspirant des solutions du chapitre. Considérer une solution où la coalition est possible entre threads d'une même classe.
+Proposer un algorithme permettant de gÃ©rer l'accÃ¨s Ã  la ressource, en s'inspirant des solutions du chapitre. ConsidÃ©rer une solution oÃ¹ la coalition est possible entre threads d'une mÃªme classe.
 
 %\subsection*{Exercice 6}
-%En reprenant l'algorithme précédent, proposer une solution où la coalition n'est pas tolérée. La séquence d'accès doit donc y être respectée.
-%CEZ: Je ne comprend pas: c'est l'algo égalitaire!
+%En reprenant l'algorithme prÃ©cÃ©dent, proposer une solution oÃ¹ la coalition n'est pas tolÃ©rÃ©e. La sÃ©quence d'accÃ¨s doit donc y Ãªtre respectÃ©e.
+%CEZ: Je ne comprend pas: c'est l'algo Ã©galitaire!
 
 \startexercice
 
-Proposer un scénario semblable aux figures \ref{fig:lectred1} à \ref{fig:lectred4}, illustrant le fonctionnement de l'algorithme\ref{lectred:prioritelecteurcourant}, où les lecteurs sont prioritaires que si une lecture est en cours.
-
+Proposer un scÃ©nario semblable aux figures \ref{fig:lectred1} Ã  \ref{fig:lectred4}, illustrant le fonctionnement de l'algorithme
+\ref{lectred:prioritelecteurcourant}, oÃ¹ les lecteurs sont prioritaires que si une lecture est en cours.

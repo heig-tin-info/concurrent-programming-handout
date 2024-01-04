@@ -1,36 +1,36 @@
 \newcommand{\function}[1]{\section{#1}}
 
-\chapter{Bibliothèque Pthread}
+\chapter{BibliothÃ¨que Pthread}
 \startchapter
 
-Le langage C n'offre pas de mécanisme natif de gestion des threads. Toutefois, il existe des bibliothèques spécifiques qui accomplissent ce rôle. Dans ce qui suit, nous nous tardons sur l'une d'elles, la bibliothèque \emph{Pthread}.
+Le langage C n'offre pas de mÃ©canisme natif de gestion des threads. Toutefois, il existe des bibliothÃ¨ques spÃ©cifiques qui accomplissent ce rÃ´le. Dans ce qui suit, nous nous tardons sur l'une d'elles, la bibliothÃ¨que \emph{Pthread}.
 
-En POSIX (ISO/IEC 9945-1$:$1996), les tâches et les outils de synchronisation font partie de la bibliothèque Pthread.
-La bibliothèque Pthread est portable; elle existe sur Linux ainsi que sur Windows. Pour Windows, il faudra cependant l'installer car elle ne l'est pas par défaut. Pour cela, il faudra la télécharger depuis le site 
+En POSIX (ISO/IEC 9945-1$:$1996), les tÃ¢ches et les outils de synchronisation font partie de la bibliothÃ¨que Pthread.
+La bibliothÃ¨que Pthread est portable; elle existe sur Linux ainsi que sur Windows. Pour Windows, il faudra cependant l'installer car elle ne l'est pas par dÃ©faut. Pour cela, il faudra la tÃ©lÃ©charger depuis le site
 
 \hspace{1cm}\url{http://sourceware.org/pthreads-win32/}.
 
-Les définitions des types, des fonctions et des constantes se trouvent dans le fichier en-tête pthread.h. A l'édition des liens, il faut aussi préciser cette bibliothèque, par exemple par
+Les dÃ©finitions des types, des fonctions et des constantes se trouvent dans le fichier en-tÃªte pthread.h. A l'Ã©dition des liens, il faut aussi prÃ©ciser cette bibliothÃ¨que, par exemple par
 
 \hspace{1cm}\ccode{gcc monapplication.c -lpthread}
 
-Sur certaines plateformes, il faut aussi spécifier au compilateur la constante symbolique \ccode{_REENTRANT}:
+Sur certaines plateformes, il faut aussi spÃ©cifier au compilateur la constante symbolique \ccode{_REENTRANT}:
 
 \hspace{1cm}\ccode{gcc -D_REENTRANT monapplication.c -lpthread}
 
-Pour pouvoir utiliser un thread, il est nécessaire de déclarer une variable de type \ccode{pthread_t}. Ce type est en fait un entier qui correspond à l'identificateur du thread utilisé. Sur Linux il s'agit en général du type \ccode{unsigned long}. Par exemple:
+Pour pouvoir utiliser un thread, il est nÃ©cessaire de dÃ©clarer une variable de type \ccode{pthread_t}. Ce type est en fait un entier qui correspond Ã  l'identificateur du thread utilisÃ©. Sur Linux il s'agit en gÃ©nÃ©ral du type \ccode{unsigned long}. Par exemple:
 
 \hspace{1cm}\ccode{pthread_t thread;}
 
-En plus de la manipulation de threads, POSIX met aussi à disposition un mécanisme de verrous pour réaliser des sections critiques. Si un thread possède le verrou, seulement celui-ci peut accéder à la section critique, et lorsque le thread quitte cette section de code, il libère le verrou et un autre thread peut le prendre à son tour. Pour créer un verrou, il faut tout simplement déclarer une variable de type \ccode{pthread_mutex_t} et l'initialiser avec la constante \ccode{PTHREAD_MUTEX_INITIALIZER} soit par exemple:
+En plus de la manipulation de threads, POSIX met aussi Ã  disposition un mÃ©canisme de verrous pour rÃ©aliser des sections critiques. Si un thread possÃ¨de le verrou, seulement celui-ci peut accÃ©der Ã  la section critique, et lorsque le thread quitte cette section de code, il libÃ¨re le verrou et un autre thread peut le prendre Ã  son tour. Pour crÃ©er un verrou, il faut tout simplement dÃ©clarer une variable de type \ccode{pthread_mutex_t} et l'initialiser avec la constante \ccode{PTHREAD_MUTEX_INITIALIZER} soit par exemple:
 
 \hspace{1cm}\ccode{static pthread_mutex_t mutex_stock = }
 
 \hspace{7cm}\ccode{PTHREAD_MUTEX_INITIALIZER;}
 
-Rappelons, qu'un verrou n'a que deux états possibles, il est soit verrouillé soit déverrouillé.
+Rappelons, qu'un verrou n'a que deux Ã©tats possibles, il est soit verrouillÃ© soit dÃ©verrouillÃ©.
 
-Nous listons ici les différentes fonctions de la libraire Pthread qui nous seront utiles durant ce cours. Un exemple est associé à chaque fonction afin d'en illustrer le fonctionnement. Les exemples sont compilables si on y associe les déclarations suivantes en début de fichier~:
+Nous listons ici les diffÃ©rentes fonctions de la libraire Pthread qui nous seront utiles durant ce cours. Un exemple est associÃ© Ã  chaque fonction afin d'en illustrer le fonctionnement. Les exemples sont compilables si on y associe les dÃ©clarations suivantes en dÃ©but de fichier~:
 \begin{lstlisting}
 #include <pthread.h>
 #include <stdio.h>
@@ -43,30 +43,30 @@ Nous listons ici les différentes fonctions de la libraire Pthread qui nous seron
 \toprule
 Fonction & page & description succincte \\
 \midrule
-\ccode{pthread_create()} & \pageref{func:pthread_create} & Crée un thread \\
+\ccode{pthread_create()} & \pageref{func:pthread_create} & CrÃ©e un thread \\
 \ccode{pthread_mutex_lock()} & \pageref{func:pthread_mutex_lock} & Verrouille un mutex (bloquant) \\
 \ccode{pthread_mutex_trylock()} & \pageref{func:pthread_mutex_trylock} & Verrouille un mutex (non bloquant) \\
-\ccode{pthread_mutex_unlock()} & \pageref{func:pthread_mutex_unlock} & Déverrouille un mutex \\
+\ccode{pthread_mutex_unlock()} & \pageref{func:pthread_mutex_unlock} & DÃ©verrouille un mutex \\
 \ccode{pthread_join()} & \pageref{func:pthread_join} & Attend la terminaison d'un thread \\
-\ccode{pthread_detach()} & \pageref{func:pthread_detach} & Détache un thread \\
+\ccode{pthread_detach()} & \pageref{func:pthread_detach} & DÃ©tache un thread \\
 \ccode{pthread_equal()} & \pageref{func:pthread_equal} & Compare deux identifiants de thread \\
 \ccode{pthread_self()} & \pageref{func:pthread_self} & Retourne l'identifiant du thread courant \\
 \ccode{pthread_cancel()} & \pageref{func:pthread_cancel} & Annule un autre thread \\
-\ccode{pthread_setcancelstate()} & \pageref{func:pthread_setcancelstate} & Défini la politique d'annulation d'un thread \\
-\ccode{pthread_setcanceltype()} & \pageref{func:pthread_setcanceltype} & Défini le type d'annulation d'un thread \\
-\ccode{pthread_testcancel()} & \pageref{func:pthread_testcancel} & Test une annulation différée d'un thread \\
-\ccode{sem_init()} & \pageref{func:sem_init} & Initialise un sémaphore \\
-\ccode{sem_destroy()} & \pageref{func:sem_destroy} & Détruit un sémaphore \\
-\ccode{sem_post()} & \pageref{func:sem_post} & Incrémente un sémaphore \\
-\ccode{sem_wait()} & \pageref{func:sem_wait} & Décrémente un sémaphore \\
-\ccode{sem_trywait()} & \pageref{func:sem_trywait} & Tente de décrémenter un sémaphore \\
-\ccode{sem_getvalue()} & \pageref{func:sem_getvalue} & Récupère la valeur d'un sémaphore \\
+\ccode{pthread_setcancelstate()} & \pageref{func:pthread_setcancelstate} & DÃ©fini la politique d'annulation d'un thread \\
+\ccode{pthread_setcanceltype()} & \pageref{func:pthread_setcanceltype} & DÃ©fini le type d'annulation d'un thread \\
+\ccode{pthread_testcancel()} & \pageref{func:pthread_testcancel} & Test une annulation diffÃ©rÃ©e d'un thread \\
+\ccode{sem_init()} & \pageref{func:sem_init} & Initialise un sÃ©maphore \\
+\ccode{sem_destroy()} & \pageref{func:sem_destroy} & DÃ©truit un sÃ©maphore \\
+\ccode{sem_post()} & \pageref{func:sem_post} & IncrÃ©mente un sÃ©maphore \\
+\ccode{sem_wait()} & \pageref{func:sem_wait} & DÃ©crÃ©mente un sÃ©maphore \\
+\ccode{sem_trywait()} & \pageref{func:sem_trywait} & Tente de dÃ©crÃ©menter un sÃ©maphore \\
+\ccode{sem_getvalue()} & \pageref{func:sem_getvalue} & RÃ©cupÃ¨re la valeur d'un sÃ©maphore \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \function{pthread\_create()}\label{func:pthread_create}
-La fonction \ccode{pthread_create} permet de créer un thread et de lancer son exécution.
+La fonction \ccode{pthread_create} permet de crÃ©er un thread et de lancer son exÃ©cution.
 \begin{lstlisting}
 int pthread_create(
 		pthread_t *thread,
@@ -75,18 +75,18 @@ int pthread_create(
 		void *arg);
 \end{lstlisting}
 
-Cette fonction retourne un entier qui vaut 0 si la création du thread s'est déroulée sans accros. Dans le cas contraire, la valeur retournée correspond à un code d'erreur. 
-Parmi les codes d'erreur les plus intéressantes, la valeur \ccode{EAGAIN} est retournée s'il n'y a pas assez de ressources système pour créer un nouveau thread ou bien si le nombre maximum de threads défini par la constante \ccode{PTHREAD_THREADS_MAX} est atteint. Le nombre de threads simultanés est limité suivant les systèmes; la constante \ccode{PTHREAD_THREADS_MAX} définit le nombre maximum qui est de 1024 sur les systèmes Unix.
+Cette fonction retourne un entier qui vaut 0 si la crÃ©ation du thread s'est dÃ©roulÃ©e sans accros. Dans le cas contraire, la valeur retournÃ©e correspond Ã  un code d'erreur.
+Parmi les codes d'erreur les plus intÃ©ressantes, la valeur \ccode{EAGAIN} est retournÃ©e s'il n'y a pas assez de ressources systÃ¨me pour crÃ©er un nouveau thread ou bien si le nombre maximum de threads dÃ©fini par la constante \ccode{PTHREAD_THREADS_MAX} est atteint. Le nombre de threads simultanÃ©s est limitÃ© suivant les systÃ¨mes; la constante \ccode{PTHREAD_THREADS_MAX} dÃ©finit le nombre maximum qui est de 1024 sur les systÃ¨mes Unix.
 \begin{itemize}
-\item\ccode{thread} est un pointeur sur une variable de type \ccode{pthread_t}. Au retour de la fonction, si la création du thread est un succès, alors cette variable contient l'identifiant du thread nouvellement créé.
+\item\ccode{thread} est un pointeur sur une variable de type \ccode{pthread_t}. Au retour de la fonction, si la crÃ©ation du thread est un succÃ¨s, alors cette variable contient l'identifiant du thread nouvellement crÃ©Ã©.
 
-\item\ccode{attr} permet de définir les attributs du thread, tels que la priorité ou la taille de la pile. Les valeurs possibles pour ce paramètre dépassent le cadre de cette introduction. Si cet argument vaut \ccode{NULL}, les paramètres par défaut sont utilisés.
+\item\ccode{attr} permet de dÃ©finir les attributs du thread, tels que la prioritÃ© ou la taille de la pile. Les valeurs possibles pour ce paramÃ¨tre dÃ©passent le cadre de cette introduction. Si cet argument vaut \ccode{NULL}, les paramÃ¨tres par dÃ©faut sont utilisÃ©s.
 
-\item\ccode{start_routine} correspond à la fonction qui est exécutée par le thread créé. Le thread se termine lorsque cette fonction a fini son exécution, ou qu'une terminaison est forcée prématurément. Il est possible d'attribuer la même fonction à plusieurs threads. Chacun utilisera le même code, mais avec un contexte différent. La fonction exécutée par le thread créé devra avoir le prototype suivant:
+\item\ccode{start_routine} correspond Ã  la fonction qui est exÃ©cutÃ©e par le thread crÃ©Ã©. Le thread se termine lorsque cette fonction a fini son exÃ©cution, ou qu'une terminaison est forcÃ©e prÃ©maturÃ©ment. Il est possible d'attribuer la mÃªme fonction Ã  plusieurs threads. Chacun utilisera le mÃªme code, mais avec un contexte diffÃ©rent. La fonction exÃ©cutÃ©e par le thread crÃ©Ã© devra avoir le prototype suivant:
 
 \hspace{1cm}\ccode{void *fonction(void *data);}
 
-\item\ccode{arg} est un pointeur sur \ccode{void}, ce qui permet, en réalisant une conversion explicite de type à une variable, de passer n'importe quelle valeur ou structure de données à la fonction exécutée par le thread. Elle peut ensuite la récupérer pour la traiter de manière adéquate.
+\item\ccode{arg} est un pointeur sur \ccode{void}, ce qui permet, en rÃ©alisant une conversion explicite de type Ã  une variable, de passer n'importe quelle valeur ou structure de donnÃ©es Ã  la fonction exÃ©cutÃ©e par le thread. Elle peut ensuite la rÃ©cupÃ©rer pour la traiter de maniÃ¨re adÃ©quate.
 \end{itemize}
 Exemple~:
 
@@ -132,10 +132,10 @@ int pthread_mutex_lock(
 		pthread_mutex_t *mutex);
 \end{lstlisting}
 
-Cette fonction permet de verrouiller un verrou qui n'est pas encore verrouillé. Si celui-ci est verrouillé, la fonction bloque jusqu'à ce qu'elle ait accès au verrou. Cette fonction est donc une fonction bloquante. La fonction renvoie 0 en cas de succès ou l'une des valeurs suivantes en cas d'échec :
+Cette fonction permet de verrouiller un verrou qui n'est pas encore verrouillÃ©. Si celui-ci est verrouillÃ©, la fonction bloque jusqu'Ã  ce qu'elle ait accÃ¨s au verrou. Cette fonction est donc une fonction bloquante. La fonction renvoie 0 en cas de succÃ¨s ou l'une des valeurs suivantes en cas d'Ã©chec :
 \begin{itemize}
-\item[EINVAL:] verrou non initialisé;
-\item[EDEADLK:] si le thread appelant se bloquait, un interblocage pourrait surgir. Le thread appelant détient un verrou qui est réclamé par celui possédant le verrou et pour lequel l'appelant se bloque.
+\item[EINVAL:] verrou non initialisÃ©;
+\item[EDEADLK:] si le thread appelant se bloquait, un interblocage pourrait surgir. Le thread appelant dÃ©tient un verrou qui est rÃ©clamÃ© par celui possÃ©dant le verrou et pour lequel l'appelant se bloque.
 \end{itemize}
 
 \begin{lstlisting}[frame=trBL]
@@ -143,8 +143,8 @@ pthread_mutex_t verrou = PTHREAD_MUTEX_INITIALIZER;
 
 void *uneTache(void *arg) {
 	pthread_mutex_lock(&verrou);
-	/* faire un traitement protégé par le verrou */
-	printf("uneTache est protégée par le verrou\n");
+	/* faire un traitement protÃ©gÃ© par le verrou */
+	printf("uneTache est protÃ©gÃ©e par le verrou\n");
 	pthread_mutex_unlock(& verrou);
 	return NULL;
 }
@@ -167,19 +167,19 @@ int pthread_mutex_trylock(
 		pthread_mutex_t *mutex);
 \end{lstlisting}
 
-Cette fonction permet de verrouiller un mutex qui n'est pas encore verrouillé. Si celui-ci n'est pas déjà verrouillé, et que du coup le thread appelant accède au mutex, la fonction retourne la valeur 0. Dans le cas contraire, la valeur retournée est \ccode{EBUSY}. Si le verrou n'est pas initialisé, la valeur retournée est \ccode{EINVAL}, et si le pointeur sur le verrou n'est pas valide, la valeur est \ccode{EFAULT}. Cette fonction, par opposition à \ccode{pthread_mutex_lock}, est une fonction non bloquante.
+Cette fonction permet de verrouiller un mutex qui n'est pas encore verrouillÃ©. Si celui-ci n'est pas dÃ©jÃ  verrouillÃ©, et que du coup le thread appelant accÃ¨de au mutex, la fonction retourne la valeur 0. Dans le cas contraire, la valeur retournÃ©e est \ccode{EBUSY}. Si le verrou n'est pas initialisÃ©, la valeur retournÃ©e est \ccode{EINVAL}, et si le pointeur sur le verrou n'est pas valide, la valeur est \ccode{EFAULT}. Cette fonction, par opposition Ã  \ccode{pthread_mutex_lock}, est une fonction non bloquante.
 
 \begin{lstlisting}[frame=trBL]
 pthread_mutex_t verrou = PTHREAD_MUTEX_INITIALIZER;
 
 void *uneTache(void *arg) {
 	if (pthread_mutex_trylock(&verrou) == 0) {
-		/* faire un traitement protégé par le verrou */
-		printf("uneTache est protégée par le verrou\n");
+		/* faire un traitement protÃ©gÃ© par le verrou */
+		printf("uneTache est protÃ©gÃ©e par le verrou\n");
 		pthread_mutex_unlock(&verrou);
 	}
 	else
-		printf("Zut, le verrou est déjà verrouillé\n");
+		printf("Zut, le verrou est dÃ©jÃ  verrouillÃ©\n");
 	return NULL;
 }
 
@@ -204,10 +204,10 @@ int pthread_mutex_unlock(
 		pthread_mutex_t *mutex);
 \end{lstlisting}
 
-Cette fonction permet de relâcher le verrou qui a été préalablement verrouillé. La fonction renvoie 0 en cas de succès ou l'une des valeurs suivantes en cas d'échec:
+Cette fonction permet de relÃ¢cher le verrou qui a Ã©tÃ© prÃ©alablement verrouillÃ©. La fonction renvoie 0 en cas de succÃ¨s ou l'une des valeurs suivantes en cas d'Ã©chec:
 \begin{itemize}
-\item[EINVAL:] verrou non initialisé;
-\item[EPERM:] le thread appelant ne détient pas le verrou spécifié.
+\item[EINVAL:] verrou non initialisÃ©;
+\item[EPERM:] le thread appelant ne dÃ©tient pas le verrou spÃ©cifiÃ©.
 \end{itemize}
 
 \begin{lstlisting}[frame=trBL]
@@ -215,8 +215,8 @@ pthread_mutex_t verrou = PTHREAD_MUTEX_INITIALIZER;
 
 void *uneTache(void *arg) {
 	pthread_mutex_lock(&verrou);
-	/* faire un traitement protégé par le verrou */
-	printf("uneTache est protégée par le verrou\n");
+	/* faire un traitement protÃ©gÃ© par le verrou */
+	printf("uneTache est protÃ©gÃ©e par le verrou\n");
 	pthread_mutex_unlock(&verrou);
 	return NULL;
 }
@@ -238,7 +238,7 @@ int pthread_join(
 		void **value_ptr);
 \end{lstlisting}
 
-Cette fonction attend la terminaison du thread passé en paramètre. Le thread appelant est bloqué jusqu'à la terminaison. \ccode{value_ptr} reçoit la valeur de retour du thread \ccode{thread}.
+Cette fonction attend la terminaison du thread passÃ© en paramÃ¨tre. Le thread appelant est bloquÃ© jusqu'Ã  la terminaison. \ccode{value_ptr} reÃ§oit la valeur de retour du thread \ccode{thread}.
 
 \begin{lstlisting}[frame=trBL]
 static const int SUCCES = 3;
@@ -262,13 +262,13 @@ int main(int argc,char *argv[])
 	void *statut2;
 	pthread_create(&thread1,NULL,uneTache,NULL);
 	pthread_create(&thread2,NULL,uneAutreTache,NULL);
-	
+
 	pthread_join(thread1,&statut1);
 	pthread_join(thread2,&statut2);
 	if (*((int *)statut1) == SUCCES)
-		printf("uneTache a retourné SUCCES\n");
+		printf("uneTache a retournÃ© SUCCES\n");
 	if (*((int *)statut2) == BIZARRE)
-		printf("uneAutreTache a retourné BIZARRE\n");
+		printf("uneAutreTache a retournÃ© BIZARRE\n");
 
 	return EXIT_SUCCESS;
 }
@@ -281,7 +281,7 @@ int pthread_detach(
 		pthread_t thread);
 \end{lstlisting}
 
-L'appel à cette fonction détache le thread en paramètre. Cela signifie que lorsque le thread se termine, toutes ses structures de données sont détruites. Il n'est alors plus possible d'attendre la terminaison d'un thread détaché avec \ccode{pthread_join()}. Pour éviter de devoir se synchroniser sur la terminaison d'un thread dont on compte ignorer le code retour, on peut détacher ce thread, auquel cas les ressources sont libérées dès que le thread termine.
+L'appel Ã  cette fonction dÃ©tache le thread en paramÃ¨tre. Cela signifie que lorsque le thread se termine, toutes ses structures de donnÃ©es sont dÃ©truites. Il n'est alors plus possible d'attendre la terminaison d'un thread dÃ©tachÃ© avec \ccode{pthread_join()}. Pour Ã©viter de devoir se synchroniser sur la terminaison d'un thread dont on compte ignorer le code retour, on peut dÃ©tacher ce thread, auquel cas les ressources sont libÃ©rÃ©es dÃ¨s que le thread termine.
 
 \begin{lstlisting}[frame=trBL]
 void *uneTache(void *arg){
@@ -307,9 +307,9 @@ int main(int argc,char *argv[])
 	int ret1 = pthread_join(thread_attache,&statut1);
 	int ret2 = pthread_join(thread_detache,&statut2);
 	if (ret1 == 0)
-		printf("Le thread lié à uneTache s'est terminé correctement\n");
+		printf("Le thread liÃ© Ã  uneTache s'est terminÃ© correctement\n");
 	if (ret2 == EINVAL)
-		printf("Le thread lié à uneAutreTache a bien été détaché\n");
+		printf("Le thread liÃ© Ã  uneAutreTache a bien Ã©tÃ© dÃ©tachÃ©\n");
 	pthread_exit(NULL);
 	return EXIT_SUCCESS;
 }
@@ -323,7 +323,7 @@ int pthread_equal(
 		pthread_t t1,
 		pthread_t t2);
 \end{lstlisting}
-Cette fonction compare deux descripteurs de thread. Elle retourne une valeur différente de 0 si les deux descripteurs sont identiques, et 0 sinon.
+Cette fonction compare deux descripteurs de thread. Elle retourne une valeur diffÃ©rente de 0 si les deux descripteurs sont identiques, et 0 sinon.
 
 \begin{lstlisting}[frame=trBL]
 pthread_t global_thread;
@@ -382,7 +382,7 @@ int main(int argc,char *argv[])
 pthread_t pthread_cancel(
 	pthread_t thread);
 \end{lstlisting}
-Cette fonction permet d'annuler un autre thread. La terminaison du thread se fait en accord avec sa politique d'annulation, et plus spéficiquement sur un point d'annulation.
+Cette fonction permet d'annuler un autre thread. La terminaison du thread se fait en accord avec sa politique d'annulation, et plus spÃ©ficiquement sur un point d'annulation.
 \begin{lstlisting}[frame=trBL]
 int counter1 = 1;
 int counter2 = 1;
@@ -428,7 +428,7 @@ int main(int argc,char *argv[])
 	pthread_create(&thread1,NULL,task1,NULL);
 	pthread_create(&thread2,NULL,task2,NULL);
 	pthread_create(&thread3,NULL,task3,NULL);
-	
+
 	void *statut1;
 	void *statut2;
 	void *statut3;
@@ -454,7 +454,7 @@ int pthread_setcancelstate(
 	int state,
 	int *oldstate);
 \end{lstlisting}
-Cette fonction permet de définir la politique d'annulation du thread appelant. Le paramètre \ccode{state} peut prendre deux valeurs:
+Cette fonction permet de dÃ©finir la politique d'annulation du thread appelant. Le paramÃ¨tre \ccode{state} peut prendre deux valeurs:
 \begin{itemize}
 	\item \ccode{PTHREAD_CANCEL_ENABLE}: Autorise l'annulation du thread par un autre
 	\item \ccode{PTHREAD_CANCEL_DISABLE}: Interdit l'annulation du thread par un autre
@@ -470,13 +470,13 @@ int pthread_setcanceltype(
 	int type,
 	int *oldtype);
 \end{lstlisting}
-Cette fonction permet de définir le type d'annulation du thread appelant. Le paramètre \ccode{type} peut prendre deux valeurs:
+Cette fonction permet de dÃ©finir le type d'annulation du thread appelant. Le paramÃ¨tre \ccode{type} peut prendre deux valeurs:
 \begin{itemize}
-	\item \ccode{PTHREAD_CANCEL_DEFFERED}: Autorise l'annulation du thread en des points d'annulation précis (annulation différée)
-	\item \ccode{PTHREAD_CANCEL_ASYNCHRONOUS}: Autorise l'annulation du thread à n'importe quel instant
+	\item \ccode{PTHREAD_CANCEL_DEFFERED}: Autorise l'annulation du thread en des points d'annulation prÃ©cis (annulation diffÃ©rÃ©e)
+	\item \ccode{PTHREAD_CANCEL_ASYNCHRONOUS}: Autorise l'annulation du thread Ã  n'importe quel instant
 \end{itemize}
 
-Au retour de la fonction, \ccode{*oldtype} contient l'ancienne valeur de type. Il faut \^etre très vigilant sur le type d'annulation supportée. En effet, le type asychrone fait que le thread peut \^etre interrompu à n'importe quel instant, et donc potentiellement laisser l'application dans un état instable ou non cohérent. De manière générale il sera préférable d'utiliser une annulation différée, qui permet de contrôler les points du code où le thread peut être annulé.
+Au retour de la fonction, \ccode{*oldtype} contient l'ancienne valeur de type. Il faut \^etre trÃ¨s vigilant sur le type d'annulation supportÃ©e. En effet, le type asychrone fait que le thread peut \^etre interrompu Ã  n'importe quel instant, et donc potentiellement laisser l'application dans un Ã©tat instable ou non cohÃ©rent. De maniÃ¨re gÃ©nÃ©rale il sera prÃ©fÃ©rable d'utiliser une annulation diffÃ©rÃ©e, qui permet de contrÃ´ler les points du code oÃ¹ le thread peut Ãªtre annulÃ©.
 
 
 \function{pthread\_testcancel()}\label{func:pthread_testcancel}
@@ -485,9 +485,9 @@ Au retour de la fonction, \ccode{*oldtype} contient l'ancienne valeur de type. I
 void pthread_testcancel(void);
 \end{lstlisting}
 
-Cette fonction est à utiliser lorsque le thread définit un type d'annulation différée. Elle vérifie alors si une demande d'annulation a été effectuée, et si oui, elle termine le thread. Elle permet donc de contr\^oler de manière précise les points du code o\`u le thread peut se terminer en garantissant une terminaison propre.
+Cette fonction est Ã  utiliser lorsque le thread dÃ©finit un type d'annulation diffÃ©rÃ©e. Elle vÃ©rifie alors si une demande d'annulation a Ã©tÃ© effectuÃ©e, et si oui, elle termine le thread. Elle permet donc de contr\^oler de maniÃ¨re prÃ©cise les points du code o\`u le thread peut se terminer en garantissant une terminaison propre.
 
-Attention, il est à noter que certains appels système sont des points d'annulation. Par exemple la fonction \ccode{write()} qui est exploitée par \ccode{printf()} est un point d'annulation. L'usage de \ccode{printf()} dans le code fait donc que le thread pourrait se terminer au moment de cet appel.
+Attention, il est Ã  noter que certains appels systÃ¨me sont des points d'annulation. Par exemple la fonction \ccode{write()} qui est exploitÃ©e par \ccode{printf()} est un point d'annulation. L'usage de \ccode{printf()} dans le code fait donc que le thread pourrait se terminer au moment de cet appel.
 
 
 
@@ -517,38 +517,38 @@ int main(int argc,char *argv[]) {
 }
 \end{lstlisting}
 
-\section{Sémaphores}
+\section{SÃ©maphores}
 
-En POSIX 1003.1b, les sémaphores sont des compteurs ayant une valeur entière positive ou nulle et partagés par plusieurs threads. Les opérations de base sur les sémaphores sont~:
+En POSIX 1003.1b, les sÃ©maphores sont des compteurs ayant une valeur entiÃ¨re positive ou nulle et partagÃ©s par plusieurs threads. Les opÃ©rations de base sur les sÃ©maphores sont~:
 \begin{itemize}
-\item incrémenter le compteur de manière atomique (opération $V$);
-\item attendre que le compteur soit supérieur à 0 et décrémenter le compteur de manière atomique (opération $P$).
+\item incrÃ©menter le compteur de maniÃ¨re atomique (opÃ©ration $V$);
+\item attendre que le compteur soit supÃ©rieur Ã  0 et dÃ©crÃ©menter le compteur de maniÃ¨re atomique (opÃ©ration $P$).
 \end{itemize}
-Les types et les prototypes manipulant les sémaphores sont fournis dans le fichier d'en-têtes suivant~:
+Les types et les prototypes manipulant les sÃ©maphores sont fournis dans le fichier d'en-tÃªtes suivant~:
 
 \hspace{1cm}\ccode{#include <semaphore.h>}
 
-Le seul nouveau type mis à disposition est \ccode{sem_t} qui s'associe à un sémaphore. Un tel objet peut-être déclaré directement ou alloué dynamiquement (il s'agit alors d'un sémaphore anonyme) ou un pointeur sur un tel objet peut être récupéré au retour d'un appel à la fonction \ccode{sem_init} (il s'agit alors d'un sémaphore nommé).
+Le seul nouveau type mis Ã  disposition est \ccode{sem_t} qui s'associe Ã  un sÃ©maphore. Un tel objet peut-Ãªtre dÃ©clarÃ© directement ou allouÃ© dynamiquement (il s'agit alors d'un sÃ©maphore anonyme) ou un pointeur sur un tel objet peut Ãªtre rÃ©cupÃ©rÃ© au retour d'un appel Ã  la fonction \ccode{sem_init} (il s'agit alors d'un sÃ©maphore nommÃ©).
 
-Toutes les fonctions relatives aux sémaphores renvoient zéro en cas de succès et -1 en cas d'erreur. Dans ce dernier cas, la variable globale \ccode{errno} est positionnée au code d'erreur correspondant. Pour accéder à \ccode{errno}, il faut inclure le fichier en-tête \ccode{errno.h} au fichier source. Les fonctions manipulant les sémaphores sont données dans le tableau ci-dessous.
+Toutes les fonctions relatives aux sÃ©maphores renvoient zÃ©ro en cas de succÃ¨s et -1 en cas d'erreur. Dans ce dernier cas, la variable globale \ccode{errno} est positionnÃ©e au code d'erreur correspondant. Pour accÃ©der Ã  \ccode{errno}, il faut inclure le fichier en-tÃªte \ccode{errno.h} au fichier source. Les fonctions manipulant les sÃ©maphores sont donnÃ©es dans le tableau ci-dessous.
 
 \begin{center}
 \begin{tabular}{l|c|l}
 \toprule
 Fonction & page & description succincte \\
 \midrule
-\ccode{sem_init()} & \pageref{func:sem_init} & Initialise un sémaphore \\
-\ccode{sem_destroy()} & \pageref{func:sem_destroy} & Détruit un sémaphore \\
-\ccode{sem_post()} & \pageref{func:sem_post} & Relâche un sémaphore \\
-\ccode{sem_wait()} & \pageref{func:sem_wait} & Verrouille un sémaphore (bloquant) \\
-\ccode{sem_trywait()} & \pageref{func:sem_trywait} & Verrouille un sémaphore (non bloquant) \\
+\ccode{sem_init()} & \pageref{func:sem_init} & Initialise un sÃ©maphore \\
+\ccode{sem_destroy()} & \pageref{func:sem_destroy} & DÃ©truit un sÃ©maphore \\
+\ccode{sem_post()} & \pageref{func:sem_post} & RelÃ¢che un sÃ©maphore \\
+\ccode{sem_wait()} & \pageref{func:sem_wait} & Verrouille un sÃ©maphore (bloquant) \\
+\ccode{sem_trywait()} & \pageref{func:sem_trywait} & Verrouille un sÃ©maphore (non bloquant) \\
 \ccode{sem_getvalue()} & \pageref{func:sem_getvalue} & Retourne la valeur courante du compteur \\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \function{sem\_init()}\label{func:sem_init}
-L'initialisation d'un sémaphore se fait grâce à l'appelle à \ccode{sem_init()}.
+L'initialisation d'un sÃ©maphore se fait grÃ¢ce Ã  l'appelle Ã  \ccode{sem_init()}.
 \begin{lstlisting}
 int sem_init(
 		sem_t *sem,
@@ -556,21 +556,21 @@ int sem_init(
 		unsigned int value);
 \end{lstlisting}
 
-Cette fonction retourne un entier qui vaut 0 si la création du sémaphore s'est déroulée sans accros. Dans le cas contraire, la valeur retournée correspond à un code d'erreur.
+Cette fonction retourne un entier qui vaut 0 si la crÃ©ation du sÃ©maphore s'est dÃ©roulÃ©e sans accros. Dans le cas contraire, la valeur retournÃ©e correspond Ã  un code d'erreur.
 
 \begin{itemize}
-\item\ccode{sem} est un pointeur sur une variable de type \ccode{sem_t}. Au retour de la fonction, si la création du sémaphore est un succès, alors cette variable contient les données du nouveau sémaphore.
+\item\ccode{sem} est un pointeur sur une variable de type \ccode{sem_t}. Au retour de la fonction, si la crÃ©ation du sÃ©maphore est un succÃ¨s, alors cette variable contient les donnÃ©es du nouveau sÃ©maphore.
 
-\item\ccode{pshare} permet de définir le partage ou non du sémaphore. S'il vaut 0, le sémaphore est local au processus courant. S'il est différent de 0, le sémaphore est partagé par les différents processus exécutant la même application.
+\item\ccode{pshare} permet de dÃ©finir le partage ou non du sÃ©maphore. S'il vaut 0, le sÃ©maphore est local au processus courant. S'il est diffÃ©rent de 0, le sÃ©maphore est partagÃ© par les diffÃ©rents processus exÃ©cutant la mÃªme application.
 
-\item\ccode{value} est la valeur initiale du compteur associé au sémaphore. Un mutex correspond à un sémaphore initialisé à 1. \ccode{value} à 0 place initialement le sémaphore dans l'état bloqué.
+\item\ccode{value} est la valeur initiale du compteur associÃ© au sÃ©maphore. Un mutex correspond Ã  un sÃ©maphore initialisÃ© Ã  1. \ccode{value} Ã  0 place initialement le sÃ©maphore dans l'Ã©tat bloquÃ©.
 \end{itemize}
 En cas d'erreur, la fonction remplit \ccode{errno} avec l'un des codes d'erreur suivants~:
 \begin{itemize}
-\item[EINVAL:] \ccode{value} dépasse la valeur maximale du compteur (\ccode{SEM_VALUE_MAX});
-\item[ENOSYS:] le partage du sémaphore entre plusieurs processus n'est pas permis (pas implémenté, et il faut mettre \ccode{pshare} à 0). 
+\item[EINVAL:] \ccode{value} dÃ©passe la valeur maximale du compteur (\ccode{SEM_VALUE_MAX});
+\item[ENOSYS:] le partage du sÃ©maphore entre plusieurs processus n'est pas permis (pas implÃ©mentÃ©, et il faut mettre \ccode{pshare} Ã  0).
 \end{itemize}
-Appeler cette fonction sur un sémaphore déjà initalisé résulte en un comportement indéfini.
+Appeler cette fonction sur un sÃ©maphore dÃ©jÃ  initalisÃ© rÃ©sulte en un comportement indÃ©fini.
 
 
 
@@ -581,9 +581,9 @@ int sem_destroy(
 		sem_t *sem);
 \end{lstlisting}
 
-Cette fonction détruit un sémaphore. Elle ne peut être appelée que sur un sémaphore précédemment initialisé grâce à \ccode{sem_init()}. Le comportement de l'appel de cette fonction sur un sémaphore dans lequel des threads sont bloqué est indéfini. Attention donc à appeler cette fonction à un instant adéquat.
+Cette fonction dÃ©truit un sÃ©maphore. Elle ne peut Ãªtre appelÃ©e que sur un sÃ©maphore prÃ©cÃ©demment initialisÃ© grÃ¢ce Ã  \ccode{sem_init()}. Le comportement de l'appel de cette fonction sur un sÃ©maphore dans lequel des threads sont bloquÃ© est indÃ©fini. Attention donc Ã  appeler cette fonction Ã  un instant adÃ©quat.
 
-Après l'appel à \ccode{sem_destroy()}, le sémaphore peut être à nouveau initialisé grâce à \ccode{sem_init()}.
+AprÃ¨s l'appel Ã  \ccode{sem_destroy()}, le sÃ©maphore peut-Ãªtre Ã  nouveau initialisÃ© grÃ¢ce Ã  \ccode{sem_init()}.
 
 \function{sem\_post()}\label{func:sem_post}
 
@@ -592,9 +592,9 @@ int sem_post(
 		sem_t *sem);
 \end{lstlisting}
 
-Cette fonction déverouille le sémaphore \ccode{sem}. Si la valeur résultante du compteur est positive, alors aucun thread n'était bloqué en attente du sémaphore. Dans ce cas la valeur du sémaphore est simplement incrémentée.
+Cette fonction dÃ©verouille le sÃ©maphore \ccode{sem}. Si la valeur rÃ©sultante du compteur est positive, alors aucun thread n'Ã©tait bloquÃ© en attente du sÃ©maphore. Dans ce cas la valeur du sÃ©maphore est simplement incrÃ©mentÃ©e.
 
-Si la valeur résultante est 0, alors un thread en attente du sémaphore se voit autorisé à continuer son traitement (suivant \ccode{sem_wait()}). Si le symbole \ccode{_POSIX_PRIORITY_SCHEDULING} est défini, le thread relâché sera choisi en fonction de la politique d'ordonnancement préalablement définie. Dans le cas des politiques \ccode{SCHED_FIFO} et \ccode{SCHED_RR}, le thread à la priorité la plus haute sera débloqué. S'il y a plusieurs threads partageant la même plus haute priorité, celui qui a attendu le plus longtemps est relâché. Si le symbole \ccode{_POSIX_PRIORITY_SCHEDULING} n'est pas défini, le choix du thread n'est pas spécifié.
+Si la valeur rÃ©sultante est 0, alors un thread en attente du sÃ©maphore se voit autorisÃ© Ã  continuer son traitement (suivant \ccode{sem_wait()}). Si le symbole \ccode{_POSIX_PRIORITY_SCHEDULING} est dÃ©fini, le thread relÃ¢chÃ© sera choisi en fonction de la politique d'ordonnancement prÃ©alablement dÃ©finie. Dans le cas des politiques \ccode{SCHED_FIFO} et \ccode{SCHED_RR}, le thread Ã  la prioritÃ© la plus haute sera dÃ©bloquÃ©. S'il y a plusieurs threads partageant la mÃªme plus haute prioritÃ©, celui qui a attendu le plus longtemps est relÃ¢chÃ©. Si le symbole \ccode{_POSIX_PRIORITY_SCHEDULING} n'est pas dÃ©fini, le choix du thread n'est pas spÃ©cifiÃ©.
 
 \function{sem\_wait()}\label{func:sem_wait}
 
@@ -603,7 +603,7 @@ int sem_wait(
 		sem_t *sem);
 \end{lstlisting}
 
-Cette fonction vérouille le sémaphore \ccode{sem}. Si la valeur courante du sémaphore est 0, alors le thread appelant est bloqué jusqu'à ce que le sémaphore soit déverouillé. Si la valeur courante est positive, alors la fonction retourne immédiatement, et le compteur est décrémenté de 1.
+Cette fonction vÃ©rouille le sÃ©maphore \ccode{sem}. Si la valeur courante du sÃ©maphore est 0, alors le thread appelant est bloquÃ© jusqu'Ã  ce que le sÃ©maphore soit dÃ©verouillÃ©. Si la valeur courante est positive, alors la fonction retourne immÃ©diatement, et le compteur est dÃ©crÃ©mentÃ© de 1.
 
 
 \function{sem\_trywait()}\label{func:sem_trywait}
@@ -612,7 +612,7 @@ Cette fonction vérouille le sémaphore \ccode{sem}. Si la valeur courante du séma
 int sem_trywait(
 		sem_t *sem);
 \end{lstlisting}
-Cette fonction vérouille le sémaphore \ccode{sem}. Si la valeur courante du sémaphore est 0, alors la fonction retourne -1 et la valeur de \ccode{errno} doit être \ccode{EAGAIN}. Si la valeur courante est positive, alors la fonction retourne 0, et le compteur est décrémenté de 1.
+Cette fonction vÃ©rouille le sÃ©maphore \ccode{sem}. Si la valeur courante du sÃ©maphore est 0, alors la fonction retourne -1 et la valeur de \ccode{errno} doit Ãªtre \ccode{EAGAIN}. Si la valeur courante est positive, alors la fonction retourne 0, et le compteur est dÃ©crÃ©mentÃ© de 1.
 
 
 \function{sem\_getvalue()}\label{func:sem_getvalue}
@@ -623,28 +623,28 @@ int sem_getvalue(
 		int *sval);
 \end{lstlisting}
 
-La fonction \ccode{sem_getvalue()} place la valeur du sémaphore dans l'entier pointé par \ccode{sval}. Elle n'affecte en aucun cas l'état du sémaphore. Si le sémaphore est bloqué, la valeur retournée dans \ccode{sval} est soit 0 soit un nombre négatif dont la valeur absolue représente le nombre de threads en attente du sémaphore.
+La fonction \ccode{sem_getvalue()} place la valeur du sÃ©maphore dans l'entier pointÃ© par \ccode{sval}. Elle n'affecte en aucun cas l'Ã©tat du sÃ©maphore. Si le sÃ©maphore est bloquÃ©, la valeur retournÃ©e dans \ccode{sval} est soit 0 soit un nombre nÃ©gatif dont la valeur absolue reprÃ©sente le nombre de threads en attente du sÃ©maphore.
 
-Exemple d'utilisation de sémaphores~:
+Exemple d'utilisation de sÃ©maphores~:
 \begin{lstlisting}[frame=trBL]
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include <semaphore.h>
- 
+
 #define NUM_THREADS 4
 sem_t sem;
- 
+
 void *Tache(void *arg)
 {
   sem_wait(&sem);
-  printf("Tache %c est rentrée en SC \n",(int)arg);
+  printf("Tache %c est rentrÃ©e en SC \n",(int)arg);
   sleep((int)((float)3*rand()/(RAND_MAX+1.0)));
   printf("Tache %c sort de la SC \n",(int)arg);
   sem_post(&sem);
   pthread_exit(NULL);
 }
- 
+
 int main(void)
 {
   int i;
@@ -661,4 +661,3 @@ int main(void)
   return EXIT_SUCCESS;
 }
 \end{lstlisting}
-

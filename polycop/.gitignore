@@ -1,0 +1,7 @@
+*.fls
+*.loa
+*.lof
+*.lot
+*.xdv
+pco1.pdf
+*.fdb_latexmk

@@ -1,31 +1,31 @@
-\chapter{Introduction à la programmation concurrente}\label{sec:into}
+\chapter{Introduction Ã  la programmation concurrente}\label{sec:into}
 \startchapter
 
 \section{Qu'est-ce que la programmation concurrente?}
 
 
-\lettrine[lines=4]{E}{n programmation} séquentielle, un programme est décomposé en sous-programmes (procédures ou fonctions). Chaque sous-programme correspond à une suite d'instructions, et l'exécution du programme voit ces instructions être exécutées les unes à la suite des autres. Les premiers ordinateurs (et leurs successeurs durant quelques années) ont fonctionné selon ce mode d'exécution sérielle. Une tâche pouvait en appeler une autre, mais la tâche appelante ne continuait son exécution qu'après la terminaison de la tâche appelée. Cette approche, simple à mettre en oeuvre en comparaison des systèmes actuels, souffre toutefois de quelques faiblesses. Un seul programme peut être exécuté à la fois, ce qui interdit entre autres à un utilisateur de travailler sur un document en même temps qu'il compile un code source. Si le programme en cours d'exécution attend que l'utilisateur effectue une action (clic souris par exemple), alors le processeur se retrouve sous-exploité. Et enfin, si un programme engendre une erreur, et se fige, alors le système risque de se retrouver totalement bloqué.
+\lettrine[lines=4]{E}{n programmation} sÃ©quentielle, un programme est dÃ©composÃ© en sous-programmes (procÃ©dures ou fonctions). Chaque sous-programme correspond Ã  une suite d'instructions, et l'exÃ©cution du programme voit ces instructions Ãªtre exÃ©cutÃ©es les unes Ã  la suite des autres. Les premiers ordinateurs (et leurs successeurs durant quelques annÃ©es) ont fonctionnÃ© selon ce mode d'exÃ©cution sÃ©rielle. Une tÃ¢che pouvait en appeler une autre, mais la tÃ¢che appelante ne continuait son exÃ©cution qu'aprÃ¨s la terminaison de la tÃ¢che appelÃ©e. Cette approche, simple Ã  mettre en oeuvre en comparaison des systÃ¨mes actuels, souffre toutefois de quelques faiblesses. Un seul programme peut Ãªtre exÃ©cutÃ© Ã  la fois, ce qui interdit entre autres Ã  un utilisateur de travailler sur un document en mÃªme temps qu'il compile un code source. Si le programme en cours d'exÃ©cution attend que l'utilisateur effectue une action (clic souris par exemple), alors le processeur se retrouve sous-exploitÃ©. Et enfin, si un programme engendre une erreur, et se fige, alors le systÃ¨me risque de se retrouver totalement bloquÃ©.
 
-A l'heure actuelle, les systèmes informatiques sont multi-processus, et supportent l'exécution pseudo-parallèle de plusieurs processus (programmes en exécution). Ceci a été rendu possible par la mise au point de systèmes d'exploitation nettement plus complexes. Un processeur peut donc voir plusieurs processus en cours d'exécution se partager le temps de traitement. Et de même, un processus peut être décomposé en sous-processus ou \emph{tâche} (\emph{threads} en anglais). Ces threads permettent de ne plus être liés à une exécution totalement sérielle des instructions. Il est dès lors possible d'avoir, par exemple, un thread responsable d'exécuter un calcul lourd pendant qu'un autre gère les interactions avec l'utilisateur. Un serveur FTP, par exemple, peut plus facilement gérer plusieurs connexions simultanées, chaque connexion étant gérée par un thread.
+A l'heure actuelle, les systÃ¨mes informatiques sont multi-processus, et supportent l'exÃ©cution pseudo-parallÃ¨le de plusieurs processus (programmes en exÃ©cution). Ceci a Ã©tÃ© rendu possible par la mise au point de systÃ¨mes d'exploitation nettement plus complexes. Un processeur peut donc voir plusieurs processus en cours d'exÃ©cution se partager le temps de traitement. Et de mÃªme, un processus peut Ãªtre dÃ©composÃ© en sous-processus ou \emph{tÃ¢che} (\emph{threads} en anglais). Ces threads permettent de ne plus Ãªtre liÃ©s Ã  une exÃ©cution totalement sÃ©rielle des instructions. Il est dÃ¨s lors possible d'avoir, par exemple, un thread responsable d'exÃ©cuter un calcul lourd pendant qu'un autre gÃ¨re les interactions avec l'utilisateur. Un serveur FTP, par exemple, peut plus facilement gÃ©rer plusieurs connexions simultanÃ©es, chaque connexion Ã©tant gÃ©rÃ©e par un thread.
 
 
-\section{Parallélisme vs. concurrence}
+\section{ParallÃ©lisme vs. concurrence}
 
-Le terme \emph{programmation concurrente} ne doit pas être confondu avec celui de \emph{programmation parallèle} (ou programmation répartie). La programmation concurrente, telle que nous l'entendrons, se réfère à un système décomposé en tâches pouvant être exécutées dans un ordre quelconque. Certaines tâches sont exécutées avant d'autres, et certaines le sont en parallèle. La programmation parallèle traite, quant à elle, de l'exécution simultanée de tâches sur différents processeurs. Il s'agit alors de pouvoir synchroniser des processus entre eux, ceci principalement au travers d'une mémoire partagée ou de liaisons réseau.
+Le terme \emph{programmation concurrente} ne doit pas Ãªtre confondu avec celui de \emph{programmation parallÃ¨le} (ou programmation rÃ©partie). La programmation concurrente, telle que nous l'entendrons, se rÃ©fÃ¨re Ã  un systÃ¨me dÃ©composÃ© en tÃ¢ches pouvant Ãªtre exÃ©cutÃ©es dans un ordre quelconque. Certaines tÃ¢ches sont exÃ©cutÃ©es avant d'autres, et certaines le sont en parallÃ¨le. La programmation parallÃ¨le traite, quant Ã  elle, de l'exÃ©cution simultanÃ©e de tÃ¢ches sur diffÃ©rents processeurs. Il s'agit alors de pouvoir synchroniser des processus entre eux, ceci principalement au travers d'une mÃ©moire partagÃ©e ou de liaisons rÃ©seau.
 
-Dans le cadre de ce cours, nous ne traiterons pas de la communication inter-processus, mais bien de la communication intra-processus. Un programme sera décomposé en threads, qui sont donc ses fils d'exécution pseudo-parallèles. Les problèmes qui vont nous intéresser sont donc le partage de données et la synchronisation entre threads. Il est intéressant de noter que le concept de programmation concurrente est autant valable sur un processeur simple coeur que sur un multi-coeur. Sur un simple coeur, les parties de threads s'exécutent tour à tour de manière transparente, et sur un multi-coeur, un réel parallélisme peut être observé, chaque coeur pouvant exécuter un ensemble de threads.
+Dans le cadre de ce cours, nous ne traiterons pas de la communication inter-processus, mais bien de la communication intra-processus. Un programme sera dÃ©composÃ© en threads, qui sont donc ses fils d'exÃ©cution pseudo-parallÃ¨les. Les problÃ¨mes qui vont nous intÃ©resser sont donc le partage de donnÃ©es et la synchronisation entre threads. Il est intÃ©ressant de noter que le concept de programmation concurrente est autant valable sur un processeur simple coeur que sur un multi-coeur. Sur un simple coeur, les parties de threads s'exÃ©cutent tour Ã  tour de maniÃ¨re transparente, et sur un multi-coeur, un rÃ©el parallÃ©lisme peut Ãªtre observÃ©, chaque coeur pouvant exÃ©cuter un ensemble de threads.
 
-L'illustration de la programmation concurrente sera faite par le biais de 2 languages. Le premier, le langage C, n'offre dans sa définition aucun mécanisme concurrent. Pour contourner ce problème, nous allons utiliser la bibliothèque standard \emph{pthread}, qui propose un ensemble de mécanismes pour la gestion des threads. Elle permet de décrire une application sous forme d'un ensemble de threads, ces threads étant ensuite exécutés sur la machine cible. Le second langage, Java, quant à lui, met à disposition la notion de threads et quelques mécanismes rudimentaires. Ce langage ne sera pas traité dans ce cours.
+L'illustration de la programmation concurrente sera faite par le biais de 2 languages. Le premier, le langage C, n'offre dans sa dÃ©finition aucun mÃ©canisme concurrent. Pour contourner ce problÃ¨me, nous allons utiliser la bibliothÃ¨que standard \emph{pthread}, qui propose un ensemble de mÃ©canismes pour la gestion des threads. Elle permet de dÃ©crire une application sous forme d'un ensemble de threads, ces threads Ã©tant ensuite exÃ©cutÃ©s sur la machine cible. Le second langage, Java, quant Ã  lui, met Ã  disposition la notion de threads et quelques mÃ©canismes rudimentaires. Ce langage ne sera pas traitÃ© dans ce cours.
 
 \section{Anatomie d'un processus}
 
-Un processus correspond à un fichier exécutable en cours d'exécution sur un processeur. Il est entre autre caractérisé par un code (le programme à exécuter), une pile et un tas qui permettent de stocker les données nécessaires à son bon fonctionnement, un identifiant unique, et une priorité. La priorité permet au système d'exploitation de gérer plusieurs processus en cours d'exécution sur un processeur, un processus à plus haute priorité se voyant attribuer un temps d'utilisation processeur plus important.
+Un processus correspond Ã  un fichier exÃ©cutable en cours d'exÃ©cution sur un processeur. Il est entre autre caractÃ©risÃ© par un code (le programme Ã  exÃ©cuter), une pile et un tas qui permettent de stocker les donnÃ©es nÃ©cessaires Ã  son bon fonctionnement, un identifiant unique, et une prioritÃ©. La prioritÃ© permet au systÃ¨me d'exploitation de gÃ©rer plusieurs processus en cours d'exÃ©cution sur un processeur, un processus Ã  plus haute prioritÃ© se voyant attribuer un temps d'utilisation processeur plus important.
 
-Un processus est créé lorsqu'un autre processus lance son exécution. Nous pouvons distinguer le processus parent (celui qui lance), et le processus enfant.
+Un processus est crÃ©Ã© lorsqu'un autre processus lance son exÃ©cution. Nous pouvons distinguer le processus parent (celui qui lance), et le processus enfant.
 
-La figure \ref{fig:process-state-unix} illustre les différentes étapes de la vie d'un processus, pour un système d'exploitation de type Unix. L'état initial d'un processus est \emph{terminé} (\emph{destroyed} en anglais). Après sa création, il passe à l'état \emph{prêt} (\emph{ready} en anglais) lorsque toutes les ressources à son bon fonctionnement ont été réquisitionnées.
-Le système d'exploitation peut ensuite le faire passer dans l'état \emph{élu}, (\emph{active} en anglais), état dans lequel le processus s'exécute.
-Ce passage n'est pas du ressort du processus, mais bien de l'ordonnanceur, qui s'occupe d'allouer le processeur aux différents processus concurrents. A tout instant l'ordonnanceur peut replacer le processus dans l'état \emph{prêt}, pour laisser un autre processus s'exécuter. Il s'agit de la \emph{préemption} d'un processus, qui se fait sans que le processus préempté n'en soit conscient. Depuis l'état \emph{élu}, le processus peut aussi se retrouver dans l'état \emph{bloqué} (\emph{blocked} en anglais), lors de l'attente d'un événement ou du relâchement d'un mutex, par exemple. Il n'y a ensuite qu'une possibilité pour sortir de l'état \emph{bloqué}. Il s'agit de réveiller le processus suite au relâchement d'un mutex ou au fait qu'un événement sur lequel le processus attend a été déclenché. Dans ce cas, le processus passe à l'état \emph{prêt}, prêt à continuer son exécution. Lorsque le processus s'exécute, il peut se terminer. Les deux autres flèches sortantes de l'état \emph{élu} représentent deux scénarios. Premièrement, si le processus a été détaché, c'est-à-dire qu'il est sans lien parental, lors de sa terminaison, le processus passe directement dans l'état \emph{terminé}. Deuxièmement, si la terminaison du processus est importante pour le reste de l'application, alors il passe dans l'état \emph{zombie} (\emph{zombied} en anglais). Il y reste jusqu'à ce que le processus parent effectue une \emph{jointure}, c'est-à-dire qu'il récupère les informations retournées par le processus en cours de terminaison.
+La figure \ref{fig:process-state-unix} illustre les diffÃ©rentes Ã©tapes de la vie d'un processus, pour un systÃ¨me d'exploitation de type Unix. L'Ã©tat initial d'un processus est \emph{terminÃ©} (\emph{destroyed} en anglais). AprÃ¨s sa crÃ©ation, il passe Ã  l'Ã©tat \emph{prÃªt} (\emph{ready} en anglais) lorsque toutes les ressources Ã  son bon fonctionnement ont Ã©tÃ© rÃ©quisitionnÃ©es.
+Le systÃ¨me d'exploitation peut ensuite le faire passer dans l'Ã©tat \emph{Ã©lu}, (\emph{active} en anglais), Ã©tat dans lequel le processus s'exÃ©cute.
+Ce passage n'est pas du ressort du processus, mais bien de l'ordonnanceur, qui s'occupe d'allouer le processeur aux diffÃ©rents processus concurrents. A tout instant l'ordonnanceur peut replacer le processus dans l'Ã©tat \emph{prÃªt}, pour laisser un autre processus s'exÃ©cuter. Il s'agit de la \emph{prÃ©emption} d'un processus, qui se fait sans que le processus prÃ©emptÃ© n'en soit conscient. Depuis l'Ã©tat \emph{Ã©lu}, le processus peut aussi se retrouver dans l'Ã©tat \emph{bloquÃ©} (\emph{blocked} en anglais), lors de l'attente d'un Ã©vÃ©nement ou du relÃ¢chement d'un mutex, par exemple. Il n'y a ensuite qu'une possibilitÃ© pour sortir de l'Ã©tat \emph{bloquÃ©}. Il s'agit de rÃ©veiller le processus suite au relÃ¢chement d'un mutex ou au fait qu'un Ã©vÃ©nement sur lequel le processus attend a Ã©tÃ© dÃ©clenchÃ©. Dans ce cas, le processus passe Ã  l'Ã©tat \emph{prÃªt}, prÃªt Ã  continuer son exÃ©cution. Lorsque le processus s'exÃ©cute, il peut se terminer. Les deux autres flÃ¨ches sortantes de l'Ã©tat \emph{Ã©lu} reprÃ©sentent deux scÃ©narios. PremiÃ¨rement, si le processus a Ã©tÃ© dÃ©tachÃ©, c'est-Ã -dire qu'il est sans lien parental, lors de sa terminaison, le processus passe directement dans l'Ã©tat \emph{terminÃ©}. DeuxiÃ¨mement, si la terminaison du processus est importante pour le reste de l'application, alors il passe dans l'Ã©tat \emph{zombie} (\emph{zombied} en anglais). Il y reste jusqu'Ã  ce que le processus parent effectue une \emph{jointure}, c'est-Ã -dire qu'il rÃ©cupÃ¨re les informations retournÃ©es par le processus en cours de terminaison.
 
 \begin{figure}[ht]
 \figcaption{fig:process-state-unix}{Etats et transitions d'un processus Unix}
@@ -36,11 +36,11 @@ Ce passage n'est pas du ressort du processus, mais bien de l'ordonnanceur, qui s
 \rule{\textwidth}{0.01in}
 \end{figure}
 
-La figure \ref{fig:process-space} illustre la décomposition de l'espace d'adressage d'un processus en trois parties principales~:
+La figure \ref{fig:process-space} illustre la dÃ©composition de l'espace d'adressage d'un processus en trois parties principales~:
 \begin{itemize}
 \item Le code contenant les instructions du programme (\emph{text segment} en anglais).
-\item Les variables globales et les variables allouées dynamiquement (\emph{data segment} en anglais).
-\item La pile, où les variables locales de ses sous-programmes, ainsi que diverses informations temporaires ayant une durée de vie égale au sous-programme sont stockées (\emph{stack segment} en anglais).
+\item Les variables globales et les variables allouÃ©es dynamiquement (\emph{data segment} en anglais).
+\item La pile, oÃ¹ les variables locales de ses sous-programmes, ainsi que diverses informations temporaires ayant une durÃ©e de vie Ã©gale au sous-programme sont stockÃ©es (\emph{stack segment} en anglais).
 \end{itemize}
 
 \begin{figure}[ht]
@@ -53,17 +53,17 @@ La figure \ref{fig:process-space} illustre la décomposition de l'espace d'adress
 \end{figure}
 
 
-Un processus, dans un cadre multi-threadé, est décomposé en deux parties~:
+Un processus, dans un cadre multi-threadÃ©, est dÃ©composÃ© en deux parties~:
 \begin{itemize}
-\item La première contenant les ressources globales, telles que les instructions du programme et les variables globales. Cette partie correspond au \emph{processus}. Il s'agit des deux premiers points de l'espace d'adressage.
-\item La deuxième contenant des informations liées à l'état d'exécution, telles que le \emph{compteur de programme} (aussi appelé \emph{compteur ordinal}) et la \emph{pile d'exécution}. Cette partie correspond à un thread. Il est à noter que chaque thread possède un compteur de programme et une pile. Il s'agit de la partie liée au \emph{thread}.
+\item La premiÃ¨re contenant les ressources globales, telles que les instructions du programme et les variables globales. Cette partie correspond au \emph{processus}. Il s'agit des deux premiers points de l'espace d'adressage.
+\item La deuxiÃ¨me contenant des informations liÃ©es Ã  l'Ã©tat d'exÃ©cution, telles que le \emph{compteur de programme} (aussi appelÃ© \emph{compteur ordinal}) et la \emph{pile d'exÃ©cution}. Cette partie correspond Ã  un thread. Il est Ã  noter que chaque thread possÃ¨de un compteur de programme et une pile. Il s'agit de la partie liÃ©e au \emph{thread}.
 \end{itemize}
 
 \section{Anatomie d'un thread}
 
-Un thread est un fil d'exécution de code, à l'intérieur d'un processus, et qui a la possibilité d'être ordonnancé. Il s'agit d'une version allégée d'un processus. Processus et threads partagent certaines propriétés, mais ne peuvent en aucun cas être interchangés. Tout processus a un thread principal, depuis lequel d'autres threads peuvent être lancés, dans le cas d'une application multi-thread.
+Un thread est un fil d'exÃ©cution de code, Ã  l'intÃ©rieur d'un processus, et qui a la possibilitÃ© d'Ãªtre ordonnancÃ©. Il s'agit d'une version allÃ©gÃ©e d'un processus. Processus et threads partagent certaines propriÃ©tÃ©s, mais ne peuvent en aucun cas Ãªtre interchangÃ©s. Tout processus a un thread principal, depuis lequel d'autres threads peuvent Ãªtre lancÃ©s, dans le cas d'une application multi-thread.
 
-Les threads d'un même processus partagent le même espace d'adressage, comme illustré à la figure \ref{fig:process-space-multi}. Toutes les ressources du processus peuvent être accédées par tous les threads, ce qui n'est pas le cas entre deux processus distincts. Toutefois, chaque thread possède son propre compteur de programme (PC), un ensemble de registres, un état, et une pile. Les piles sont placées dans l'espace mémoire dédié aux piles, mais chaque thread possède sa propre pile. Les variables globales sont par contre partagées entre les threads.
+Les threads d'un mÃªme processus partagent le mÃªme espace d'adressage, comme illustrÃ© Ã  la figure \ref{fig:process-space-multi}. Toutes les ressources du processus peuvent Ãªtre accÃ©dÃ©es par tous les threads, ce qui n'est pas le cas entre deux processus distincts. Toutefois, chaque thread possÃ¨de son propre compteur de programme (PC), un ensemble de registres, un Ã©tat, et une pile. Les piles sont placÃ©es dans l'espace mÃ©moire dÃ©diÃ© aux piles, mais chaque thread possÃ¨de sa propre pile. Les variables globales sont par contre partagÃ©es entre les threads.
 
 \begin{figure}[!ht]
 \figcaption{fig:process-space-multi}{Espace d'adressage d'un processus multi-thread}
@@ -74,10 +74,10 @@ Les threads d'un même processus partagent le même espace d'adressage, comme illu
 \rule{\textwidth}{0.01in}
 \end{figure}
 
-Du point de vue du programmeur, le programme de la figure \ref{fig:process-space-multi} s'exécute à la manière présentée sur la figure \ref{fig:thread-execution}.
+Du point de vue du programmeur, le programme de la figure \ref{fig:process-space-multi} s'exÃ©cute Ã  la maniÃ¨re prÃ©sentÃ©e sur la figure \ref{fig:thread-execution}.
 
 \begin{figure}[ht]
-\figcaption{fig:thread-execution}{Flot d'exécution d'un processus multi-thread}
+\figcaption{fig:thread-execution}{Flot d'exÃ©cution d'un processus multi-thread}
 \begin{center}
 \includegraphics{thread-execution}
 \end{center}
@@ -85,10 +85,10 @@ Du point de vue du programmeur, le programme de la figure \ref{fig:process-space
 \rule{\textwidth}{0.01in}
 \end{figure}
 
-Toutefois, sur un processeur simple coeur, les threads doivent se partager le processeur. De ce fait, le flot d'exécution ressemble plutôt à celui présenté sur la figure \ref{fig:thread-execution-single}. Nous pouvons observer qu'un seul thread est en exécution à un instant donné, et que le passage d'un thread à un autre peut être influencé par une communication inter-thread (deux derniers cas), ou simplement dicté par l'ordonnanceur.
+Toutefois, sur un processeur simple coeur, les threads doivent se partager le processeur. De ce fait, le flot d'exÃ©cution ressemble plutÃ´t Ã  celui prÃ©sentÃ© sur la figure \ref{fig:thread-execution-single}. Nous pouvons observer qu'un seul thread est en exÃ©cution Ã  un instant donnÃ©, et que le passage d'un thread Ã  un autre peut Ãªtre influencÃ© par une communication inter-thread (deux derniers cas), ou simplement dictÃ© par l'ordonnanceur.
 
 \begin{figure}[ht]
-\figcaption{fig:thread-execution-single}{Flot d'exécution d'un processus multi-thread sur un processeur simple coeur}
+\figcaption{fig:thread-execution-single}{Flot d'exÃ©cution d'un processus multi-thread sur un processeur simple coeur}
 \begin{center}
 \includegraphics{thread-execution-single}
 \end{center}
@@ -96,43 +96,43 @@ Toutefois, sur un processeur simple coeur, les threads doivent se partager le pr
 \rule{\textwidth}{0.01in}
 \end{figure}
 
-Le cycle de vie d'un thread est semblable à celui d'un processus (figure \ref{fig:process-state-unix}).
+Le cycle de vie d'un thread est semblable Ã  celui d'un processus (figure \ref{fig:process-state-unix}).
 
-Bien que la programmation multi-thread offre, dans le cadre de la programmation concurrente, passablement d'avantages sur la programmation multi-processus, il faut être conscient des dangers y relatifs~:
+Bien que la programmation multi-thread offre, dans le cadre de la programmation concurrente, passablement d'avantages sur la programmation multi-processus, il faut Ãªtre conscient des dangers y relatifs~:
 
 \begin{itemize}
-\item Etant donné que les threads d'un même processus partagent le même espace d'adressage, un thread peut facilement corrompre les données utilisées par un autre thread. Des outils de synchronisation permettent toutefois d'éliminer les risques de ces corruptions, s'ils sont utilisés de manière appropriée.
+\item Etant donnÃ© que les threads d'un mÃªme processus partagent le mÃªme espace d'adressage, un thread peut facilement corrompre les donnÃ©es utilisÃ©es par un autre thread. Des outils de synchronisation permettent toutefois d'Ã©liminer les risques de ces corruptions, s'ils sont utilisÃ©s de maniÃ¨re appropriÃ©e.
 
-\item Toujours lié au partage de l'espace d'adressage, si un thread effectue un accès mémoire erroné fatal, le processus entier risque de se terminer. Ce n'est évidemment pas le cas pour un système à plusieurs processus.
+\item Toujours liÃ© au partage de l'espace d'adressage, si un thread effectue un accÃ¨s mÃ©moire erronÃ© fatal, le processus entier risque de se terminer. Ce n'est Ã©videmment pas le cas pour un systÃ¨me Ã  plusieurs processus.
 
-\item Un thread est lié à un programme particulier, et ne peut donc pas être lancé par un autre programme. Les processus peuvent en revanche être lancé par un autre processus, et donc être plus aisément réutilisés.
+\item Un thread est liÃ© Ã  un programme particulier, et ne peut donc pas Ãªtre lancÃ© par un autre programme. Les processus peuvent en revanche Ãªtre lancÃ© par un autre processus, et donc Ãªtre plus aisÃ©ment rÃ©utilisÃ©s.
 \end{itemize}
 
-Pour résumer, listons ce que les processus et les threads ont en commun ou non.
+Pour rÃ©sumer, listons ce que les processus et les threads ont en commun ou non.
 
 En commun~:
 \begin{itemize}
-\item possèdent un identifiant (ID), un ensemble de registres, un état, et une priorité;
-\item possèdent un bloc d'information;
+\item possÃ¨dent un identifiant (ID), un ensemble de registres, un Ã©tat, et une prioritÃ©;
+\item possÃ¨dent un bloc d'information;
 \item partagent des ressources avec les processus parents;
-\item sont des entités indépendantes, une fois créés;
-\item les créateurs du processus ou du thread ont contrôle sur eux;
-\item peuvent changer leurs attributs après création et créer de nouvelles ressources;
-\item ne peuvent accéder aux ressources d'autres threads et processus non reliés.
+\item sont des entitÃ©s indÃ©pendantes, une fois crÃ©Ã©s;
+\item les crÃ©ateurs du processus ou du thread ont contrÃ´le sur eux;
+\item peuvent changer leurs attributs aprÃ¨s crÃ©ation et crÃ©er de nouvelles ressources;
+\item ne peuvent accÃ©der aux ressources d'autres threads et processus non reliÃ©s.
 \end{itemize}
 
 Pas en commun~:
 \begin{itemize}
 \item les processus ont un espace d'adressage, les threads pas;
-\item les processus parents et enfants doivent utiliser des mécanismes de communication inter-processus; les threads d'un même processus communiquent en lisant et modifiant les variables de leur processus;
-\item les processus enfants n'ont aucun contrôle sur les autres processus enfants; les threads d'un processus sont considérés comme des pairs et peuvent exercer un contrôle sur les autres threads du processus;
-\item les processus enfants ne peuvent pas exercer de contrôle sur le processus parent; n'importe quel thread peut exercer un contrôle sur le thread principal, et donc sur le processus entier.
+\item les processus parents et enfants doivent utiliser des mÃ©canismes de communication inter-processus; les threads d'un mÃªme processus communiquent en lisant et modifiant les variables de leur processus;
+\item les processus enfants n'ont aucun contrÃ´le sur les autres processus enfants; les threads d'un processus sont considÃ©rÃ©s comme des pairs et peuvent exercer un contrÃ´le sur les autres threads du processus;
+\item les processus enfants ne peuvent pas exercer de contrÃ´le sur le processus parent; n'importe quel thread peut exercer un contrÃ´le sur le thread principal, et donc sur le processus entier.
 \end{itemize}
 
 
 \section{Avantages du multi-threading}
 
-En comparaison d'un programme ne contenant qu'un seul thread, un programme décomposé en threads permet de mieux gérer les entrées/sorties et le calcul. Un thread peut s'occuper du calcul, tandis que d'autres gèrent les entrées/sorties. De ce fait, l'usage d'un GUI (Graphical User Interface) est plus ergonomique et convivial. Prenons l'exemple d'une application visant à afficher la courbe de Mandelbrot (Figure \ref{fig:mandelbrot}). Pour chaque point de l'image, une grande quantité de calcul doit être effectuée. Supposons que l'utilisateur peut cliquer sur des boutons pour zoomer. Si nous ne disposons pas de multi-threading, un clic sur le bouton va ensuite voir l'application se bloquer pendant que la nouvelle image est calculée. Si par contre nous disposons de plusieurs threads, un thread peut s'occuper du calcul pendant que l'autre gère l'interface graphique. Dès lors l'utilisateur a encore la possibilité d'interagir avec l'application sans devoir souffrir de l'accaparement du processeur pour le calcul.
+En comparaison d'un programme ne contenant qu'un seul thread, un programme dÃ©composÃ© en threads permet de mieux gÃ©rer les entrÃ©es/sorties et le calcul. Un thread peut s'occuper du calcul, tandis que d'autres gÃ¨rent les entrÃ©es/sorties. De ce fait, l'usage d'un GUI (Graphical User Interface) est plus ergonomique et convivial. Prenons l'exemple d'une application visant Ã  afficher la courbe de Mandelbrot (Figure \ref{fig:mandelbrot}). Pour chaque point de l'image, une grande quantitÃ© de calcul doit Ãªtre effectuÃ©e. Supposons que l'utilisateur peut cliquer sur des boutons pour zoomer. Si nous ne disposons pas de multi-threading, un clic sur le bouton va ensuite voir l'application se bloquer pendant que la nouvelle image est calculÃ©e. Si par contre nous disposons de plusieurs threads, un thread peut s'occuper du calcul pendant que l'autre gÃ¨re l'interface graphique. DÃ¨s lors l'utilisateur a encore la possibilitÃ© d'interagir avec l'application sans devoir souffrir de l'accaparement du processeur pour le calcul.
 
 \begin{figure}[ht]
 \figcaption{fig:mandelbrot}{Courbe de Mandelbrot}
@@ -143,42 +143,42 @@ En comparaison d'un programme ne contenant qu'un seul thread, un programme décom
 \rule{\textwidth}{0.01in}
 \end{figure}
 
-Dans le cas d'un processeur multi-coeur, un autre avantage du multi-threading peut s'exploiter. En effet, chaque coeur peut prendre en charge un ou plusieurs threads. En reprenant l'exemple de Mandelbrot, si nous supposons que nous sommes en présence d'un dual-core, alors nous pouvons décomposer notre calcul en deux threads, chacun étant responsable de la génération de la moitié de l'image. Lorsque l'utilisateur clique sur le bouton, la nouvelle image pourra donc s'afficher en un temps réduit de moitié. Il s'agit là d'un parallélisme réel, rendu possible par l'amélioration des plateformes matérielles proposées sur le marché. Nous pouvons toutefois noter que l'accélération d'un facteur $n$ pour un $n$-core reste théorique, la probable communication inter-thread imposant une perte en performance.
+Dans le cas d'un processeur multi-coeur, un autre avantage du multi-threading peut s'exploiter. En effet, chaque coeur peut prendre en charge un ou plusieurs threads. En reprenant l'exemple de Mandelbrot, si nous supposons que nous sommes en prÃ©sence d'un dual-core, alors nous pouvons dÃ©composer notre calcul en deux threads, chacun Ã©tant responsable de la gÃ©nÃ©ration de la moitiÃ© de l'image. Lorsque l'utilisateur clique sur le bouton, la nouvelle image pourra donc s'afficher en un temps rÃ©duit de moitiÃ©. Il s'agit lÃ  d'un parallÃ©lisme rÃ©el, rendu possible par l'amÃ©lioration des plateformes matÃ©rielles proposÃ©es sur le marchÃ©. Nous pouvons toutefois noter que l'accÃ©lÃ©ration d'un facteur $n$ pour un $n$-core reste thÃ©orique, la probable communication inter-thread imposant une perte en performance.
 
-En comparaison d'un système multi-processus, une application multi-thread requiert une surcharge (overhead) moindre pour la gestion des tâches. En effet, commuter d'un thread à un autre est nettement moins coûteux en terme de temps processeur que de commuter d'un processus à un autre. Un avantage d'une application multi-processus est la possibilité d'exécuter les processus sur des machines différentes, ce qui n'est pas le cas du multi-thread. Pour ce qui est de la commutation, le responsable de son fonctionnement, dans les deux cas, est le système d'exploitation.
+En comparaison d'un systÃ¨me multi-processus, une application multi-thread requiert une surcharge (overhead) moindre pour la gestion des tÃ¢ches. En effet, commuter d'un thread Ã  un autre est nettement moins coÃ»teux en terme de temps processeur que de commuter d'un processus Ã  un autre. Un avantage d'une application multi-processus est la possibilitÃ© d'exÃ©cuter les processus sur des machines diffÃ©rentes, ce qui n'est pas le cas du multi-thread. Pour ce qui est de la commutation, le responsable de son fonctionnement, dans les deux cas, est le systÃ¨me d'exploitation.
 
-La table suivante (tirée de \cite{hughes03parallel}) liste les avantages et les inconvénients du multi-threading par opposition au multi-processing~:
+La table suivante (tirÃ©e de \cite{hughes03parallel}) liste les avantages et les inconvÃ©nients du multi-threading par opposition au multi-processing~:
 
 \begin{center}
 \begin{tabular}{p{.5\textwidth}|p{.5\textwidth}}
 \toprule
-\textbf{Avantage des threads} & \textbf{Désavantages des threads} \\
+\textbf{Avantage des threads} & \textbf{DÃ©savantages des threads} \\
 \midrule
-Moins de ressources nécessaires lors d'un changement de contexte & Requiert des mécanismes de synchronisation lors d'accès mémoires concurrents \\
-Améliore le débit de traitement des données dans une application & Peut facilement polluer l'espace d'adressage du processus \\
-Ne nécessite pas de mécanismes spéciaux de communication entre tâches & N'existe que dans un processus, et n'est donc pas réutilisable \\
+Moins de ressources nÃ©cessaires lors d'un changement de contexte & Requiert des mÃ©canismes de synchronisation lors d'accÃ¨s mÃ©moires concurrents \\
+AmÃ©liore le dÃ©bit de traitement des donnÃ©es dans une application & Peut facilement polluer l'espace d'adressage du processus \\
+Ne nÃ©cessite pas de mÃ©canismes spÃ©ciaux de communication entre tÃ¢ches & N'existe que dans un processus, et n'est donc pas rÃ©utilisable \\
 Permet de simplifier la structure d'un programme & \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\section{Séparation d'un programme en plusieurs threads}
+\section{SÃ©paration d'un programme en plusieurs threads}
 
-A priori, n'importe quelle application pourrait être réalisée à l'aide d'un seul thread. Toutefois, comme nous l'avons vu, cette approche est quelque peu limitée. Il faut alors se poser la question concernant la meilleure manière de décomposer une application. Nous pouvons identifier différents types de modèles, qui définissent la façon dont les threads interagissent entre eux:
+A priori, n'importe quelle application pourrait Ãªtre rÃ©alisÃ©e Ã  l'aide d'un seul thread. Toutefois, comme nous l'avons vu, cette approche est quelque peu limitÃ©e. Il faut alors se poser la question concernant la meilleure maniÃ¨re de dÃ©composer une application. Nous pouvons identifier diffÃ©rents types de modÃ¨les, qui dÃ©finissent la faÃ§on dont les threads interagissent entre eux:
 
 \begin{itemize}
-\item Le modèle \emph{délégation} (\emph{boss-worker model} ou \emph{delegation model} en anglais)
-\item Le modèle \emph{pair} (\emph{peer model} en anglais)
-\item Le modèle \emph{pipeline} (\emph{pipeline model} en anglais)
+\item Le modÃ¨le \emph{dÃ©lÃ©gation} (\emph{boss-worker model} ou \emph{delegation model} en anglais)
+\item Le modÃ¨le \emph{pair} (\emph{peer model} en anglais)
+\item Le modÃ¨le \emph{pipeline} (\emph{pipeline model} en anglais)
 \end{itemize}
 
-\subsection{Modèle délégation}
+\subsection{ModÃ¨le dÃ©lÃ©gation}
 
-Dans le modèle \emph{délégation} (Figure \ref{fig:model-boss-worker}), un thread principal s'occupe de répartir la charge de travail sur les threads travailleurs. Ce pourrait typiquement être le cas d'un serveur FTP où un thread attend des commandes et les délègue ensuite aux autres threads. La réalisation d'une application selon ce modèle peut se faire de deux manières.
+Dans le modÃ¨le \emph{dÃ©lÃ©gation} (Figure \ref{fig:model-boss-worker}), un thread principal s'occupe de rÃ©partir la charge de travail sur les threads travailleurs. Ce pourrait typiquement Ãªtre le cas d'un serveur FTP oÃ¹ un thread attend des commandes et les dÃ©lÃ¨gue ensuite aux autres threads. La rÃ©alisation d'une application selon ce modÃ¨le peut se faire de deux maniÃ¨res.
 
 
 \begin{figure}[ht]
-\figcaption{fig:model-boss-worker}{Modèle délégation}
+\figcaption{fig:model-boss-worker}{ModÃ¨le dÃ©lÃ©gation}
 \begin{center}
 \includegraphics[scale=0.7]{model-boss-worker}
 \end{center}
@@ -186,7 +186,7 @@ Dans le modèle \emph{délégation} (Figure \ref{fig:model-boss-worker}), un thread
 \rule{\textwidth}{0.01in}
 \end{figure}
 
-Premièrement, le thread principal peut créer un thread pour chaque nouvelle tâche à exécuter. Dans ce cas, il est composé d'une boucle dans laquelle il attend des requêtes et où il crée ensuite un thread capable de répondre à cette requête.
+PremiÃ¨rement, le thread principal peut crÃ©er un thread pour chaque nouvelle tÃ¢che Ã  exÃ©cuter. Dans ce cas, il est composÃ© d'une boucle dans laquelle il attend des requÃªtes et oÃ¹ il crÃ©e ensuite un thread capable de rÃ©pondre Ã  cette requÃªte.
 
 \newpage
 
@@ -195,7 +195,7 @@ Exemple:
 \begin{lstlisting}[frame=trBL]
 void *patron(void *) {
   boucle infinie {
-    attend une requête
+    attend une requÃªte
     switch (requete) {
       case requeteX: pthread_create( ... tacheX); break;
       case requeteY: pthread_create( ... tacheY); break;
@@ -205,33 +205,33 @@ void *patron(void *) {
 }
 
 void *tacheX(void *) {
-  exécuter le travail demandé, puis se terminer
+  exÃ©cuter le travail demandÃ©, puis se terminer
 }
 
 void *tacheY(void *) {
-  exécuter le travail demandé, puis se terminer
+  exÃ©cuter le travail demandÃ©, puis se terminer
 }
 \end{lstlisting}
 
-Deuxièmement, le thread principal peut créer initialement un ensemble de threads. Il boucle ensuite en attendant une requête, et lorsqu'une requête arrive, la place dans une file d'attente. Tous les travailleurs sont également basés sur une boucle dans laquelle ils attendent qu'une requête soit placée dans la file d'attente. Un des travailleurs prend ensuite le contrôle de la requête et l'exécute.
+DeuxiÃ¨mement, le thread principal peut crÃ©er initialement un ensemble de threads. Il boucle ensuite en attendant une requÃªte, et lorsqu'une requÃªte arrive, la place dans une file d'attente. Tous les travailleurs sont Ã©galement basÃ©s sur une boucle dans laquelle ils attendent qu'une requÃªte soit placÃ©e dans la file d'attente. Un des travailleurs prend ensuite le contrÃ´le de la requÃªte et l'exÃ©cute.
 \newpage
 Exemple:
 
 \begin{lstlisting}[frame=trBL]
 void *patron(void *) {
-  // crée tous les threads
+  // crÃ©e tous les threads
   pthread_create(...);
   boucle infinie {
-    attend une requête;
-    place la requête dans la file d'attente
-    signale aux travailleurs qu'une requête est prête
+    attend une requÃªte;
+    place la requÃªte dans la file d'attente
+    signale aux travailleurs qu'une requÃªte est prÃªte
   }
 }
 
 void *travailleur(void *) {
   boucle infinie {
-    bloque jusqu'à être activé par le patron
-    récupère la requête de la file d'attente
+    bloque jusqu'Ã  Ãªtre activÃ© par le patron
+    rÃ©cupÃ¨re la requÃªte de la file d'attente
     switch(requete){
       case requeteX: tacheX();
       case requeteY: tacheY();
@@ -241,21 +241,21 @@ void *travailleur(void *) {
 }
 
 void tacheX() {
-  exécuter le travail demandé
+  exÃ©cuter le travail demandÃ©
 }
 
 void tacheY() {
-  exécuter le travail demandé
+  exÃ©cuter le travail demandÃ©
 }
 \end{lstlisting}
 
-\subsection{Modèle pair}
+\subsection{ModÃ¨le pair}
 
-Dans le modèle \emph{pair} (Figure \ref{fig:model-peer}), aucun thread n'est principal, tous étant égaux au niveau hiérarchique. Chaque thread est alors responsable de gérer ses propres entrées/sorties. La synchronisation entre thread risque fort d'y être nécessaire, afin que la tâche globale s'exécute correctement. Un exemple typique de ce type de modèle est une simulation d'un système physique décomposé en éléments finis. La modélisation de la chaleur dans une pièce, par exemple, pourrait voir le calcul être réparti entre plusieurs threads, chacun étant responsable d'une partie de la pièce. Le temps d'exécution d'une telle application sur une machine multi-coeur devrait alors être réduit. Il est toutefois à noter que la synchronisation nécessaire pour les interfaces entre les parties gérées par deux threads différents nécessite quelques précautions.
+Dans le modÃ¨le \emph{pair} (Figure \ref{fig:model-peer}), aucun thread n'est principal, tous Ã©tant Ã©gaux au niveau hiÃ©rarchique. Chaque thread est alors responsable de gÃ©rer ses propres entrÃ©es/sorties. La synchronisation entre thread risque fort d'y Ãªtre nÃ©cessaire, afin que la tÃ¢che globale s'exÃ©cute correctement. Un exemple typique de ce type de modÃ¨le est une simulation d'un systÃ¨me physique dÃ©composÃ© en Ã©lÃ©ments finis. La modÃ©lisation de la chaleur dans une piÃ¨ce, par exemple, pourrait voir le calcul Ãªtre rÃ©parti entre plusieurs threads, chacun Ã©tant responsable d'une partie de la piÃ¨ce. Le temps d'exÃ©cution d'une telle application sur une machine multi-coeur devrait alors Ãªtre rÃ©duit. Il est toutefois Ã  noter que la synchronisation nÃ©cessaire pour les interfaces entre les parties gÃ©rÃ©es par deux threads diffÃ©rents nÃ©cessite quelques prÃ©cautions.
 
 
 \begin{figure}[ht]
-\figcaption{fig:model-peer}{Modèle pair}
+\figcaption{fig:model-peer}{ModÃ¨le pair}
 \begin{center}
 \includegraphics[scale=0.7]{model-peer}
 \end{center}
@@ -271,33 +271,33 @@ main() {
   pthread_create( ... tache1);
   pthread_create( ... tache2);
   ...
-  signale aux threads qu'ils peuvent commencer à travailler
+  signale aux threads qu'ils peuvent commencer Ã  travailler
 }
 
 tache1() {
   attend le signal de commencement
-  effectue le traitement, et synchronise avec les autres threads si nécessaire
+  effectue le traitement, et synchronise avec les autres threads si nÃ©cessaire
 }
 
 tache2() {
   attend le signal de commencement
-  effectue le traitement, et synchronise avec les autres threads si nécessaire
+  effectue le traitement, et synchronise avec les autres threads si nÃ©cessaire
 }
 \end{lstlisting}
 
-\subsection{Modèle pipeline}
+\subsection{ModÃ¨le pipeline}
 
-Le modèle \emph{pipeline} (Figure \ref{fig:model-pipeline}) est exploitable lorsque les conditions suivantes sont remplies:
+Le modÃ¨le \emph{pipeline} (Figure \ref{fig:model-pipeline}) est exploitable lorsque les conditions suivantes sont remplies:
 
 \begin{itemize}
-\item L'application traite une longue chaîne d'entrée;
-\item Le traitement à effectuer sur ces entrée peut être décomposé en sous-tâches (étages de pipeline) au travers desquelles chaque donnée d'entrée doit passer;
-\item Chaque étage peut traiter une donnée différente à chaque instant.
+\item L'application traite une longue chaÃ®ne d'entrÃ©e;
+\item Le traitement Ã  effectuer sur ces entrÃ©e peut Ãªtre dÃ©composÃ© en sous-tÃ¢ches (Ã©tages de pipeline) au travers desquelles chaque donnÃ©e d'entrÃ©e doit passer;
+\item Chaque Ã©tage peut traiter une donnÃ©e diffÃ©rente Ã  chaque instant.
 \end{itemize}
 
 
 \begin{figure}[ht]
-\figcaption{fig:model-pipeline}{Modèle pipeline}
+\figcaption{fig:model-pipeline}{ModÃ¨le pipeline}
 \begin{center}
 \includegraphics[scale=0.7]{model-pipeline}
 \end{center}
@@ -306,9 +306,9 @@ Le modèle \emph{pipeline} (Figure \ref{fig:model-pipeline}) est exploitable lors
 \end{figure}
 
 
-Là encore, un processeur multi-coeur devrait voir le temps d'exécution d'un programme grandement réduit. Un exemple typique permettant d'exploiter ce modèle serait du traitement sur un flux vidéo, où un étage modifierait la couleur, un autre le son, un autre appliquerait de la compression, ...
+LÃ  encore, un processeur multi-coeur devrait voir le temps d'exÃ©cution d'un programme grandement rÃ©duit. Un exemple typique permettant d'exploiter ce modÃ¨le serait du traitement sur un flux vidÃ©o, oÃ¹ un Ã©tage modifierait la couleur, un autre le son, un autre appliquerait de la compression, ...
 
-Un étage du pipeline correspond donc à un traitement particulier à appliquer aux données. Le thread responsable de cet étage a un fonctionnement relativement simple. Il attend des données de l'étage précédent, traite ces données, et transmet ensuite le résultat de son traitement au thread responsable de l'étage suivant.
+Un Ã©tage du pipeline correspond donc Ã  un traitement particulier Ã  appliquer aux donnÃ©es. Le thread responsable de cet Ã©tage a un fonctionnement relativement simple. Il attend des donnÃ©es de l'Ã©tage prÃ©cÃ©dent, traite ces donnÃ©es, et transmet ensuite le rÃ©sultat de son traitement au thread responsable de l'Ã©tage suivant.
 \newpage
 Exemple:
 
@@ -321,25 +321,25 @@ main() {
 
 etage1() {
   boucle infinie {
-    récupérer une entrée du programme
-    traiter cette donnée
-    passer le résultat à l'étage suivant
+    rÃ©cupÃ©rer une entrÃ©e du programme
+    traiter cette donnÃ©e
+    passer le rÃ©sultat Ã  l'Ã©tage suivant
   }
 }
 
 etage2() {
   boucle infinie {
-    récupérer une donnée de l'étage précédent
-    traiter cette donnée
-    passer le résultat à l'étage suivant
+    rÃ©cupÃ©rer une donnÃ©e de l'Ã©tage prÃ©cÃ©dent
+    traiter cette donnÃ©e
+    passer le rÃ©sultat Ã  l'Ã©tage suivant
   }
 }
 
 etageN() {
   boucle infinie {
-    récupérer une donnée de l'étage précédent
-    traiter cette donnée
-    passer le résultat en sortie du programme
+    rÃ©cupÃ©rer une donnÃ©e de l'Ã©tage prÃ©cÃ©dent
+    traiter cette donnÃ©e
+    passer le rÃ©sultat en sortie du programme
   }
 }
 \end{lstlisting}
