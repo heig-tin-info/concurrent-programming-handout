@@ -5,7 +5,7 @@
 Un {\em moniteur} comprend un ensemble de variables et un ensemble de procédures qui manipulent ces variables. Certaines procédures sont accessibles depuis l'extérieur et sont les {\em points d'entrée} du moniteur. Les tâches qui font appel à un moniteur pour se synchroniser n'ont pas un accès direct aux variables contenues dans le moniteur. Elles ne peuvent les atteindre que par les points d'entrée fournis par le moniteur. Les procédures contiennent des opérations qui permettent de bloquer et de réveiller les tâches conformément aux spécifications du problème. Les conditions de blocage et de réveil sont exprimées en fonction des variables du moniteur. Le mécanisme d'exécution du moniteur garantit qu'une seule tâche est active dans le moniteur, en train d'exécuter une de ses procédures. Un moniteur contient aussi une partie d'initialisation qui n'est exécutée qu'une fois lors de la création du moniteur (voir figure~\ref{moniteur:struct}). Un moniteur est donc tout simplement un type de donnée abstrait qui possède des mécanismes de synchronisation et dont l'accès se réalise en exclusion mutuelle.
 \begin{figure}[!ht]
 
-\begin{center}
+\centering
 \begin{tabular}{l}
 {\bf monitor} <{\em nom}> \\
 \hspace{0.3cm}<{\em déclarations des variables rémanentes locales}>; \\
@@ -22,20 +22,20 @@ Un {\em moniteur} comprend un ensemble de variables et un ensemble de procédure
 \hspace{0.3cm}{\bf end};
 \end{tabular}
 \caption{\label{moniteur:struct}Structure d'un moniteur}
-\end{center}
+
 \end{figure}
 
 La synchronisation des tâches s'exprime au moyen de {\em variables conditions} (VC). Une VC est déclarée comme une variable ordinaire mais elle ne peut être utilisée que par 2 primitives: les primitives {\em attente} et {\em signale}. Soit la VC $cond$ déclarée par
-\begin{center}
+\centering
 {\bf condition} $cond$;
-\end{center}
+
 les opérations $cond.attente$ et $cond.signale$ ont les effets suivants. La primitive $cond.attente$ bloque inconditionnellement la tâche appelante, lui fait relâcher l'exclusion mutuelle sur le moniteur et la place dans une file associée à $cond$. Le résultat de l'exécution de la primitive $cond.signale$ dépend de l'état de la file associée à $cond$. Si la file est vide, la tâche appelante poursuit son exécution et l'opération n'a aucun effet.  Aucun état n'est préservé par la VC, à la différence de l'opération $V$ qui affecte l'état du sémaphore. Par contre si la file associée à $cond$ n'est pas vide, l'une des tâches bloquées est réactivée et reprend immédiatement son exécution à l'instruction qui suit la primitive $cond.attente$. La tâche appelante est suspendue et reprendra son exécution lorsque la tâche qu'elle a réveillée exécute une primitive $attente$ ou quitte le moniteur.
 
 Prenons quelques exemples pour illustrer ces idées. L'algorithme~\ref{moniteur:exempleVerrou} montre une implémentation d'un verrou. La variable \ccode{verrou} indique l'état du verrou. La première exécution de \ccode{Verrouille} met \ccode{verrou} à vrai. Les appels de \ccode{Verrouille} suivants bloqueront les tâches appelantes.  Remarquons que la procédure \ccode{Deverrouille} essaie toujours de réveiller une tâche en attente après avoir modifié \ccode{verrou}. Si une telle tâche existe, cette tâche remet immédiatement \ccode{verrou} à vrai, sinon \ccode{verrou} reste inchangée.
 
 \begin{algorithm}[!htb]
 \caption{Verrou par moniteur}\label{moniteur:exempleVerrou}
-\begin{center}
+\centering
 \begin{tabular}{l}
 {\bf monitor} VerrouMoniteur \\
 \hspace{0.3cm}{\bf var} verrou: boolean; \\
@@ -56,13 +56,13 @@ Prenons quelques exemples pour illustrer ces idées. L'algorithme~\ref{moniteur:
 \hspace{0.3cm}{\bf begin} verrou := {\em false}; \\
 \hspace{0.3cm}{\bf end} VerrouMoniteur;
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 \par
 Le problème des producteurs et des consommateurs, illustré sur l'algorithme~\ref{moniteur:ProdCons}, est rendu évident. Signalons seulement le fait que lors de la création du moniteur, la partie d'initialisation doit se faire avant tout appel à l'une des procédures accessibles du moniteur.
 \begin{algorithm}[!ht]
 \caption{Problème des producteurs et des consommateurs par moniteur}\label{moniteur:ProdCons}
-\begin{center}
+\centering
 \begin{tabular}{l}
 {\bf monitor} Tampons \\
 \hspace{0.3cm}{\bf var} place: array [0..N-1] {\bf of} ARTICLE; \\
@@ -90,7 +90,7 @@ Le problème des producteurs et des consommateurs, illustré sur l'algorithme~\r
 \hspace{0.3cm}{\bf begin} taille := 0; queue := 0; tete := 0; \\
 \hspace{0.3cm}{\bf end} Tampons;
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 \par
 Attardons-nous à présent sur quelques extensions et sur quelques variantes du modèle des moniteurs que nous avons introduit. Lorsqu'une tâche $Q$ se fait réveiller par la primitive {\em signale}, $Q$ reprend immédiatement son exécution. Cette approche est la plus répandue car la condition sur laquelle $Q$ était en attente est toujours vérifiée lorsque $Q$ reprend son exécution. Certains langages abordent la question différemment.  Par exemple en Mesa, l'ancêtre de Java, la primitive {\em notify} exécutée par la tâche $P$ sur une VC a pour effet de réveiller une tâche, mais cette dernière ne reprendra son exécution seulement après que $P$ libère le moniteur. Ainsi en Mesa, la mise en suspension s'écrit par  \\
@@ -148,7 +148,7 @@ L'algorithme \ref{moniteurs:pthreadProdCons} propose une solution au problème d
 
 \begin{algorithm}[!ht]
 \caption{Exemple d'un moniteur $pthread$: problème des producteurs et des consommateurs à un tampon}\label{moniteurs:pthreadProdCons}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -206,7 +206,7 @@ void DetruitTampon(void) {
 } /* fin de DetruitTampon */
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 \section{Implémentation de moniteurs à partir de sémaphores}
@@ -256,7 +256,7 @@ L'exclusion mutuelle est assurée par le sémaphore {mutex}, et lors du relâche
 Pour illustrer l'utilité des substitutions ci-dessus, prenons l'algorithme~\ref{moniteur:ProdCons} montrant la gestion des tampons entre producteurs et consommateurs. Après application directe des substituons, nous obtenons l'algorithme~\ref{moniteur:ProdCons2}.
 \begin{algorithm}[!ht]
 \caption{Problème des producteurs et des consommateurs à un tampon (sans optimisation)}\label{moniteur:ProdCons2}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -316,11 +316,11 @@ void retirer(ARTICLE *a) {
 } /* fin de retirer */
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Malgré que la substitution obtenue donne une solution correcte, celle-ci peut être optimisée. Lorsqu'un producteur dépose un article et réveille un consommateur (\ccode{pasVide.signale}), ce producteur se met en attente dans la file des signaleurs, puis quand le contrôle lui revient, il sort du moniteur. Pour ce producteur, il aurait été préférable de réveiller le consommateur et de sortir immédiatement. La procédure \ccode{deposer} devient alors %\vspace*{-0.6cm}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -346,12 +346,12 @@ void deposer(ARTICLE a) {
 } /* fin de deposer */
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 Finalement, on constate qu'après cette transformation la file \ccode{signale} est toujours vide. Nous pouvons éliminer tout ce qui est en relation avec le sémaphore \ccode{signale}. La version finale est donnée sur l'algorithme~\ref{moniteur:ProdCons3},  où nous avons appliqué les mêmes transformations à la procédure \ccode{retirer}.
 
 \begin{algorithm}[!ht]
 \caption{Problème des producteurs et des consommateurs à un tampon (version finale)}\label{moniteur:ProdCons3}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -395,7 +395,7 @@ void retirer(ARTICLE *a) {
 } /* fin de retirer */
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 \section{Remarques finales}

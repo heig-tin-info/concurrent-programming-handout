@@ -4,36 +4,69 @@
 \usepackage{color}
 \usepackage{frbib}
 \usepackage{booktabs}
-\usepackage[T1]{fontenc}
+\usepackage{fontspec}
 \usepackage{amsfonts}
 \usepackage{lettrine}
-\usepackage{times}
 \usepackage[Lenny]{fncychap}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{cleveref}
-\usepackage{times}
 \usepackage{amstext}
 \usepackage{subfigure}
 \usepackage{heiglogo}
 \usepackage{listings}
-
-\lstset{language=C}
-\lstset{basicstyle=\scriptsize\ttfamily, stringstyle=\ttfamily}
-\lstset{tabsize=2,showstringspaces=false}
-
-\newcommand{\ccode}[1]{{\lstset{basicstyle=\normalsize\ttfamily,stringstyle=\ttfamily}\lstinline$#1$}}
-
 \usepackage[chapter]{algorithm}
 \usepackage{algorithmic}
 \usepackage{tabularx}
 \usepackage{fancyhdr}
-
 \usepackage{ulem}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage[labelfont=bf]{caption}
 
-\normalem
+\setlength{\parskip}{1em}
 
-\usepackage[labelfont=bf,justification=justified,format=hang,skip=0pt,nooneline]{caption}
+\definecolor{GitHubGray}{rgb}{0.9,0.9,0.9}
+
+\lstset{
+    language=c,
+    breaklines=true,
+    keywordstyle=\bfseries\color{black},
+    basicstyle=\ttfamily\color{black}\fontsize{9pt}{10pt}\selectfont,
+    emphstyle={\em \color{gray}},
+    literate={`}{\lstinline`}{1},
+    keepspaces=true,
+    showspaces=false,
+    showtabs=true,
+    tabsize=2,
+    upquote=true,
+    aboveskip=2pt,
+    belowskip=2pt,
+    framexleftmargin=2pt,
+    extendedchars=true,
+    inputencoding=utf8,
+    literate=
+    {à}{{\`a}}1
+    {è}{{\`e}}1
+    {é}{{\'e}}1
+    {É}{{\'E}}1
+    {ê}{{\^e}}1
+    {î}{{\^i}}1
+    {ö}{{\"o}}1
+    {°}{\textdegree}1
+    {ç}{{\c{c}}}1
+}
+
+\mdfsetup{%
+  roundcorner=4pt,
+  innerleftmargin=2mm,
+  innertopmargin=4.5mm,
+  linecolor=black!50,%
+  backgroundcolor=GitHubGray,
+  innerbottommargin=1mm
+}
+
+\newcommand{\ccode}[1]{{\lstset{basicstyle=\normalsize\ttfamily,stringstyle=\ttfamily}\lstinline$#1$}}
+
 
 \floatname{algorithm}{Algorithme}
 
@@ -63,7 +96,7 @@
 \newcounter{exercicecounter}
 \setcounter{exercicecounter}{1}
 
-\newcommand{\extitle}[1]{\begin{center}{\Huge #1}\end{center}\vspace{1cm}}
+\newcommand{\extitle}[1]{\centering{\Huge #1}\vspace{1cm}}
 
 \newenvironment{exercice}[1][]{{%
   \noindent%

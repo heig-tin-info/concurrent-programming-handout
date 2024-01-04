@@ -33,7 +33,7 @@ Les actions des tâches deviennent alors
 
 \begin{figure}[t]
 
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -80,7 +80,7 @@ int main(void)
 \end{lstlisting}
 \end{tabular}
 \caption{\label{prodcons:base}Schéma des tâches productrices et consommatrices}
-\end{center}
+
 \end{figure}
 
 Dans ce qui suit, nous formulons des algorithmes permettant la synchronisation entre productrice et consommatrice. Nous commençons par le cas particulier où le tampon ne peut contenir qu'un seul élément avant de généraliser nos solutions à une capacité quelconque.
@@ -98,7 +98,7 @@ Par contre, après avoir inséré son item dans le tampon, si la tâche productr
 Le retrait d'un item du tampon est symétrique. Les consommatrices attendent que le tampon devienne plein puis réalisent une copie locale avant de libérer l'exclusion mutuelle ou réveiller une productrice bloquée.
 \begin{algorithm}[h!tp]
 \caption{Première méthode}\label{prodcons:tampon1}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -169,14 +169,14 @@ ITEM Preleve(void)
 } /* fin de Preleve */
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Notre second algorithme, plus simple que le premier, considère que l'état du tampon peut être exprimé directement par un sémaphore. En effet, si nous avons un sémaphore \ccode{attendreVide} qui indique par la valeur $1$ que le tampon est vide, un appel à \ccode{P(attendreVide)} laisse passer l'appelant si le tampon est vide ou bloque l'appelant si le tampon est plein (valeur du semaphore $= 0$). Quand une tâche vide le tampon, celle-ci peut ensuite faire \ccode{V(attendreVide)} pour réveiller une tâche en attente que le tampon devienne vide ou encore modifier la valeur du sémaphore pour qu'elle redevienne égale à $1$. Un raisonnement semblable peut être fait avec un second sémaphore \ccode{attendrePlein}, qui indique par sa valeur $1$ que le tampon est plein et par $0$ qu'il est vide. Autrement dit, \ccode{attendreVide} compte le nombre de tampons vides ($0$ ou $1$) alors que \ccode{attendrePlein} compte le nombre de tampons pleins. Notons que \ccode{attendreVide} $+$ \ccode{attendrePlein} $=$ $1$.
 
 \begin{algorithm}[h!t]
 \caption{Deuxième méthode}\label{prodcons:tampon2}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -214,7 +214,7 @@ ITEM Preleve(void)
 } /* fin de Preleve */
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 L'algorithme \ref{prodcons:tampon2} illustre les fonctions \ccode{Depose} et \ccode{Preleve} qui utilisent le principe précédent. Notons finalement que l'initialisation du tampon reflète son état vide.
@@ -223,7 +223,7 @@ L'algorithme \ref{prodcons:tampon2} illustre les fonctions \ccode{Depose} et \cc
 \section{Extension à $N$ tampons}
 Pour généraliser le problème à une capacité supérieure à 1, il y a 2 aspects à considérer. Le premier est lié à la synchronisation entre les tâches et le second à la gestion du tampon.
 Le tampon est un tableau géré selon une liste circulaire à l'aide de 2 indices, \ccode{ptEntree} et \ccode{ptSortie}, indiquant respectivement la prochaine case libre du tableau et la prochaine case contenant l'élément à retirer du tableau. Sans considérer la synchronisation, les tâches productrices réalisent
-\begin{center}
+\centering
 \vspace{-0.2 cm}
 \begin{tabular}{l}
 \begin{lstlisting}
@@ -231,9 +231,9 @@ tableau[ptEntree] = item;
 ptEntree = (ptEntree + 1) % TAILLE_TAMPON;
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 La première instruction introduit l'élément dans le tableau et la seconde prépare l'indice pour la prochaine insertion. De manière identique, les consommatrices font
-\begin{center}
+\centering
 \vspace{-0.2 cm}
 \begin{tabular}{l}
 \begin{lstlisting}
@@ -241,14 +241,14 @@ item = tableau[ptSortie];
 ptSortie = (ptSortie + 1) % TAILLE_TAMPON;
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 En initialisant \ccode{ptEntree} à \ccode{ptSortie}, on voit que les éléments retirés se font dans le même ordre qu'ils ont été introduits par les tâches productrices.
 
 Le second problème qu'il faut traiter est lié à la synchronisation. Dans les 2 bouts de code ci-dessus, il faut bloquer les consommatrices lorsque le tampon est vide, et aussi les productrices lorsque le tampon est plein. Dans ces 2 cas, \ccode{prEntree} $=$ \ccode{ptSortie} et, pour savoir si le tampon est plein ou vide, nous utilisons un indicateur supplémentaire, un compteur de cases libres. Quand une productrice dépose un élément, ce compteur est décrémenté, et lorsqu'une consommatrice prélève un élément, le compteur est incrémenté. Ainsi, quand le compteur est égal à 0, le tampon est plein, et quand il est égal à \ccode{TAILLE_TAMPON}, le tampon est vide.
 La généralisation de l'algorithme \ref{prodcons:tampon1} est donnée par l'algorithme \ref{prodcons:tampon3}. Le passage du premier algorithme vers le second tient tout simplement compte des nouvelles variables qui ont été introduites pour gérer le tableau circulaire.
 \begin{algorithm}[!ht]
 \caption{Extension de l'algorithme \ref{prodcons:tampon1}}\label{prodcons:tampon3}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -319,7 +319,7 @@ ITEM Preleve(void)
 } /* fin de Preleve */
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Les idées de l'algorithme \ref{prodcons:tampon2} peuvent également s'appliquer à un tampon ayant une capacité supérieure à 1 (voir algorithme \ref{prodcons:tampon4}).
@@ -328,7 +328,7 @@ De manière identique, le sémaphore \ccode{attendrePlein} compte le nombre d'é
 
 \begin{algorithm}[!ht]
 \caption{Extension de l'algorithme \ref{prodcons:tampon2}}\label{prodcons:tampon4}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -378,7 +378,7 @@ ITEM Preleve(void)
 } /* fin de Preleve */
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 A priori, on pourrait croire que l'algorithme \ref{prodcons:tampon4} est plus rapide que l'algorithme \ref{prodcons:tampon3}. Ceci n'est pas forcément le cas car chaque insertion ou retrait nécessite 4 appels à des primitives de sémaphores. Ces appels ont un coût non négligeable. Par contre, l'algorithme \ref{prodcons:tampon3} ne réalise généralement que 2 appels de primitives pour accomplir les mêmes actions.

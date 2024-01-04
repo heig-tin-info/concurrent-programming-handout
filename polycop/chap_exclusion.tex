@@ -23,10 +23,10 @@ Avant d'apporter une solution au problème de l'exclusion mutuelle, regardons qu
 \end{enumerate}
 
 \begin{figure}[tb]
-	\begin{center}
+	\centering
 		\includegraphics[width=.9\textwidth]{FigFamine}
 		\caption{\label{figex:famine}Situation de famine}
-	\end{center}
+
 \end{figure}
 
 \section{Classification des solutions}
@@ -65,7 +65,7 @@ Les parties {\em prélude} et {\em postlude} constituent le protocole que doiven
 
 \begin{figure}[!ht]
 
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -92,7 +92,7 @@ void *T1(void *arg)
 \end{lstlisting}
 \end{tabular}
 \caption{\label{algex:générale}Schéma général des algorithmes d'exclusion mutuelle}
-\end{center}
+
 \end{figure}
 
 \subsection*{Première tentative}
@@ -101,7 +101,7 @@ Initialement, $occupe$ est positionné à faux.
 
 \begin{algorithm}[!ht]
 \caption{Première tentative d'exclusion mutuelle}\label{algex:tentative1}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -132,11 +132,11 @@ void *T1(void *arg)
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Malheureusement notre solution est incorrecte car on peut imaginer le scénario suivant.
-\begin{center}
+\centering
 \begin{tabular}{cl}
 $T_0$& lit $occupe$ à faux \\
 $T_1$& lit aussi $occupe$ à faux \\
@@ -145,7 +145,7 @@ $T_1$& entre en section critique \\
 $T_0$& met aussi $occupe$ à vrai \\
 $T_0$& entre aussi en section critique. \\
 \end{tabular}
-\end{center}
+
 Les deux tâches peuvent se retrouver simultanément en section critique.  Il n'y a donc pas d'exclusion mutuelle.
 
 \subsection*{Deuxième tentative}
@@ -154,7 +154,7 @@ Ainsi $T_i$ peut accéder à la section critique seulement si $tour$ est égale 
 
 \begin{algorithm}[!ht]
 \caption{Deuxième tentative d'exclusion mutuelle}\label{algex:tentative2}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -183,7 +183,7 @@ void *T1(void *arg)
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Notre solution garantit qu'une seule tâche peut se trouver en section critique.  Cependant elle ne satisfait pas notre troisième contrainte.
@@ -197,20 +197,20 @@ Pour remédier au problème, remplaçons la variable $tour$ de notre solution pr
 Ainsi $etat[i]$ est vrai si $T_i$ est en section critique.
 Malheureusement notre nouvelle solution, algorithme~\ref{algex:tentative3}, ne garantit plus l'exclusion mutuelle comme le montre la séquence qui suit.
 \par\noindent
-\begin{center}
+\centering
 \begin{tabular}{l}
 $T_0$ exécute sa boucle et trouve $etat[1]$ à faux \\
 $T_1$ exécute sa boucle et trouve aussi $etat [0]$ à faux \\
 $T_0$ met $etat[0]$ à vrai et entre en section critique \\
 $T_1$ met $etat[1]$ à vrai et entre aussi en section critique. \\
 \end{tabular}
-\end{center}
+
 \par\noindent
 Notre solution dépend des vitesses relatives des tâches.
 
 \begin{algorithm}[!ht]
 \caption{Troisième tentative d'exclusion mutuelle}\label{algex:tentative3}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -241,7 +241,7 @@ void *T1(void *arg)
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 \subsection*{Quatrième tentative}
@@ -249,7 +249,7 @@ Le problème avec notre troisième tentative provient du fait que l'une des tâc
 Ainsi $etat[i]$ est vrai si $T_i$ désire accéder à la section critique.
 \begin{algorithm}[!ht]
 \caption{Quatrième tentative d'exclusion mutuelle}\label{algex:tentative4}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -280,7 +280,7 @@ void *T1(void *arg)
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 L'exclusion mutuelle est à présent garantie mais un autre problème surgit.
@@ -294,7 +294,7 @@ Modifions notre précédente tentative de manière à obliger une tâche à reno
 Cette nouvelle tentative est donnée par l'algorithme~\ref{algex:tentative5}.
 \begin{algorithm}[!ht]
 \caption{Cinquième tentative d'exclusion mutuelle}\label{algex:tentative5}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -333,12 +333,12 @@ void *T1(void *arg)
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Bien que l'exclusion mutuelle soit garantie, un interblocage est possible si les deux tâches exécutent leur prélude en alternance.
 \par\noindent
-\begin{center}
+\centering
 \begin{tabular}{l}
 $T_0$ met $etat[0]$ à vrai \\
 $T_1$ met $etat[1]$ à vrai \\
@@ -352,7 +352,7 @@ $T_0$ met $etat[0]$ à vrai \\
 $T_1$ met $etat[1]$ à vrai \\
 etc. \\
 \end{tabular}
-\end{center}
+
 \par\noindent
 Cette séquence d'instructions a très peu de chance de se produire en réalité. Elle nécessite en effet, des conditions difficiles à réaliser.
 
@@ -361,7 +361,7 @@ On remarque qu'au fur et à mesure que nous progressons vers une solution, celle
 L'algorithme~\ref{algex:Dekker} est basé sur notre dernière tentative mais règle le problème d'interblocage en donnant priorité à l'une des deux tâches.  La variable $tour$ de notre deuxième tentative impose l'ordre dans lequel les tâches accèdent à la section critique.  En cas de conflit, l'une des tâches se résigne temporairement pour donner l'accès à l'autre tâche.
 \begin{algorithm}[!ht]
 \caption{Algorithme de Dekker}\label{algex:Dekker}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -405,7 +405,7 @@ void *T1(void *arg)
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Montrons que l'algorithme de Dekker garantit l'exclusion mutuelle et ensuite qu'il n'y a pas d'interblocage possible.
@@ -428,7 +428,7 @@ L'algorithme se fie sur le matériel pour l'équité des requêtes mémoires.  L
 Avant de conclure, nous présentons un dernier algorithme, algorithme~\ref{algex:Peterson}, qui est remarquable par sa simplicité.
 \begin{algorithm}[!ht]
 \caption{Algorithme de Peterson}\label{algex:Peterson}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -462,11 +462,11 @@ void *T1(void *arg)
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Les variables partagées entre les deux tâches sont
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -474,7 +474,7 @@ Les variables partagées entre les deux tâches sont
 		int tour = 0; // ou 1
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \par\noindent
 Lorsque la tâche $T_i$ veut accéder à la section critique, elle positionne $intention[i]$ à vrai.  La variable $tour$ départage les deux tâches si celles-ci désirent accéder en même temps à la section critique.
 \par
@@ -495,7 +495,7 @@ Les deux algorithmes, Dekker et Peterson, se généralisent à $n$ tâches. Tout
 Soit les deux tâches $T_0$ et $T_1$ données sur la figure~\ref{algex:Exercice1} et devant réaliser l'exclusion mutuelle dans leur section critique.
 \begin{figure}[!ht]
 
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -534,6 +534,6 @@ void *T1(void *arg)
 \end{lstlisting}
 \end{tabular}
 \caption{\label{algex:Exercice1}Exercice 1}
-\end{center}
+
 \end{figure}
 L'exclusion mutuelle est-elle garantie par les parties prélude et postlude des tâches? Justifiez votre réponse.

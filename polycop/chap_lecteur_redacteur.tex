@@ -74,7 +74,7 @@ L'algorithme \ref{lectred:prioritelecteur} présente une solution basée sur ces
 
 \begin{algorithm}[h!tp]
 \caption{Lecteurs-rédacteurs: priorité aux lecteurs}\label{lectred:prioritelecteur}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -119,7 +119,7 @@ void finEcriture(RessourceLectRed *res) {
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Les fonctions \ccode{debutLecture()} et \ccode{finLecture()} sont appelées par les lecteurs, alors que \ccode{debutEcriture()} et \ccode{finEcriture()} sont appelées par les rédacteurs. Nous utilisons une structure, \ccode{RessourceLectRed}, pour stocker l'ensemble des informations nécessaires à l'accès d'une ressource. De ce fait, les mêmes fonctions peuvent être utilisées pour l'accès à différentes ressources.
@@ -129,10 +129,10 @@ Les figures de \ref{fig:lectred1} à \ref{fig:lectred4} montrent l'évolution de
 A la figure \ref{fig:lectred1}, un rédacteur a l'accès à la ressource critique. Il est donc seul à être dans ce cas. Le sémaphore \ccode{redacteur} bloque un seul lecteur. En effet, les rédacteurs successifs sont bloqués par \ccode{mutexRedacteurs}, celui-ci étant réquisitionné par le rédacteur $R1$. Du côté des lecteurs, seul le premier arrivé est bloqué sur le sémaphore \ccode{redacteur}, les autres étant bloqué sur le sémaphore \ccode{mutexLecteurs}, réquisitionné par le premier lecteur.
 
 \begin{figure}[!ht]
-  \begin{center}
+  \centering
     \includegraphics[scale=.7]{lectred1}
     \caption{\label{fig:lectred1}Exemple d'exécution avec priorité aux lecteurs (1)}
-  \end{center}
+
 \end{figure}
 
 Lorsque le rédacteur $R1$ libère la ressource, il libère le sémaphore \ccode{redacteur} ce qui permet au premier lecteur d'accéder à la ressource.
@@ -140,19 +140,19 @@ Il libère ensuite le sémaphore \ccode{mutexRedacteurs}. Le rédacteur $R3$ se 
 Le lecteur $L2$ relâche donc le sémaphore \ccode{mutexLecteurs}, ce qui permet à tous les lecteurs en attente d'accéder à la ressource, et le système se retrouve dans l'état illustré par la figure \ref{fig:lectred2}.
 
 \begin{figure}[!ht]
-  \begin{center}
+  \centering
     \includegraphics[scale=.7]{lectred2}
     \caption{\label{fig:lectred2}Exemple d'exécution avec priorité aux lecteurs (2)}
-  \end{center}
+
 \end{figure}
 
 Lorsque de nouveaux rédacteurs désirent accéder à la ressource, ils sont bloqués par le sémaphore \ccode{mutexRedacteurs}. Les lecteurs désirant effectuer la même action sont par contre autorisés à accéder à la ressource. La figure \ref{fig:lectred3} montre l'état du système après l'arrivée de deux rédacteurs et d'un lecteur. $L9$ se retrouve en accès de ressource, alors que $R8$ et $R10$ sont bloqués.
 
 \begin{figure}[!ht]
-  \begin{center}
+  \centering
     \includegraphics[scale=.7]{lectred3}
     \caption{\label{fig:lectred3}Exemple d'exécution avec priorité aux lecteurs (3)}
-  \end{center}
+
 \end{figure}
 
 Lorsque tous les lecteurs ont relâché la ressource, le rédacteur $R3$, qui était bloqué par le sémaphore \ccode{redacteur} peut enfin y avoir accès.
@@ -160,10 +160,10 @@ La figure \ref{fig:lectred4} illustre cette situation.
 Remarquez que la file d'attente associée à \ccode{redacteur} reste vide car $R3$ bloque toujours les rédacteurs par son sémaphore \ccode{mutexRedacteurs}. Un nouvel lecteur qui se présenterait pourra alors se placer à la tête de cette file et ainsi dépasser tous les rédacteurs présents pour prendre la ressource aussitôt que $R3$ libère \ccode{redacteur}.
 
 \begin{figure}[!ht]
-  \begin{center}
+  \centering
     \includegraphics[scale=.7]{lectred4}
     \caption{\label{fig:lectred4}Exemple d'exécution avec priorité aux lecteurs (4)}
-  \end{center}
+
 \end{figure}
 
 Nous pouvons noter que cet algorithme permet aux lecteurs de se coaliser pour empêcher l'accès aux rédacteurs. En effet, si un nouveau lecteur accède à la ressource avant que tous les lecteurs ne l'aient relâchée, alors les rédacteurs n'auront jamais accès à la ressource.
@@ -172,7 +172,7 @@ Le programme \ref{lectredtest} permet de lancer concurremment des lectures et é
 
 \begin{algorithm}[h!tp]
 \caption{Lecteurs-rédacteurs: Programme de test}\label{lectredtest}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -224,7 +224,7 @@ int main(int argc, char *argv[]) {
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Nous pouvons également noter que ce programme de test, ainsi la manière dont sont réalisés les différents protocoles présentés dans ce chapitre, peuvent être considérés comme légèrement risqués. En effet, la variable de type \ccode{RessourceLectRed} est déclarée dans le programme principal. En théorie, seules les fonctions de début et de fin de lecture et d'écriture y font référence. Pour que le fonctionnement soit correct, il faudrait garantir que le programme principal n'agisse pas directement sur cette structure, sans quoi le système risquerait de se retrouver dans un état incohérent. Ceci pourrait aisément être réalisé grâce à une meilleure encapsulation, mais la compréhension du chapitre ne nécessitant pas de telles contraintes, l'exercice est laissé au bon vouloir du lecteur.
@@ -234,7 +234,7 @@ Ce nouvel algorithme \ref{lectred:prioritelecteurcourant} permet toujours aux le
 
 \begin{algorithm}[h!tp]
 \caption{Lecteurs-rédacteurs: priorité aux lecteurs uniquement si une lecture est en cours}\label{lectred:prioritelecteurcourant}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -275,7 +275,7 @@ void finEcriture(RessourceLectRed *res) {
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Il également possible d'implémenter l'algorithme \ref{lectred:prioritelecteur} d'une autre manière. Il s'agit d'un modèle permettant de dériver plusieurs solutions, en fonction des priorités à accorder. Ce modèle de solution se prête également à la résolution de problèmes s'apparentant aux lecteurs-rédacteurs, tels que le passage d'un pont, les giratoires, ou les ressources multiples. Pour ce modèle, nous utilisons les informations contenues dans la structure suivante:
@@ -306,7 +306,7 @@ L'algorithme \ref{lectred:prioritelecteurgenerale} présente la solution basée 
 
 \begin{algorithm}[h!tp]
 \caption{Lecteurs-rédacteurs: priorité aux lecteurs, solution générale}\label{lectred:prioritelecteurgenerale}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -376,7 +376,7 @@ void finEcriture(RessourceLectRed *res) {
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 
@@ -404,7 +404,7 @@ L'algorithme \ref{lectred:prioriteegale} présente une solution avec priorité �
 
 \begin{algorithm}[h!tp]
 \caption{Lecteurs-rédacteurs: priorité égale}\label{lectred:prioriteegale}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -451,7 +451,7 @@ void finEcriture(RessourceLectRed *res) {
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Le sémaphore \ccode{fifo} est le point central de l'algorithme. Il sert à préserver l'ordre des demandes et il est initialisé à 1, permettant au premier thread arrivé de passer directement. Un seul thread peut donc posséder ce sémaphore à un instant donné, ce qui correspond à un simple verrou. Un seul thread étant en possession du verrou, nous pouvons observer que les rédacteurs acquièrent le verrou dans \ccode{debutEcriture()}, et le relâchent dans \ccode{finEcriture()}. De ce fait, un seul rédacteur ne peut être actif à un instant donné. Du côté des lecteurs, ce même verrou n'est réquisitionné que dans \ccode{debutLecture()}, afin d'autoriser le premier lecteur disponible à accéder la ressource. Le premier à passer va alors bloquer les rédacteurs, grâce au verrou \ccode{redacteur}.
@@ -493,7 +493,7 @@ L'algorithme \ref{lectred:prioriteredacteurs} présente une solution avec priori
 
 \begin{algorithm}[h!tp]
 \caption{Lecteurs-rédacteurs: priorité aux rédacteurs}\label{lectred:prioriteredacteurs}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -556,7 +556,7 @@ void finEcriture(RessourceLectRed *res) {
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Nous pouvons noter une certaine symétrie entre les lecteurs et les rédacteurs, chacuns étant capables de bloquer les autres. Le premier lecteur à accéder à la ressource bloque les rédacteurs, grâce au sémaphore \ccode{redacteur}. En fin de lecture, le dernier lecteur à relâcher la ressource va alors débloquer les rédacteurs. De manière symétrique, le premier rédacteur à accéder à la ressource va bloquer l'ensemble des lecteurs grâce au sémaphore \ccode{lecteur}, et le dernier rédacteur à relâcher la ressource va débloquer les lecteurs.

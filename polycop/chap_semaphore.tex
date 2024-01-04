@@ -8,7 +8,7 @@ De plus ces solutions sont basées sur l'attente active~:  une tâche qui ne peu
 Les {\em verrous} ont été introduits pour résoudre (partiellement) ces problèmes. Un verrou $v$ est une variable booléenne sur laquelle deux opérations atomiques sont définies, $Verrouille(v)$ et $D\acute{e}verrouille(v)$.  Ce sont les deux seules opérations (mis à part la création et sa destruction) qui peuvent manipuler le verrou.
 Les primitives $Verrouille(v)$ et $D\acute{e}verrouille(v)$ sont équivalentes à l'exécution atomique des séquences d'instructions données ci-dessous.
 
-\begin{center}
+\centering
 \begin{tabular}{l}
 \lstset{language=C++}
 \begin{lstlisting}
@@ -29,7 +29,7 @@ void Déverrouille(verrou v)
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \par
 Ainsi, si un verrou $v$ est initialisé à vrai et qu'une tâche appelle $Verrouille(v)$, le verrou est positionné à faux. Si une seconde tâche appelle $Verrouille(v)$, alors cette tâche, qui est à l'état élu, passe à l'état bloqué et joint la file d'attente associée à $v$.
 La primitive $D\acute{e}verrouille(v)$ réalise l'opération inverse. S'il y a une tâche en attente sur le verrou $v$, alors cette tâche est réactivée. La tâche réveillée sort de la file d'attente associée à $v$ pour joindre la file des tâches prêtes. Remarquons que l'exécution de la primitive $D\acute{e}verrouille(v)$ revient à passer le verrou $v$ à la tâche réveillée.
@@ -37,7 +37,7 @@ S'il n'y a pas de tâche en attente pour obtenir le verrou $v$, la primitive $D\
 
 \subsection{Section critique}
 Comme son nom le sous-entend, un verrou permet de résoudre le problème de l'exclusion mutuelle à $n$ tâches de manière simple. Il suffit de verrouiller un verrou $v$ avant d'entrer en section, bloquant ainsi les autres tâches qui accèdent à leur section critique protégée par le même verrou $v$. La sortie d'une section critique se fait en déverrouillant $v$, ce qui libère le verrou ou réveille une tâche bloquée pour l'accès à sa section critique.
-\begin{center}
+\centering
 \vspace{-0.2 cm}
 \begin{tabular}{l}
 \hspace{0.6 cm}$\vdots$ \\
@@ -48,7 +48,7 @@ Déverrouille(v);
 \end{lstlisting} \\
 \hspace{0.6 cm}$\vdots$
 \end{tabular}
-\end{center}
+
 
 \subsection{Verrous en Posix}
 Mis à part de définir un ensemble de fonctions permettant de gérer des threads, la bibliothèque Pthread contient aussi des fonctions manipulant des verrous.
@@ -59,7 +59,7 @@ Il y a 2 façons pour créer un verrou. La première, et la plus simple, consist
 Les 2 opérations de verrouillage et de déverrouillage du verrou deviennent en Pthread des appels aux fonctions \ccode{pthread_mutex_lock} et \ccode{pthread_mutex_unlock} respectivement. Ces 2 fonctions ont exactement la sémantique des primitives que nous avons vu à la section \ref{verrou:intro}.
 
 Il y a une troisième primitive, \ccode{pthread_mutex_trylock}, qui est un verrouillage immédiat. Si, au moment de l'appel, le verrou est déjà verrouillé, la fonction ne bloque pas l'appelant mais retourne la valeur \ccode{EBUSY}. Une tâche peut donc essayer de s'emparer d'un verrou, et si celui-ci est déjà pris, de faire autre chose.
-\begin{center}
+\centering
 \vspace{-0.2 cm}
 \begin{tabular}{l}
 \begin{lstlisting}
@@ -71,7 +71,7 @@ switch (pthread_mutex_trylock(&verrou)) {
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 
 Généralement un verrou a une existence équivalente à celle du thread principal. Mais il y a des situations où un verrou est créé pour accomplir une action précise et cesse d'être utile par la suite. Pour ce cas, Pthread met à disposition une fonction permettant de libérer toutes les ressources associées au verrou. Cette fonction s'appelle \ccode{pthread_mutex_destroy}.
 
@@ -81,7 +81,7 @@ L'algorithme \ref{verrou:synchro1} illustre l'exemple.
 
 \begin{algorithm}[!ht]
 \caption{Coordination de 2 tâches par un verrou}\label{verrou:synchro1}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \begin{lstlisting}
 #include <pthread.h>
@@ -118,14 +118,14 @@ int main(void) {
 } /* fin de main */
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Remarquons que le verrou $sync$ est initialisé pour une exclusion mutuelle et, avant de lancer l'exécution des tâches \ccode{T1} et \ccode{T2}, le verrou $sync$ est verrouillé. Ainsi, si \ccode{T2} est plus rapide que \ccode{T1}, \ccode{T2} se bloque jusqu'à ce que \ccode{T1} relâche le verrou pris par \ccode{main}.
 
 On peut généraliser le problème précédent pour que deux tâches se synchronisent de la manière suivante. Chaque tâche dispose d'une activité qu'elle peut exécuter, suivie d'une autre activité pouvant être démarrée quand l'autre tâche a terminé sa première activité.
 Schématiquement, nous avons
-\begin{center}
+\centering
 \vspace{-0.2 cm}
 \begin{tabular}{lccc}
 &{\em TâcheA} & \hspace{0.5 cm} & {\em TâcheB} \\
@@ -138,14 +138,14 @@ Deuxièmes activités &\ccode{a2}     &  & \ccode{b2}
 %\ccode{a1}     &  & \ccode{b1} \\
 %\ccode{a2}     &  & \ccode{b2}
 %\end{tabular}
-\end{center}
+
 
 Les activités \ccode{a2} et \ccode{b2} ne peuvent débuter que lorsque les activités \ccode{a1} et \ccode {b1} ont terminés. Ce type de synchronisation s'appelle {\em rendez-vous}. Les 2 tâches ont un point de rencontre où aucune ne peut continuer avant que l'autre n'arrive à ce point.
 
 \subsubsection*{Première solution}
 \begin{algorithm}[t]
 \caption{Première solution: Rendez-vous entre 2 tâches}\label{verrou:synchro2}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \begin{lstlisting}
 #include <pthread.h>
@@ -186,7 +186,7 @@ int main(void) {
 } /* fin de main */
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 
 Notre première solution (algorithme \ref{verrou:synchro2}) demande un nombre élevé de changements de contexte. En effet, sur un monoprocesseur ou pour une exécution asynchrone, l'une des tâches arrivera au point de rendez-vous avant l'autre. Si \ccode{TacheA} arrive la première, la tâche se bloquera sur le verrou \ccode{arriveB}, puis lorsque \ccode{TacheB} termine \ccode{b1}, \ccode{TacheB} déverrouille \ccode{arriveB} avant de se bloquer sur \ccode{arriveA}. La tâche \ccode{TacheA} peut alors reprendre son exécution et déverrouiller \ccode{arriveA} avant de progresser à son activité \ccode{a2}. Dans ce cas, il y a 3 changements de contexte. Si, au contraire \ccode{TacheB} termine \ccode{b1} et arrive au point de rendez-vous avant \ccode{TacheA}, le fait de déverrouiller \ccode{arriveB} puis attendre sur \ccode{arriveA}, permet à \ccode{TacheA} de terminer son activité \ccode{a1}, puis de poursuive à \ccode{a2} sans changement de contexte.
@@ -194,7 +194,7 @@ Notre première solution (algorithme \ref{verrou:synchro2}) demande un nombre é
 \subsubsection*{Deuxième solution}
 \begin{algorithm}[t]
 \caption{Deuxième solution: rendez-vous entre 2 tâches}\label{verrou:synchro3}
-\begin{center}
+\centering
 \begin{tabular}{l}
 \begin{lstlisting}
 ...
@@ -216,7 +216,7 @@ void *TacheB(void *arg) {
 ...
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \end{algorithm}
 Notre seconde solution, donnée sur algorithme \ref{verrou:synchro3}, minimise le nombre de changements de contexte. Ici, la dernière tâche qui arrive au point de rendez-vous informe l'autre via un déverrouillage, puis peut prendre le verrou positionné par l'autre tâche avant de poursuive. C'est uniquement la première tâche qui atteint le rendez-vous qui devra subir un changement de contexte.
 
@@ -224,7 +224,7 @@ Notre seconde solution, donnée sur algorithme \ref{verrou:synchro3}, minimise l
 Les {\em sémaphores} sont une généralisation des verrous. Un sémaphore $s$ est une variable entière sur laquelle deux opérations atomiques sont définies, $P(s)$ (pour tester: Proberen) et $V(s)$ (pour incrémenter: Verhogen). Comme pour un verrou, ce sont les deux seules opérations (mis à part la création et l'initialisation) qui peuvent manipuler le sémaphore. Ainsi, un sémaphore généralise les valeurs que peuvent prendre le verrou, c'est la raison pour laquelle les verrous sont souvent appelés des {\em sémaphores binaires}, car ils sont limités à 2 valeurs.
 Les primitives $P(s)$ et $V(s)$ sont équivalentes à l'exécution atomique des séquences d'instructions données ci-dessous.
 
-\begin{center}
+\centering
 \begin{tabular}{l}
 \begin{lstlisting}
 void P(sémaphore s)
@@ -242,12 +242,12 @@ void V(sémaphore s)
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 \par
 Avant de voir comment implémenter ces opérations, regardons d'abord quelques problèmes simples résolus par les sémaphores.
 Les sémaphores peuvent résoudre l'exclusion mutuelle avec $n$ tâches pouvant accéder à la ressource.
 Les tâches se partagent un sémaphore $mutex$ initialisé à 1.  Le protocole pour chaque tâche devient tout simplement
-\begin{center}
+\centering
 \begin{tabular}{l}
 \hspace{0.6 cm}$\vdots$ \\
 \begin{lstlisting}
@@ -257,13 +257,13 @@ V(mutex);
 \end{lstlisting} \\
 \hspace{0.6 cm}$\vdots$
 \end{tabular}
-\end{center}
+
 \par
 Selon la valeur $v>0$ à laquelle est initialisée \ccode{mutex}, jusqu'à $v$ tâches peuvent être admises simultanément dans la section critique.  On parle dans cas de {\em section contrôlée} plutôt que de section critique.  L'exclusion mutuelle devient un cas particulier d'un problème plus général~:  limiter à $n$ le nombre de tâches pouvant se trouver ensemble dans une section.
 
 Les sémaphores servent aussi à résoudre les problèmes liés à la coordination (ou synchronisation) de tâches.  Par exemple, si deux tâches $T_1$ et $T_2$ exécutent respectivement les instructions $I_1$ et $I_2$, et que $I_1$ doit précéder l'exécution de $I_2$, la synchronisation se réalise avec un sémaphore $sync$ initialisé à 0 comme
 suit
-\begin{center}
+\centering
 \begin{tabular}{l}
 \begin{lstlisting}
 void *T1(void *arg)
@@ -285,11 +285,11 @@ void *T2(void *arg)
 }
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 
 \section{Implémentation des sémaphores}
 Nous avons vu qu'une file d'attente est associée à chaque sémaphore. Cette file contient toutes les tâches bloquées sur ce sémaphore.  Un sémaphore peut donc se définir de la façon suivante
-\begin{center}
+\centering
 \begin{tabular}{l}
 \begin{lstlisting}
 typedef struct {
@@ -298,7 +298,7 @@ typedef struct {
 } sémaphore;
 \end{lstlisting}
 \end{tabular}
-\end{center}
+
 Lorsqu'une tâche se bloque sur un sémaphore, elle est ajoutée à la liste des tâches de ce sémaphore. Lors de l'opération $V$, une des tâches est enlevée de la liste, puis réactivée. Ceci consiste à changer l'état de tâche à {\em prêt}, puis de l'insérer dans la file des tâches éligibles pour le processeur. La file d'attente d'un sémaphore s'implémente facilement avec une liste chaînée de descripteurs de processus. Le sémaphore contient un pointeur vers la liste de descripteurs.  Chaque descripteur contient aussi un pointeur pour assurer la continuité de la liste. La gestion des insertions et des retraits est l'aspect qui rend le sémaphore équitable ou non.  La gestion peut se faire comme une pile, toutefois il y aura un risque évident de famine.  La solution la plus courante est évidemment de l'implémenter comme une file PAPS.  On pourrait envisager des priorités ou n'importe quelle discipline de service.
 \par
 Il est intéressant d'observer l'implémentation telle que proposée, qui utilise une valeur de sémaphore non signée. Le passage dans les valeurs négatives, qui serait observé avec la réalisation de $P$ et $V$ telle que précédemment illustrée est en fait réalisée en laissant la valeur à 0, et en comptant le nombre de threads en attente dans la liste.

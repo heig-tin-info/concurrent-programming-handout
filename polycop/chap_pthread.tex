@@ -38,7 +38,7 @@ Nous listons ici les différentes fonctions de la libraire Pthread qui nous sero
 #include <stdbool.h>
 \end{lstlisting}
 
-\begin{center}
+\centering
 \begin{tabular}{l|c|l}
 \toprule
 Fonction & page & description succincte \\
@@ -63,7 +63,7 @@ Fonction & page & description succincte \\
 \ccode{sem_getvalue()} & \pageref{func:sem_getvalue} & Récupère la valeur d'un sémaphore \\
 \bottomrule
 \end{tabular}
-\end{center}
+
 
 \function{pthread\_create()}\label{func:pthread_create}
 La fonction \ccode{pthread_create} permet de créer un thread et de lancer son exécution.
@@ -90,7 +90,7 @@ Parmi les codes d'erreur les plus intéressantes, la valeur \ccode{EAGAIN} est r
 \end{itemize}
 Exemple~:
 
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 typedef struct {
 	int a;
 	int b;
@@ -138,7 +138,7 @@ Cette fonction permet de verrouiller un verrou qui n'est pas encore verrouillé.
 \item[EDEADLK:] si le thread appelant se bloquait, un interblocage pourrait surgir. Le thread appelant détient un verrou qui est réclamé par celui possédant le verrou et pour lequel l'appelant se bloque.
 \end{itemize}
 
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 pthread_mutex_t verrou = PTHREAD_MUTEX_INITIALIZER;
 
 void *uneTache(void *arg) {
@@ -169,7 +169,7 @@ int pthread_mutex_trylock(
 
 Cette fonction permet de verrouiller un mutex qui n'est pas encore verrouillé. Si celui-ci n'est pas déjà verrouillé, et que du coup le thread appelant accède au mutex, la fonction retourne la valeur 0. Dans le cas contraire, la valeur retournée est \ccode{EBUSY}. Si le verrou n'est pas initialisé, la valeur retournée est \ccode{EINVAL}, et si le pointeur sur le verrou n'est pas valide, la valeur est \ccode{EFAULT}. Cette fonction, par opposition à \ccode{pthread_mutex_lock}, est une fonction non bloquante.
 
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 pthread_mutex_t verrou = PTHREAD_MUTEX_INITIALIZER;
 
 void *uneTache(void *arg) {
@@ -210,7 +210,7 @@ Cette fonction permet de relâcher le verrou qui a été préalablement verrouil
 \item[EPERM:] le thread appelant ne détient pas le verrou spécifié.
 \end{itemize}
 
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 pthread_mutex_t verrou = PTHREAD_MUTEX_INITIALIZER;
 
 void *uneTache(void *arg) {
@@ -240,7 +240,7 @@ int pthread_join(
 
 Cette fonction attend la terminaison du thread passé en paramètre. Le thread appelant est bloqué jusqu'à la terminaison. \ccode{value_ptr} reçoit la valeur de retour du thread \ccode{thread}.
 
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 static const int SUCCES = 3;
 static const int BIZARRE = 1;
 
@@ -283,7 +283,7 @@ int pthread_detach(
 
 L'appel à cette fonction détache le thread en paramètre. Cela signifie que lorsque le thread se termine, toutes ses structures de données sont détruites. Il n'est alors plus possible d'attendre la terminaison d'un thread détaché avec \ccode{pthread_join()}. Pour éviter de devoir se synchroniser sur la terminaison d'un thread dont on compte ignorer le code retour, on peut détacher ce thread, auquel cas les ressources sont libérées dès que le thread termine.
 
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 void *uneTache(void *arg){
 	printf("uneTache\n");
 	pthread_exit(NULL);
@@ -325,7 +325,7 @@ int pthread_equal(
 \end{lstlisting}
 Cette fonction compare deux descripteurs de thread. Elle retourne une valeur différente de 0 si les deux descripteurs sont identiques, et 0 sinon.
 
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 pthread_t global_thread;
 
 void *uneTache(void *arg) {
@@ -353,7 +353,7 @@ int main(int argc,char *argv[])
 pthread_t pthread_self();
 \end{lstlisting}
 Cette fonction retourne l'identifiant du thread courant.
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 pthread_t global_thread;
 
 void *uneTache(void *arg) {
@@ -383,7 +383,7 @@ pthread_t pthread_cancel(
 	pthread_t thread);
 \end{lstlisting}
 Cette fonction permet d'annuler un autre thread. La terminaison du thread se fait en accord avec sa politique d'annulation, et plus spéficiquement sur un point d'annulation.
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 int counter1 = 1;
 int counter2 = 1;
 int counter3 = 1;
@@ -491,7 +491,7 @@ Attention, il est à noter que certains appels système sont des points d'annula
 
 
 
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 int counter1 = 1;
 
 void *tache1(void *arg) {
@@ -532,7 +532,7 @@ Le seul nouveau type mis à disposition est \ccode{sem_t} qui s'associe à un s�
 
 Toutes les fonctions relatives aux sémaphores renvoient zéro en cas de succès et -1 en cas d'erreur. Dans ce dernier cas, la variable globale \ccode{errno} est positionnée au code d'erreur correspondant. Pour accéder à \ccode{errno}, il faut inclure le fichier en-tête \ccode{errno.h} au fichier source. Les fonctions manipulant les sémaphores sont données dans le tableau ci-dessous.
 
-\begin{center}
+\centering
 \begin{tabular}{l|c|l}
 \toprule
 Fonction & page & description succincte \\
@@ -545,7 +545,7 @@ Fonction & page & description succincte \\
 \ccode{sem_getvalue()} & \pageref{func:sem_getvalue} & Retourne la valeur courante du compteur \\
 \bottomrule
 \end{tabular}
-\end{center}
+
 
 \function{sem\_init()}\label{func:sem_init}
 L'initialisation d'un sémaphore se fait grâce à l'appelle à \ccode{sem_init()}.
@@ -626,7 +626,7 @@ int sem_getvalue(
 La fonction \ccode{sem_getvalue()} place la valeur du sémaphore dans l'entier pointé par \ccode{sval}. Elle n'affecte en aucun cas l'état du sémaphore. Si le sémaphore est bloqué, la valeur retournée dans \ccode{sval} est soit 0 soit un nombre négatif dont la valeur absolue représente le nombre de threads en attente du sémaphore.
 
 Exemple d'utilisation de sémaphores~:
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>

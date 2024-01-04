@@ -33,7 +33,7 @@ Le second argument, \ccode{tz}, est obligatoire, mais n'est pas utilisé.
 
 Exemple d'utilisation:
 
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 	struct timeval t1,t2;
 	struct timezone tz;
 	gettimeofday(&t1,&tz);
@@ -52,7 +52,7 @@ Outre le temps standard, il est possible de savoir combien de temps processeur a
 
 La fonction \ccode{clock()} permet de le faire, à la manière suivante:
 
-\begin{lstlisting}[frame=trBL]
+\begin{lstlisting}
 #include <time.h>
 
 clock_t start, end;
