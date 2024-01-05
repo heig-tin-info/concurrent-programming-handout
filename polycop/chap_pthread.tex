@@ -3,7 +3,7 @@
 \chapter{Bibliothèque Pthread}
 \startchapter
 
-Le langage C n'offre pas de mécanisme natif de gestion des threads. Toutefois, il existe des bibliothèques spécifiques qui accomplissent ce rôle. Dans ce qui suit, nous nous tardons sur l'une d'elles, la bibliothèque \emph{Pthread}.
+\lettrine[lines=3]{L}{e} langage C n'offre pas de mécanisme natif de gestion des threads. Toutefois, il existe des bibliothèques spécifiques qui accomplissent ce rôle. Dans ce qui suit, nous nous tardons sur l'une d'elles, la bibliothèque \emph{Pthread}.
 
 En POSIX (ISO/IEC 9945-1$:$1996), les tâches et les outils de synchronisation font partie de la bibliothèque Pthread.
 La bibliothèque Pthread est portable; elle existe sur Linux ainsi que sur Windows. Pour Windows, il faudra cependant l'installer car elle ne l'est pas par défaut. Pour cela, il faudra la télécharger depuis le site
@@ -31,6 +31,7 @@ En plus de la manipulation de threads, POSIX met aussi à disposition un mécani
 Rappelons, qu'un verrou n'a que deux états possibles, il est soit verrouillé soit déverrouillé.
 
 Nous listons ici les différentes fonctions de la libraire Pthread qui nous seront utiles durant ce cours. Un exemple est associé à chaque fonction afin d'en illustrer le fonctionnement. Les exemples sont compilables si on y associe les déclarations suivantes en début de fichier~:
+
 \begin{lstlisting}
 #include <pthread.h>
 #include <stdio.h>
@@ -38,8 +39,8 @@ Nous listons ici les différentes fonctions de la libraire Pthread qui nous sero
 #include <stdbool.h>
 \end{lstlisting}
 
-\centering
-\begin{tabular}{l|c|l}
+\begin{center}
+\begin{tabular}{lcl}
 \toprule
 Fonction & page & description succincte \\
 \midrule
@@ -63,17 +64,17 @@ Fonction & page & description succincte \\
 \ccode{sem_getvalue()} & \pageref{func:sem_getvalue} & Récupère la valeur d'un sémaphore \\
 \bottomrule
 \end{tabular}
-
+\end{center}
 
 \function{pthread\_create()}\label{func:pthread_create}
 La fonction \ccode{pthread_create} permet de créer un thread et de lancer son exécution.
-\begin{lstlisting}
+\begin{codeblock}
 int pthread_create(
-		pthread_t *thread,
-		const pthread_attr_t *attr,
-		void *(*start_routine)(void *),
-		void *arg);
-\end{lstlisting}
+    pthread_t *thread,
+    const pthread_attr_t *attr,
+    void *(*start_routine)(void *),
+    void *arg);
+\end{codeblock}
 
 Cette fonction retourne un entier qui vaut 0 si la création du thread s'est déroulée sans accros. Dans le cas contraire, la valeur retournée correspond à un code d'erreur.
 Parmi les codes d'erreur les plus intéressantes, la valeur \ccode{EAGAIN} est retournée s'il n'y a pas assez de ressources système pour créer un nouveau thread ou bien si le nombre maximum de threads défini par la constante \ccode{PTHREAD_THREADS_MAX} est atteint. Le nombre de threads simultanés est limité suivant les systèmes; la constante \ccode{PTHREAD_THREADS_MAX} définit le nombre maximum qui est de 1024 sur les systèmes Unix.
@@ -90,47 +91,47 @@ Parmi les codes d'erreur les plus intéressantes, la valeur \ccode{EAGAIN} est r
 \end{itemize}
 Exemple~:
 
-\begin{lstlisting}
+\begin{codeblock}
 typedef struct {
-	int a;
-	int b;
+  int a;
+  int b;
 } struct_t;
 
 void *Tache1(void *arg) {
-	struct_t *var;
-	var = (struct_t *)arg;
-	printf("Tache1: a=%d, b=%d\n",var->a,var->b);
-	return NULL;
+  struct_t *var;
+  var = (struct_t *)arg;
+  printf("Tache1: a=%d, b=%d\n",var->a,var->b);
+  return NULL;
 }
 
 void *Tache2(void *arg) {
-	int i = (int)arg;
-	printf("Tache2: i=%d\n",i);
-	return NULL;
+  int i = (int)arg;
+  printf("Tache2: i=%d\n",i);
+  return NULL;
 }
 
 int main(int argc,char *argv[])
 {
-	struct_t v;
-	v.a = 1; v.b = 2;
-	pthread_t thread;
-	pthread_create(&thread,NULL,Tache1,&v);
-	pthread_join(thread,NULL);
-	pthread_create(&thread,NULL,Tache2,(void *)2);
-	pthread_join(thread,NULL);
-	return EXIT_SUCCESS;
+  struct_t v;
+  v.a = 1; v.b = 2;
+  pthread_t thread;
+  pthread_create(&thread,NULL,Tache1,&v);
+  pthread_join(thread,NULL);
+  pthread_create(&thread,NULL,Tache2,(void *)2);
+  pthread_join(thread,NULL);
+  return EXIT_SUCCESS;
 }
-\end{lstlisting}
+\end{codeblock}
 
 
 
 
 \function{pthread\_mutex\_lock()}\label{func:pthread_mutex_lock}
 
-\begin{lstlisting}
+\begin{codeblock}
 int pthread_mutex_lock(
-		pthread_mutex_t *mutex);
-\end{lstlisting}
+    pthread_mutex_t *mutex);
+\end{codeblock}
 
 Cette fonction permet de verrouiller un verrou qui n'est pas encore verrouillé. Si celui-ci est verrouillé, la fonction bloque jusqu'à ce qu'elle ait accès au verrou. Cette fonction est donc une fonction bloquante. La fonction renvoie 0 en cas de succès ou l'une des valeurs suivantes en cas d'échec :
 \begin{itemize}
@@ -138,71 +139,71 @@ Cette fonction permet de verrouiller un verrou qui n'est pas encore verrouillé.
 \item[EDEADLK:] si le thread appelant se bloquait, un interblocage pourrait surgir. Le thread appelant détient un verrou qui est réclamé par celui possédant le verrou et pour lequel l'appelant se bloque.
 \end{itemize}
 
-\begin{lstlisting}
+\begin{codeblock}
 pthread_mutex_t verrou = PTHREAD_MUTEX_INITIALIZER;
 
 void *uneTache(void *arg) {
-	pthread_mutex_lock(&verrou);
-	/* faire un traitement protégé par le verrou */
-	printf("uneTache est protégée par le verrou\n");
-	pthread_mutex_unlock(& verrou);
-	return NULL;
+  pthread_mutex_lock(&verrou);
+  /* faire un traitement protégé par le verrou */
+  printf("uneTache est protégée par le verrou\n");
+  pthread_mutex_unlock(& verrou);
+  return NULL;
 }
 
 int main(int argc,char *argv[])
 {
-	pthread_t thread;
-	pthread_create(&thread,NULL,uneTache,NULL);
-	pthread_join(thread,NULL);
-	return EXIT_SUCCESS;
+  pthread_t thread;
+  pthread_create(&thread,NULL,uneTache,NULL);
+  pthread_join(thread,NULL);
+  return EXIT_SUCCESS;
 }
-\end{lstlisting}
+\end{codeblock}
 
 
 
 \function{pthread\_mutex\_trylock()}\label{func:pthread_mutex_trylock}
 
-\begin{lstlisting}
+\begin{codeblock}
 int pthread_mutex_trylock(
-		pthread_mutex_t *mutex);
-\end{lstlisting}
+    pthread_mutex_t *mutex);
+\end{codeblock}
 
 Cette fonction permet de verrouiller un mutex qui n'est pas encore verrouillé. Si celui-ci n'est pas déjà verrouillé, et que du coup le thread appelant accède au mutex, la fonction retourne la valeur 0. Dans le cas contraire, la valeur retournée est \ccode{EBUSY}. Si le verrou n'est pas initialisé, la valeur retournée est \ccode{EINVAL}, et si le pointeur sur le verrou n'est pas valide, la valeur est \ccode{EFAULT}. Cette fonction, par opposition à \ccode{pthread_mutex_lock}, est une fonction non bloquante.
 
-\begin{lstlisting}
+\begin{codeblock}
 pthread_mutex_t verrou = PTHREAD_MUTEX_INITIALIZER;
 
 void *uneTache(void *arg) {
-	if (pthread_mutex_trylock(&verrou) == 0) {
-		/* faire un traitement protégé par le verrou */
-		printf("uneTache est protégée par le verrou\n");
-		pthread_mutex_unlock(&verrou);
-	}
-	else
-		printf("Zut, le verrou est déjà verrouillé\n");
-	return NULL;
+  if (pthread_mutex_trylock(&verrou) == 0) {
+    /* faire un traitement protégé par le verrou */
+    printf("uneTache est protégée par le verrou\n");
+    pthread_mutex_unlock(&verrou);
+  }
+  else
+    printf("Zut, le verrou est déjà verrouillé\n");
+  return NULL;
 }
 
 
 int main(int argc,char *argv[])
 {
-	pthread_t thread1;
-	pthread_t thread2;
-	pthread_create(&thread1,NULL,uneTache,NULL);
-	pthread_create(&thread2,NULL,uneTache,NULL);
-	pthread_join(thread1,NULL);
-	pthread_join(thread2,NULL);
-	return EXIT_SUCCESS;
+  pthread_t thread1;
+  pthread_t thread2;
+  pthread_create(&thread1,NULL,uneTache,NULL);
+  pthread_create(&thread2,NULL,uneTache,NULL);
+  pthread_join(thread1,NULL);
+  pthread_join(thread2,NULL);
+  return EXIT_SUCCESS;
 }
-\end{lstlisting}
+\end{codeblock}
 
 
 \function{pthread\_mutex\_unlock()}\label{func:pthread_mutex_unlock}
 
-\begin{lstlisting}
+\begin{codeblock}
 int pthread_mutex_unlock(
-		pthread_mutex_t *mutex);
-\end{lstlisting}
+    pthread_mutex_t *mutex);
+\end{codeblock}
 
 Cette fonction permet de relâcher le verrou qui a été préalablement verrouillé. La fonction renvoie 0 en cas de succès ou l'une des valeurs suivantes en cas d'échec:
 \begin{itemize}
@@ -210,254 +211,254 @@ Cette fonction permet de relâcher le verrou qui a été préalablement verrouil
 \item[EPERM:] le thread appelant ne détient pas le verrou spécifié.
 \end{itemize}
 
-\begin{lstlisting}
+\begin{codeblock}
 pthread_mutex_t verrou = PTHREAD_MUTEX_INITIALIZER;
 
 void *uneTache(void *arg) {
-	pthread_mutex_lock(&verrou);
-	/* faire un traitement protégé par le verrou */
-	printf("uneTache est protégée par le verrou\n");
-	pthread_mutex_unlock(&verrou);
-	return NULL;
+  pthread_mutex_lock(&verrou);
+  /* faire un traitement protégé par le verrou */
+  printf("uneTache est protégée par le verrou\n");
+  pthread_mutex_unlock(&verrou);
+  return NULL;
 }
 
 int main(int argc,char *argv[])
 {
-	pthread_t thread;
-	pthread_create(&thread,NULL,uneTache,NULL);
-	pthread_join(thread,NULL);
-	return EXIT_SUCCESS;
+  pthread_t thread;
+  pthread_create(&thread,NULL,uneTache,NULL);
+  pthread_join(thread,NULL);
+  return EXIT_SUCCESS;
 }
-\end{lstlisting}
+\end{codeblock}
 
 \function{pthread\_join()}\label{func:pthread_join}
 
-\begin{lstlisting}
+\begin{codeblock}
 int pthread_join(
-		pthread_t thread,
-		void **value_ptr);
-\end{lstlisting}
+    pthread_t thread,
+    void **value_ptr);
+\end{codeblock}
 
 Cette fonction attend la terminaison du thread passé en paramètre. Le thread appelant est bloqué jusqu'à la terminaison. \ccode{value_ptr} reçoit la valeur de retour du thread \ccode{thread}.
 
-\begin{lstlisting}
+\begin{codeblock}
 static const int SUCCES = 3;
 static const int BIZARRE = 1;
 
 void *uneTache(void *arg) {
-	printf("uneTache\n");
-	pthread_exit((void *)&SUCCES);
+  printf("uneTache\n");
+  pthread_exit((void *)&SUCCES);
 }
 
 void *uneAutreTache(void *arg) {
-	printf("uneAutreTache\n");
-	return ((void *)&BIZARRE);
+  printf("uneAutreTache\n");
+  return ((void *)&BIZARRE);
 }
 
 int main(int argc,char *argv[])
 {
-	pthread_t thread1;
-	pthread_t thread2;
-	void *statut1;
-	void *statut2;
-	pthread_create(&thread1,NULL,uneTache,NULL);
-	pthread_create(&thread2,NULL,uneAutreTache,NULL);
+  pthread_t thread1;
+  pthread_t thread2;
+  void *statut1;
+  void *statut2;
+  pthread_create(&thread1,NULL,uneTache,NULL);
+  pthread_create(&thread2,NULL,uneAutreTache,NULL);
 
-	pthread_join(thread1,&statut1);
-	pthread_join(thread2,&statut2);
-	if (*((int *)statut1) == SUCCES)
-		printf("uneTache a retourné SUCCES\n");
-	if (*((int *)statut2) == BIZARRE)
-		printf("uneAutreTache a retourné BIZARRE\n");
+  pthread_join(thread1,&statut1);
+  pthread_join(thread2,&statut2);
+  if (*((int *)statut1) == SUCCES)
+    printf("uneTache a retourné SUCCES\n");
+  if (*((int *)statut2) == BIZARRE)
+    printf("uneAutreTache a retourné BIZARRE\n");
 
-	return EXIT_SUCCESS;
+  return EXIT_SUCCESS;
 }
-\end{lstlisting}
+\end{codeblock}
 
 \function{pthread\_detach()}\label{func:pthread_detach}
 
-\begin{lstlisting}
+\begin{codeblock}
 int pthread_detach(
-		pthread_t thread);
-\end{lstlisting}
+    pthread_t thread);
+\end{codeblock}
 
 L'appel à cette fonction détache le thread en paramètre. Cela signifie que lorsque le thread se termine, toutes ses structures de données sont détruites. Il n'est alors plus possible d'attendre la terminaison d'un thread détaché avec \ccode{pthread_join()}. Pour éviter de devoir se synchroniser sur la terminaison d'un thread dont on compte ignorer le code retour, on peut détacher ce thread, auquel cas les ressources sont libérées dès que le thread termine.
 
-\begin{lstlisting}
+\begin{codeblock}
 void *uneTache(void *arg){
-	printf("uneTache\n");
-	pthread_exit(NULL);
+  printf("uneTache\n");
+  pthread_exit(NULL);
 }
 
 void *uneAutreTache(void *arg) {
-	printf("uneAutreTache\n");
-	pthread_exit(NULL);
+  printf("uneAutreTache\n");
+  pthread_exit(NULL);
 }
 
 int main(int argc,char *argv[])
 {
-	pthread_t thread_attache;
-	pthread_t thread_detache;
-	pthread_create(&thread_attache,NULL,uneTache,NULL);
-	pthread_create(&thread_detache,NULL,uneAutreTache,NULL);
-	pthread_detach(thread_detache);
+  pthread_t thread_attache;
+  pthread_t thread_detache;
+  pthread_create(&thread_attache,NULL,uneTache,NULL);
+  pthread_create(&thread_detache,NULL,uneAutreTache,NULL);
+  pthread_detach(thread_detache);
 
-	void *statut1;
-	void *statut2;
-	int ret1 = pthread_join(thread_attache,&statut1);
-	int ret2 = pthread_join(thread_detache,&statut2);
-	if (ret1 == 0)
-		printf("Le thread lié à uneTache s'est terminé correctement\n");
-	if (ret2 == EINVAL)
-		printf("Le thread lié à uneAutreTache a bien été détaché\n");
-	pthread_exit(NULL);
-	return EXIT_SUCCESS;
+  void *statut1;
+  void *statut2;
+  int ret1 = pthread_join(thread_attache,&statut1);
+  int ret2 = pthread_join(thread_detache,&statut2);
+  if (ret1 == 0)
+    printf("Le thread lié à uneTache s'est terminé correctement\n");
+  if (ret2 == EINVAL)
+    printf("Le thread lié à uneAutreTache a bien été détaché\n");
+  pthread_exit(NULL);
+  return EXIT_SUCCESS;
 }
-\end{lstlisting}
+\end{codeblock}
 
 
 \function{pthread\_equal()}\label{func:pthread_equal}
 
-\begin{lstlisting}
+\begin{codeblock}
 int pthread_equal(
-		pthread_t t1,
-		pthread_t t2);
-\end{lstlisting}
+    pthread_t t1,
+    pthread_t t2);
+\end{codeblock}
 Cette fonction compare deux descripteurs de thread. Elle retourne une valeur différente de 0 si les deux descripteurs sont identiques, et 0 sinon.
 
-\begin{lstlisting}
+\begin{codeblock}
 pthread_t global_thread;
 
 void *uneTache(void *arg) {
-	if (pthread_equal(pthread_self(),global_thread))
-		printf("uneTache: Il s'agit du thread global_thread\n");
-	else
-		printf("uneTache: Il ne s'agit pas du thread global_thread\n");
-	return NULL;
+  if (pthread_equal(pthread_self(),global_thread))
+    printf("uneTache: Il s'agit du thread global_thread\n");
+  else
+    printf("uneTache: Il ne s'agit pas du thread global_thread\n");
+  return NULL;
 }
 
 int main(int argc,char *argv[])
 {
-	pthread_t thread;
-	pthread_create(&global_thread,NULL,uneTache,NULL);
-	pthread_create(&thread,NULL,uneTache,NULL);
-	pthread_join(thread,NULL);
-	pthread_join(global_thread,NULL);
-	return EXIT_SUCCESS;
+  pthread_t thread;
+  pthread_create(&global_thread,NULL,uneTache,NULL);
+  pthread_create(&thread,NULL,uneTache,NULL);
+  pthread_join(thread,NULL);
+  pthread_join(global_thread,NULL);
+  return EXIT_SUCCESS;
 }
-\end{lstlisting}
+\end{codeblock}
 
 \function{pthread\_self()}\label{func:pthread_self}
 
-\begin{lstlisting}
+\begin{codeblock}
 pthread_t pthread_self();
-\end{lstlisting}
+\end{codeblock}
 Cette fonction retourne l'identifiant du thread courant.
-\begin{lstlisting}
+\begin{codeblock}
 pthread_t global_thread;
 
 void *uneTache(void *arg) {
-	if (pthread_equal(pthread_self(),global_thread))
-		printf("uneTache: Il s'agit du thread global_thread\n");
-	else
-		printf("uneTache: Il ne s'agit pas du thread global_thread\n");
-	return NULL;
+  if (pthread_equal(pthread_self(),global_thread))
+    printf("uneTache: Il s'agit du thread global_thread\n");
+  else
+    printf("uneTache: Il ne s'agit pas du thread global_thread\n");
+  return NULL;
 }
 
 int main(int argc,char *argv[])
 {
-	pthread_t thread;
-	pthread_create(&global_thread,NULL,uneTache,NULL);
-	pthread_create(&thread,NULL,uneTache,NULL);
-	pthread_join(thread,NULL);
-	pthread_join(global_thread,NULL);
-	return EXIT_SUCCESS;
+  pthread_t thread;
+  pthread_create(&global_thread,NULL,uneTache,NULL);
+  pthread_create(&thread,NULL,uneTache,NULL);
+  pthread_join(thread,NULL);
+  pthread_join(global_thread,NULL);
+  return EXIT_SUCCESS;
 }
-\end{lstlisting}
+\end{codeblock}
 
 
 \function{pthread\_cancel()}\label{func:pthread_cancel}
 
-\begin{lstlisting}
+\begin{codeblock}
 pthread_t pthread_cancel(
-	pthread_t thread);
-\end{lstlisting}
+  pthread_t thread);
+\end{codeblock}
 Cette fonction permet d'annuler un autre thread. La terminaison du thread se fait en accord avec sa politique d'annulation, et plus spéficiquement sur un point d'annulation.
-\begin{lstlisting}
+\begin{codeblock}
 int counter1 = 1;
 int counter2 = 1;
 int counter3 = 1;
 
 void *task1(void *arg) {
-	int ancien_etat, ancien_type;
-	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,&ancien_etat);
-	pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,&ancien_type);
-	while (true) {
-		counter1++;
-		if (counter1 % 100 == 0)
-			pthread_testcancel();
-	}
+  int ancien_etat, ancien_type;
+  pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,&ancien_etat);
+  pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,&ancien_type);
+  while (true) {
+    counter1++;
+    if (counter1 % 100 == 0)
+      pthread_testcancel();
+  }
 }
 
 void *task2(void *arg) {
-	int ancien_etat, ancien_type;
-	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,&ancien_etat);
-	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS,&ancien_type);
-	while (true) {
-		counter2++;
-		if (counter2 % 100 == 0)
-			pthread_testcancel();
-	}
+  int ancien_etat, ancien_type;
+  pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,&ancien_etat);
+  pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS,&ancien_type);
+  while (true) {
+    counter2++;
+    if (counter2 % 100 == 0)
+      pthread_testcancel();
+  }
 }
 
 void *task3(void *arg){
-	int ancien_etat, ancien_type;
-	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,&ancien_etat);
-	pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,&ancien_type);
-	while (true) {
-		counter3++;
-		pthread_testcancel();
-	}
+  int ancien_etat, ancien_type;
+  pthread_setcancelstate(PTHREAD_CANCEL_ENABLE,&ancien_etat);
+  pthread_setcanceltype(PTHREAD_CANCEL_DEFERRED,&ancien_type);
+  while (true) {
+    counter3++;
+    pthread_testcancel();
+  }
 }
 
 int main(int argc,char *argv[])
 {
-	pthread_t thread1;
-	pthread_t thread2;
-	pthread_t thread3;
-	pthread_create(&thread1,NULL,task1,NULL);
-	pthread_create(&thread2,NULL,task2,NULL);
-	pthread_create(&thread3,NULL,task3,NULL);
+  pthread_t thread1;
+  pthread_t thread2;
+  pthread_t thread3;
+  pthread_create(&thread1,NULL,task1,NULL);
+  pthread_create(&thread2,NULL,task2,NULL);
+  pthread_create(&thread3,NULL,task3,NULL);
 
-	void *statut1;
-	void *statut2;
-	void *statut3;
-	usleep(50);
-	pthread_cancel(thread1);
-	pthread_cancel(thread2);
-	pthread_cancel(thread3);
-	pthread_join(thread1,&statut1);
-	pthread_join(thread2,&statut2);
-	pthread_join(thread1,&statut3);
-	printf("Counter1: %d, Counter2: %d, Counter3: %d\n",
-					counter1,counter2,counter3);
-	pthread_exit(NULL);
-	return EXIT_SUCCESS;
+  void *statut1;
+  void *statut2;
+  void *statut3;
+  usleep(50);
+  pthread_cancel(thread1);
+  pthread_cancel(thread2);
+  pthread_cancel(thread3);
+  pthread_join(thread1,&statut1);
+  pthread_join(thread2,&statut2);
+  pthread_join(thread1,&statut3);
+  printf("Counter1: %d, Counter2: %d, Counter3: %d\n",
+          counter1,counter2,counter3);
+  pthread_exit(NULL);
+  return EXIT_SUCCESS;
 }
-\end{lstlisting}
+\end{codeblock}
 
 
 \function{pthread\_setcancelstate()}\label{func:pthread_setcancelstate}
 
-\begin{lstlisting}
+\begin{codeblock}
 int pthread_setcancelstate(
-	int state,
-	int *oldstate);
-\end{lstlisting}
+  int state,
+  int *oldstate);
+\end{codeblock}
 Cette fonction permet de définir la politique d'annulation du thread appelant. Le paramètre \ccode{state} peut prendre deux valeurs:
 \begin{itemize}
-	\item \ccode{PTHREAD_CANCEL_ENABLE}: Autorise l'annulation du thread par un autre
-	\item \ccode{PTHREAD_CANCEL_DISABLE}: Interdit l'annulation du thread par un autre
+  \item \ccode{PTHREAD_CANCEL_ENABLE}: Autorise l'annulation du thread par un autre
+  \item \ccode{PTHREAD_CANCEL_DISABLE}: Interdit l'annulation du thread par un autre
 \end{itemize}
 
 Au retour de la fonction, \ccode{*oldstate} contient l'ancienne valeur d'enable.
@@ -465,15 +466,15 @@ Au retour de la fonction, \ccode{*oldstate} contient l'ancienne valeur d'enable.
 
 \function{pthread\_setcanceltype()}\label{func:pthread_setcanceltype}
 
-\begin{lstlisting}
+\begin{codeblock}
 int pthread_setcanceltype(
-	int type,
-	int *oldtype);
-\end{lstlisting}
+  int type,
+  int *oldtype);
+\end{codeblock}
 Cette fonction permet de définir le type d'annulation du thread appelant. Le paramètre \ccode{type} peut prendre deux valeurs:
 \begin{itemize}
-	\item \ccode{PTHREAD_CANCEL_DEFFERED}: Autorise l'annulation du thread en des points d'annulation précis (annulation différée)
-	\item \ccode{PTHREAD_CANCEL_ASYNCHRONOUS}: Autorise l'annulation du thread à n'importe quel instant
+  \item \ccode{PTHREAD_CANCEL_DEFFERED}: Autorise l'annulation du thread en des points d'annulation précis (annulation différée)
+  \item \ccode{PTHREAD_CANCEL_ASYNCHRONOUS}: Autorise l'annulation du thread à n'importe quel instant
 \end{itemize}
 
 Au retour de la fonction, \ccode{*oldtype} contient l'ancienne valeur de type. Il faut \^etre très vigilant sur le type d'annulation supportée. En effet, le type asychrone fait que le thread peut \^etre interrompu à n'importe quel instant, et donc potentiellement laisser l'application dans un état instable ou non cohérent. De manière générale il sera préférable d'utiliser une annulation différée, qui permet de contrôler les points du code où le thread peut être annulé.
@@ -481,9 +482,9 @@ Au retour de la fonction, \ccode{*oldtype} contient l'ancienne valeur de type. I
 
 \function{pthread\_testcancel()}\label{func:pthread_testcancel}
 
-\begin{lstlisting}
+\begin{codeblock}
 void pthread_testcancel(void);
-\end{lstlisting}
+\end{codeblock}
 
 Cette fonction est à utiliser lorsque le thread définit un type d'annulation différée. Elle vérifie alors si une demande d'annulation a été effectuée, et si oui, elle termine le thread. Elle permet donc de contr\^oler de manière précise les points du code o\`u le thread peut se terminer en garantissant une terminaison propre.
 
@@ -491,7 +492,7 @@ Attention, il est à noter que certains appels système sont des points d'annula
 
 
 
-\begin{lstlisting}
+\begin{codeblock}
 int counter1 = 1;
 
 void *tache1(void *arg) {
@@ -515,7 +516,7 @@ int main(int argc,char *argv[]) {
     printf("Counter1: %d\n",counter1);
     return EXIT_SUCCESS;
 }
-\end{lstlisting}
+\end{codeblock}
 
 \section{Sémaphores}
 
@@ -532,7 +533,7 @@ Le seul nouveau type mis à disposition est \ccode{sem_t} qui s'associe à un s�
 
 Toutes les fonctions relatives aux sémaphores renvoient zéro en cas de succès et -1 en cas d'erreur. Dans ce dernier cas, la variable globale \ccode{errno} est positionnée au code d'erreur correspondant. Pour accéder à \ccode{errno}, il faut inclure le fichier en-tête \ccode{errno.h} au fichier source. Les fonctions manipulant les sémaphores sont données dans le tableau ci-dessous.
 
-\centering
+\begin{center}
 \begin{tabular}{l|c|l}
 \toprule
 Fonction & page & description succincte \\
@@ -545,16 +546,16 @@ Fonction & page & description succincte \\
 \ccode{sem_getvalue()} & \pageref{func:sem_getvalue} & Retourne la valeur courante du compteur \\
 \bottomrule
 \end{tabular}
-
+\end{center}
 
 \function{sem\_init()}\label{func:sem_init}
 L'initialisation d'un sémaphore se fait grâce à l'appelle à \ccode{sem_init()}.
-\begin{lstlisting}
+\begin{codeblock}
 int sem_init(
-		sem_t *sem,
-		int pshare,
-		unsigned int value);
-\end{lstlisting}
+    sem_t *sem,
+    int pshare,
+    unsigned int value);
+\end{codeblock}
 
 Cette fonction retourne un entier qui vaut 0 si la création du sémaphore s'est déroulée sans accros. Dans le cas contraire, la valeur retournée correspond à un code d'erreur.
 
@@ -576,10 +577,10 @@ Appeler cette fonction sur un sémaphore déjà initalisé résulte en un compor
 
 \function{sem\_destroy()}\label{func:sem_destroy}
 
-\begin{lstlisting}
+\begin{codeblock}
 int sem_destroy(
-		sem_t *sem);
-\end{lstlisting}
+    sem_t *sem);
+\end{codeblock}
 
 Cette fonction détruit un sémaphore. Elle ne peut être appelée que sur un sémaphore précédemment initialisé grâce à \ccode{sem_init()}. Le comportement de l'appel de cette fonction sur un sémaphore dans lequel des threads sont bloqué est indéfini. Attention donc à appeler cette fonction à un instant adéquat.
 
@@ -587,10 +588,10 @@ Après l'appel à \ccode{sem_destroy()}, le sémaphore peut-être à nouveau ini
 
 \function{sem\_post()}\label{func:sem_post}
 
-\begin{lstlisting}
+\begin{codeblock}
 int sem_post(
-		sem_t *sem);
-\end{lstlisting}
+    sem_t *sem);
+\end{codeblock}
 
 Cette fonction déverouille le sémaphore \ccode{sem}. Si la valeur résultante du compteur est positive, alors aucun thread n'était bloqué en attente du sémaphore. Dans ce cas la valeur du sémaphore est simplement incrémentée.
 
@@ -598,34 +599,35 @@ Si la valeur résultante est 0, alors un thread en attente du sémaphore se voit
 
 \function{sem\_wait()}\label{func:sem_wait}
 
-\begin{lstlisting}
+\begin{codeblock}
 int sem_wait(
-		sem_t *sem);
-\end{lstlisting}
+    sem_t *sem);
+\end{codeblock}
 
 Cette fonction vérouille le sémaphore \ccode{sem}. Si la valeur courante du sémaphore est 0, alors le thread appelant est bloqué jusqu'à ce que le sémaphore soit déverouillé. Si la valeur courante est positive, alors la fonction retourne immédiatement, et le compteur est décrémenté de 1.
 
 
 \function{sem\_trywait()}\label{func:sem_trywait}
 
-\begin{lstlisting}
+\begin{codeblock}
 int sem_trywait(
-		sem_t *sem);
-\end{lstlisting}
+    sem_t *sem);
+\end{codeblock}
 Cette fonction vérouille le sémaphore \ccode{sem}. Si la valeur courante du sémaphore est 0, alors la fonction retourne -1 et la valeur de \ccode{errno} doit être \ccode{EAGAIN}. Si la valeur courante est positive, alors la fonction retourne 0, et le compteur est décrémenté de 1.
 
 
 \function{sem\_getvalue()}\label{func:sem_getvalue}
 
-\begin{lstlisting}
+\begin{codeblock}
 int sem_getvalue(
-		sem_t *sem,
-		int *sval);
-\end{lstlisting}
+    sem_t *sem,
+    int *sval);
+\end{codeblock}
 
 La fonction \ccode{sem_getvalue()} place la valeur du sémaphore dans l'entier pointé par \ccode{sval}. Elle n'affecte en aucun cas l'état du sémaphore. Si le sémaphore est bloqué, la valeur retournée dans \ccode{sval} est soit 0 soit un nombre négatif dont la valeur absolue représente le nombre de threads en attente du sémaphore.
 
 Exemple d'utilisation de sémaphores~:
+
 \begin{lstlisting}
 #include <stdio.h>
 #include <stdlib.h>
@@ -635,8 +637,7 @@ Exemple d'utilisation de sémaphores~:
 #define NUM_THREADS 4
 sem_t sem;
 
-void *Tache(void *arg)
-{
+void *Tache(void *arg) {
   sem_wait(&sem);
   printf("Tache %c est rentrée en SC \n",(int)arg);
   sleep((int)((float)3*rand()/(RAND_MAX+1.0)));
@@ -645,8 +646,7 @@ void *Tache(void *arg)
   pthread_exit(NULL);
 }
 
-int main(void)
-{
+int main(void) {
   int i;
   pthread_t tid[NUM_THREADS];
   sem_init(&sem,0,1);

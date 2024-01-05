@@ -7,7 +7,6 @@
 \usepackage{fontspec}
 \usepackage{amsfonts}
 \usepackage{lettrine}
-%\usepackage[Lenny]{fncychap}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{cleveref}
@@ -23,7 +22,6 @@
 \usepackage{xpatch}
 \usepackage{xcolor}
 \usepackage{realboxes}
-\usepackage[framemethod=tikz]{mdframed}
 \usepackage[labelfont=bf]{caption}
 \usepackage{fontspec}
 \usepackage{tcolorbox}
@@ -66,17 +64,7 @@
     {ç}{{\c{c}}}1
 }
 
-\mdfsetup{%
-  roundcorner=4pt,
-  innerleftmargin=2mm,
-  innertopmargin=4.5mm,
-  linecolor=black!50,%
-  backgroundcolor=GitHubGray,
-  innerbottommargin=1mm
-}
-
 \tcbuselibrary{listings, breakable, skins}
-
 
 \renewcommand{\lstlistingname}{Code}
 \renewcommand{\lstlistlistingname}{Liste des sources}
@@ -119,27 +107,15 @@
 \xpretocmd\lstinline{\Colorbox{GitHubGray}\bgroup\appto\lst@DeInit{\egroup}}{}{}
 \makeatother
 
-
 \floatname{algorithm}{Algorithme}
 
 \graphicspath{{./images/}}
 
-
 \newcommand{\com}[1]{}
-%\renewcommand{\com}[1]{\pagebreak{\typeout{Comment: #1}\Huge\textbf{#1}}\pagebreak}
-
-
 \newcommand{\ang}[1]{\textit{#1}}
 
-%\renewcommand{\includegraphics}[2]{}
-
-
-% \setlength{\headheight}{1.2cm}
-% \setlength{\voffset}{-1.2cm}
-% \setlength{\textheight}{655pt}
-% \addtolength{\oddsidemargin}{-1cm}
-% \addtolength{\evensidemargin}{-1cm}
-% \addtolength{\textwidth}{2cm}
+\setlength{\headheight}{1.2cm}
+\addtolength{\topmargin}{-1.6pt}
 
 \newcounter{exercicecounter}
 \setcounter{exercicecounter}{1}
@@ -161,38 +137,24 @@
 \newcommand{\startexercice}{\subsection*{Exercice \thechapter.\theexercicecounter}\addtocounter{exercicecounter}{1}}
 
 \newcommand{\startchapter}{\thispagestyle{myplain}
-%\setcounter{page}{1}
 \setcounter{exercicecounter}{1}}
 
 \setlength{\unitlength}{1cm}
 
 \pagestyle{fancy}
-% with this we ensure that the chapter and section
-% headings are in lowercase
 \renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\chaptername}\ \thechapter.\ \MakeUppercase{#1}}{}}
-%\renewcommand{\rightmark}[1]{PCO1. \markboth{\MakeUppercase{\chaptername}\ \thechapter.\ \MakeUppercase{#1}}{}}
-%\renewcommand{\chaptermark}[1]{PCO1. \markboth{\MakeUppercase{\chaptername}\ \thechapter.\ \MakeUppercase{#1}}{}}
-\fancyhf{} %delete the current section for header and footer
+\fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
 \fancyhead[RO]{\thepage}
 \fancyhead[LE]{\thepage}
 \fancyhead[LO]{\rightmark}
 \fancyhead[RE]{\leftmark}
-%\fancyfoot[C]{Programmation Concurrente 1 \copyright HEIG-VD}
 \fancyheadoffset[LE,RO]{1.5cm} \fancyfootoffset[LE,RO]{1.5cm}
-%\fancyhead[LE]{{\Roman{chapter}}.\thepage}
 
 \fancypagestyle{myplain}{%
-%\fancyhf{} % clear all header and footer fields
 \renewcommand{\headrulewidth}{0pt}
 \fancyhead{}
-%\fancyfoot[C]{Programmation Concurrente 1 \copyright HEIG-VD}
 }
-
-%\renewcommand{\figurename}{Figure}
-%\def\listfigurename{Liste des figures}
-%\renewcommand{\tablename}{Tableau}
-
 
 \emergencystretch=50pt
 
@@ -205,30 +167,22 @@
 
 \begin{document}
 
-
 \begin{titlepage}
+  \logo{1cm}{1cm}
+  \centering \vspace*{\fill}%
 
-\logo{1cm}{1cm}
-\centering \scshape \vspace*{\fill}
-
-{\Huge Introduction à la\\\vspace{1em}Programmation Concurrente} \vspace{5em}
-
-{\Large Polycopié du cours PCO} \vspace{5em}
-
-\upshape
-
-{\Large Prof. Claude Evéquoz, Prof. Yann Thoma, Prof. Yves Chevallier }
-\vspace{2em}
-
-{\Large
-HEIG-VD\\
-2023}
-
-\vspace*{\fill}
-
+  {\Huge \scshape Introduction à la\\\vspace{1em}Programmation Concurrente}\par
+  \vspace{5em}%
+  {\Large Polycopié du cours PCO}\par
+  \vspace{5em}%
+  \upshape\par
+  {\Large Prof. Claude Evéquoz, Prof. Yann Thoma, Prof. Yves Chevallier }%
+  \vspace{2em}%
+  {\Large
+    HEIG-VD\\
+    2023}%
+  \vspace*{\fill}
 \end{titlepage}
-
-\thispagestyle{empty} \thispagestyle{empty}
 
 \addcontentsline{toc}{chapter}{Table des matières}
 \tableofcontents
@@ -245,30 +199,19 @@ HEIG-VD\\
 \include{chap_pthread}
 \include{chap_temps}
 
-\newpage
-\mbox{}
-\newpage \addcontentsline{toc}{chapter}{Liste des Figures}
+\clearpage
+
 \listoffigures
-
-\clearpage \addcontentsline{toc}{chapter}{Liste des Tableaux}
 \listoftables
-
-\clearpage \addcontentsline{toc}{chapter}{Liste des Algorithmes}
-\listofalgorithms
+\lstlistoflistings
 
 \let\ifFTR\iftrue\captionsfrench
 
 \nocite{*}
 \bibliographystyle{frplain}
-%\bibliography{../bibtex/routing}
-%,../bibtex/biblio
-
-%\newpage
-%\mbox{}
 
 \startchapter
 \addcontentsline{toc}{chapter}{Bibliographie}
 \bibliography{pco}
-\clearpage \thispagestyle{empty}
 
 \end{document}

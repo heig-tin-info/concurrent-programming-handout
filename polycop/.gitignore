@@ -5,3 +5,5 @@
 *.xdv
 pco1.pdf
 *.fdb_latexmk
+*.listing
+*.lol
