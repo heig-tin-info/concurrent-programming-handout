@@ -4,7 +4,7 @@
 \section{Qu'est-ce que la programmation concurrente?}
 
 
-\lettrine[lines=4]{E}{n programmation} séquentielle, un programme est décomposé en sous-programmes (procédures ou fonctions). Chaque sous-programme correspond à une suite d'instructions, et l'exécution du programme voit ces instructions être exécutées les unes à la suite des autres. Les premiers ordinateurs (et leurs successeurs durant quelques années) ont fonctionné selon ce mode d'exécution sérielle. Une tâche pouvait en appeler une autre, mais la tâche appelante ne continuait son exécution qu'après la terminaison de la tâche appelée. Cette approche, simple à mettre en oeuvre en comparaison des systèmes actuels, souffre toutefois de quelques faiblesses. Un seul programme peut être exécuté à la fois, ce qui interdit entre autres à un utilisateur de travailler sur un document en même temps qu'il compile un code source. Si le programme en cours d'exécution attend que l'utilisateur effectue une action (clic souris par exemple), alors le processeur se retrouve sous-exploité. Et enfin, si un programme engendre une erreur, et se fige, alors le système risque de se retrouver totalement bloqué.
+\lettrine[lines=3]{E}{n} programmation séquentielle, un programme est décomposé en sous-programmes (procédures ou fonctions). Chaque sous-programme correspond à une suite d'instructions, et l'exécution du programme voit ces instructions être exécutées les unes à la suite des autres. Les premiers ordinateurs (et leurs successeurs durant quelques années) ont fonctionné selon ce mode d'exécution sérielle. Une tâche pouvait en appeler une autre, mais la tâche appelante ne continuait son exécution qu'après la terminaison de la tâche appelée. Cette approche, simple à mettre en oeuvre en comparaison des systèmes actuels, souffre toutefois de quelques faiblesses. Un seul programme peut être exécuté à la fois, ce qui interdit entre autres à un utilisateur de travailler sur un document en même temps qu'il compile un code source. Si le programme en cours d'exécution attend que l'utilisateur effectue une action (clic souris par exemple), alors le processeur se retrouve sous-exploité. Et enfin, si un programme engendre une erreur, et se fige, alors le système risque de se retrouver totalement bloqué.
 
 À l'heure actuelle, les systèmes informatiques sont multiprocessus, et supportent l'exécution pseudo-parallèle de plusieurs processus (programmes en exécution). Ceci a été rendu possible par la mise au point de systèmes d'exploitation nettement plus complexes. Un processeur peut donc voir plusieurs processus en cours d'exécution se partager le temps de traitement. Et de même, un processus peut être décomposé en sous-processus ou \emph{tâche} (\emph{threads} en anglais). Ces threads permettent de ne plus être liés à une exécution totalement sérielle des instructions. Il est dès lors possible d'avoir, par exemple, un thread responsable d'exécuter un calcul lourd pendant qu'un autre gère les interactions avec l'utilisateur. Un serveur FTP, par exemple, peut plus facilement gérer plusieurs connexions simultanées, chaque connexion étant gérée par un thread.
 
@@ -179,9 +179,7 @@ Premièrement, le thread principal peut créer un thread pour chaque nouvelle t�
 
 \newpage
 
-Exemple:
-
-\begin{lstlisting}
+\begin{codeblock}[list text={Exemple Patron},title={Exemple}]
 void *patron(void *) {
   boucle infinie {
     attend une requête
@@ -200,18 +198,18 @@ void *tacheX(void *) {
 void *tacheY(void *) {
   exécuter le travail demandé, puis se terminer
 }
-\end{lstlisting}
+\end{codeblock}
 
 Deuxièmement, le thread principal peut créer initialement un ensemble de threads. Il boucle ensuite en attendant une requête, et lorsqu'une requête arrive, la place dans une file d'attente. Tous les travailleurs sont également basés sur une boucle dans laquelle ils attendent qu'une requête soit placée dans la file d'attente. Un des travailleurs prend ensuite le contrôle de la requête et l'exécute.
-\newpage
-Exemple:
 
-\begin{mdframed}
-  \begin{lstlisting}
+\begin{codeblock}[list text={Exemple Travailleur},title={Un des travailleurs
+prend le contrôle de la requête}]
+void tacheX() { exécuter le travail demandé }
+void tacheY() { exécuter le travail demandé }
+
 void *patron(void *) {
-  // crée tous les threads
   pthread_create(...);
-  boucle infinie {
+  for (;;) {
     attend une requête;
     place la requête dans la file d'attente
     signale aux travailleurs qu'une requête est prête
@@ -219,7 +217,7 @@ void *patron(void *) {
 }
 
 void *travailleur(void *) {
-  boucle infinie {
+  for (;;) {
     bloque jusqu'à être activé par le patron
     récupère la requête de la file d'attente
     switch(requete){
@@ -229,16 +227,7 @@ void *travailleur(void *) {
     }
   }
 }
-
-void tacheX() {
-  exécuter le travail demandé
-}
-
-void tacheY() {
-  exécuter le travail demandé
-}
-\end{lstlisting}
-\end{mdframed}
+\end{codeblock}
 
 \subsection{Modèle pair}
 
@@ -252,27 +241,27 @@ Dans le modèle \emph{pair} (Figure \ref{fig:model-peer}), aucun thread n'est pr
 \end{figure}
 
 
-Exemple:
-\begin{mdframed}
-\begin{lstlisting}
+\begin{codeblock}[list text={Création Thread},title={Création de threads}]
+task1() {
+  attend le signal de commencement
+  effectue le traitement, et synchronise avec les autres threads si nécessaire
+}
+
+task2() {
+  attend le signal de commencement
+  effectue le traitement, et synchronise avec les autres threads si nécessaire
+}
+
 main() {
-  pthread_create( ... tache1);
-  pthread_create( ... tache2);
+  pthread_create( ... task1);
+  pthread_create( ... task2);
   ...
-  signale aux threads qu'ils peuvent commencer à travailler
+  // signale aux threads qu'ils peuvent commencer à travailler
 }
 
-tache1() {
-  attend le signal de commencement
-  effectue le traitement, et synchronise avec les autres threads si nécessaire
-}
 
-tache2() {
-  attend le signal de commencement
-  effectue le traitement, et synchronise avec les autres threads si nécessaire
-}
-\end{lstlisting}
-\end{mdframed}
+\end{codeblock}
+
 \subsection{Modèle pipeline}
 
 Le modèle \emph{pipeline} (Figure \ref{fig:model-pipeline}) est exploitable lorsque les conditions suivantes sont remplies:
@@ -293,37 +282,35 @@ Le modèle \emph{pipeline} (Figure \ref{fig:model-pipeline}) est exploitable lor
 Là encore, un processeur multicœur devrait voir le temps d'exécution d'un programme grandement réduit. Un exemple typique permettant d'exploiter ce modèle serait du traitement sur un flux vidéo, où un étage modifierait la couleur, un autre le son, un autre appliquerait de la compression ...
 
 Un étage du pipeline correspond donc à un traitement particulier à appliquer aux données. Le thread responsable de cet étage a un fonctionnement relativement simple. Il attend des données de l'étage précédent, traite ces données, et transmet ensuite le résultat de son traitement au thread responsable de l'étage suivant.
-\newpage
-Exemple:
 
-\begin{lstlisting}
-main() {
-  pthread_create( ... etage1);
-  pthread_create( ... etage2);
-  ...
-}
-
-etage1() {
-  boucle infinie {
+\begin{codeblock}[list text={Création Thread},title={Création de threads}]
+floor1() {
+  for(;;) {
     récupérer une entrée du programme
     traiter cette donnée
     passer le résultat à l'étage suivant
   }
 }
 
-etage2() {
-  boucle infinie {
+floor2() {
+  for(;;) {
     récupérer une donnée de l'étage précédent
     traiter cette donnée
     passer le résultat à l'étage suivant
   }
 }
 
-etageN() {
-  boucle infinie {
+floorN() {
+  for(;;) {
     récupérer une donnée de l'étage précédent
     traiter cette donnée
     passer le résultat en sortie du programme
   }
 }
-\end{lstlisting}
+
+main() {
+  pthread_create( ... floor1);
+  pthread_create( ... floor2);
+  ...
+}
+\end{codeblock}
