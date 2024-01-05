@@ -20,6 +20,7 @@
 - L'enseignement de la programmation sur GPU avec des compute shaders peut être une excellente idée. Cela peut introduire les étudiants à la programmation hautement parallèle et au calcul général sur GPU.
 - Étude de cas: Des exemples concrets de problèmes résolus de manière concurrente, tels que la parallélisation d'algorithmes de tri, la résolution de problèmes complexes avec des threads, etc. (Algorithme de tri bitonique, tri parallèle, etc.)
 - Présentation d'outils et de bibliothèques utiles pour la programmation concurrente, tels que std::async, std::threadpool, ou des bibliothèques de haut niveau comme Intel TBB (Threading Building Blocks) ou OpenMP.
+- Thread Safety ? : Il est important de noter que les threads ne sont pas toujours la meilleure solution pour la programmation concurrente. Dans certains cas, il peut être préférable d'utiliser des processus, des tâches, des événements, des canaux, des flux, etc. Il est important de choisir la bonne solution pour chaque problème.
 
 ## Discussion
 
